@@ -139,7 +139,7 @@ Class View {
     private static function failure_view($reason = null) {
         switch ($reason) {
             case 'privacy':
-                $message = '<p>You did not accept our privacy policy, therefore your details have not been submitted to our database.</p>'
+                $message = '<div class="zws-contacts-db-failure-message"><p>You did not accept our privacy policy, therefore your details have not been submitted to our database.</p></div>'
                         . ' <button onclick="goBack()">Try Again?</button><script>function goBack() { window.history.back();}</script>';
                 break;
             default:
