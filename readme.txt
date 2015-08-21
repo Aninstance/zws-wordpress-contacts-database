@@ -54,7 +54,7 @@ To install search for "ZWS Contacts Database" in the WordPress Plugins Directory
 
 When it's installed, simply activate, then navigate to the Settings page to update the defaults to your liking.
 
-Alternatively, the latest version of the plugin may be installed via a zip file, available here: https://github.com/ZWS2014/wordpress-contacts-database/archive/master.zip
+Alternatively, the latest version of the plugin may be installed via a zip file, available here: https://github.com/ZWS2014/zws-wordpress-contacts-database/archive/master.zip
 
 After downloading the zip, change the name of the unzipped directory to "ZwsContactsDatabase", upload the plugin to the '/wp-content/plugins/' directory, then activate through the 'Plugins' menu in WordPress.
 

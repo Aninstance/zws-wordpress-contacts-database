@@ -117,7 +117,7 @@ Class AdminView {
                     $contacts_array_safe[$id_safe]['phone'] = sanitize_text_field($value['phone']);
                     $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
                     $contacts_array_safe[$id_safe]['max_radius'] = sanitize_text_field($value['max_radius']);
-                    $contacts_array_safe[$id_safe]['extra_info'] = wp_kses_post($value['extra_info']);
+                    $contacts_array_safe[$id_safe]['extra_info'] = nl2br(stripslashes(wp_kses_post($value['extra_info'])));
                 }
             }
 
@@ -141,7 +141,7 @@ Class AdminView {
                 echo '<li  style="margin-bottom:1em;">';
                 echo '<ul class="contact-info-list-inner">';
                 echo '<li>Distance from target: ' . $value['distance'] . ' miles</li>';
-                echo '<li>Name of contact: ' . $value['first_name'] . ' ' . $value['last_name'] . '</li>';
+                echo '<li>Name of contact: ' . stripslashes($value['first_name']) . ' ' . stripslashes($value['last_name']) . '</li>';
                 echo '<li>Postcode of contact: ' . $value['postcode'] . '</li>';
                 echo '<li>Phone of contact: <a href="tel:' . $value['phone'] . '">' . $value['phone'] . '</a></li>';
                 echo '<li>Email of contact: <a href="mailto:' . $value['email'] . '">' . $value['email'] . '</a></li>';

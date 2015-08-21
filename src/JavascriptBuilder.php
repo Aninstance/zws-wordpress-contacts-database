@@ -34,7 +34,8 @@ Class JavascriptBuilder {
                 $js_postcode_str .= $c . ':"' . $value['postcode'] . '",';
                 $js_email_str .= $c . ':"' . $value['email'] . '",';
                 $js_phone_str .= $c . ':"' . $value['phone'] . '",';
-                $js_notes_str .= $c . ':"' . $value['extra_info'] . '",';
+                $js_notes_str .= $c . ':"' . sanitize_text_field($value['extra_info']) . '",';
+                error_log($value['extra_info']);
                 array_push($dupeCheck, $value['postcode']);
                 $c++;
             }

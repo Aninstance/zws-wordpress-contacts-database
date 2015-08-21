@@ -98,7 +98,7 @@ Class View {
             $safe_values['phone'] = trim(self::removeNonNumeric(sanitize_text_field($_POST['phone'])));
             $safe_values['email'] = sanitize_email($_POST['email']);
             $safe_values['max_radius'] = sanitize_text_field($_POST['max_radius']);
-            $safe_values['extra_info'] = esc_textarea($_POST['extra_info']);
+            $safe_values['extra_info'] = wp_kses_post($_POST['extra_info']);
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
 // verify privacy policy has been accepted
             if (!$safe_values['pp_accepted']) {
