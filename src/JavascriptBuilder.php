@@ -40,7 +40,7 @@ Class JavascriptBuilder {
                 $c++;
             }
         }
-        // &key=AIzaSyBWWGk2H9NwjOcF07YRXDXBimae3x7Dk9Y
+        // &key=
         // define filename ensuring it includes the unique user id, in case of simultatious sessions by different users.
         $filename = __DIR__ . '/../inc/' . $map_config['new_script_uri'];
         // build the file

@@ -14,7 +14,7 @@ namespace ZwsContactsDatabase;
 Class DistanceCalculator {
 
     // uses Google Distance Matrix API
-    const DISTANCE_MATRIX_API_KEY = 'AIzaSyBWWGk2H9NwjOcF07YRXDXBimae3x7Dk9Y';
+    const DISTANCE_MATRIX_API_KEY = '';
     const DISTANCE_MATRIX_BASE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
     const DISTANCE_MATRIX_PARAMS = '&mode=driving&language=en-EN&units=imperial&sensor=false';
 
