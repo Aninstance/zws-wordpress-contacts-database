@@ -4,9 +4,8 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0 
 Tested up to: 4.3.0
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
-
 Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
 
 == Description ==
@@ -21,13 +20,7 @@ When a casualty is reported, the administrator enters the postcode, and is prese
 
 This is a beta testing release. The first release version (1.0) of this plugin is currently still under active development.
 
-Because this is a beta version, there is currently NO plugin settings page. In addition, caching has been disabled by default, until the release of beta 0.2.
-
-Please only install for testing purposes until at least version 0.2.
-
-However, if you do install < 0.2 on a live website, please re-download the zip and reinstall periodically, to ensure you always have the latest version.
-
-Because there is no settings page yet, you will need to edit DistanceCalculator.php and set the DISTANCE_MATRIX_API_KEY constant to your Google Distance Matrix API key.
+If you are installing from the master zip file from GitHub, please re-download the zip and reinstall periodically, to ensure you always have the latest release version.
 
 == Features ==
 
@@ -92,9 +85,13 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.1
+The current version is: 0.2
 
 == Changelog ==
+
+= 0.2 =
+
+Pending ...
 
 = 0.1 =
 
