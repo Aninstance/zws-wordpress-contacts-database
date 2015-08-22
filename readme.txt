@@ -17,6 +17,16 @@ An example use case: The plugin is being developed for use initially on a wildli
 
 When a casualty is reported, the administrator enters the postcode, and is presented with the 5 closest contacts ("ambulances") to the casualty who are within their specified maximum travel distance. The casualty and the contacts are also plotted on a Google map.
 
+== Beta Information ==
+
+This is a beta testing release. The first release version (1.0) of this plugin is currently still under active development.
+
+Because this is a beta version, there is currently NO plugin settings page. In addition, caching has been disabled by default, until the release of beta 0.2.
+
+Please only install for testing purposes until at least version 0.2.
+
+However, if you do install < 0.2 on a live website, please re-download the zip and reinstall periodically, to ensure you have the latest version.
+
 == Features ==
 
 * Contacts submit details into database. Details include:
@@ -28,7 +38,13 @@ When a casualty is reported, the administrator enters the postcode, and is prese
     - Free form extra information
 * Administrators submit postcode, which queries database and returns nearest contacts to the target (provided target is within contact's maximum radius).
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
-* Uses Memcacher to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
+* Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
+
+== Requirements ==
+
+You will need to have Memcached installed on your system to make use of the Cache feature.
+
+The plugin has been tested with PHP versions 5.5.x and above.
 
 == Future development roadmap ==
 

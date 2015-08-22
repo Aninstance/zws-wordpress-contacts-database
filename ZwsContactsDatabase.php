@@ -65,7 +65,7 @@ Class ZwsContactsDatabase {
 // add additional links on plugins page
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
 // create the administration page
-add_action('admin_menu', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_admin'));
+// add_action('admin_menu', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_admin'));
 // add the installer to the activation hook
 register_activation_hook(__FILE__, array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_installer'));
 // add the shortcodes
