@@ -31,6 +31,7 @@ When a casualty is reported, the administrator enters the postcode, and is prese
 * Uses Memcacher to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 
 == Future development roadmap ==
+
 * Add facility for administrators to browse the database.
 * Add form field to allow contacts to set times when they'd be available.
 * Modify code so only contacts available at the time of request are included in admin contacts view page.
@@ -58,9 +59,9 @@ Alternatively, the latest version of the plugin may be installed via a zip file,
 
 After downloading the zip, change the name of the unzipped directory to "ZwsContactsDatabase", upload the plugin to the '/wp-content/plugins/' directory, then activate through the 'Plugins' menu in WordPress.
 
-Once installed, the contacts submission form can be added to a post or page using the shortcode [zwscontactsdatabase_public_form].
+Once installed, the contacts submission form can be added to a post or page using the shortcode: [zwscontactsdatabase_public_form].
 
-The administration page where contacts may be viewed and displayed on a map in relation to a "target" postcode can be inserted to a post or page using the shortcode [zwscontactsdatabase_results_page].
+The administration page where contacts may be viewed and displayed on a map in relation to a "target" postcode can be inserted to a post or page using the shortcode: [zwscontactsdatabase_results_page].
 
 == Frequently Asked Questions ==
 
