@@ -25,7 +25,7 @@ Because this is a beta version, there is currently NO plugin settings page. In a
 
 Please only install for testing purposes until at least version 0.2.
 
-However, if you do install < 0.2 on a live website, please re-download the zip and reinstall periodically, to ensure you have the latest version.
+However, if you do install < 0.2 on a live website, please re-download the zip and reinstall periodically, to ensure you always have the latest version.
 
 == Features ==
 
