@@ -44,13 +44,11 @@ The plugin has been tested with PHP versions 5.5.x and above.
 
 == Future development roadmap ==
 
-* Add facility for administrators to browse the database.
+* Add facility for administrators to browse and administer the database.
 * Add form field to allow contacts to set times when they'd be available.
 * Modify code so only contacts available at the time of request are included in admin contacts view page.
-* Add feature to allow contacts to modify their own stored data.This would necessitate creating a password at sign-up.
-* Code settings page for existing options.
+* Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
-* Allow greater ability to configure more options from settings page.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
 * Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
 * Add presentation polish.
@@ -96,7 +94,7 @@ The current version is: 0.2
 
 = 0.2 =
 
-Pending ...
+* Settings page added, with ability to change configuration options.
 
 = 0.1 =
 
