@@ -48,7 +48,7 @@ The plugin has been tested with PHP versions 5.5.x and above.
 * Add form field to allow contacts to set times when they'd be available.
 * Modify code so only contacts available at the time of request are included in admin contacts view page.
 * Add feature to allow contacts to modify their own stored data.This would necessitate creating a password at sign-up.
-* Code settings page for existing options - including setting the distance matrix api key (currently a constant in DistanceCalculator.php).
+* Code settings page for existing options.
 * Add function to email administrators when new contacts register.
 * Allow greater ability to configure more options from settings page.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
@@ -79,6 +79,10 @@ Once installed, the contacts submission form can be added to a post or page usin
 The administration page where contacts may be viewed and displayed on a map in relation to a "target" postcode can be inserted to a post or page using the shortcode:
 
 [zwscontactsdatabase_results_page].
+
+Be sure to visit the plugin's settings page (available via the Wordpress admin section settings sidebar), to configure the plugin for your system.
+
+You will also need to create a page (or post) for your website's privacy policy, and enter the URL on the aforementioned settings page.
 
 == Frequently Asked Questions ==
 

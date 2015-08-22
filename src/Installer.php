@@ -21,7 +21,7 @@ Class Installer {
     const DEFAULT_MEMCACHED_IP = '127.0.0.1';
     const DEFAULT_MEMCACHED_PORT = '11211';
     const DEFAULT_FULL_REMOVAL = 'FALSE';
-    const DEFAULT_PRIVACY_POLICY_URL = '/privacy_policy';
+    const DEFAULT_PRIVACY_POLICY_URL = '';
     const DEFAULT_GOOGLE_SERVER_API_KEY = '';
 
     private static $existing_stored_options = array();

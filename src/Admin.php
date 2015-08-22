@@ -29,15 +29,16 @@ Class Admin {
 
         // hande postbacks from form
         if (isset($_GET['postback'])) {
+            $updated = false;
             // check to determine if this is form postback
             switch ($_GET['postback']) {
                 case 'set_options':
                     require_once(__DIR__ . '/SetOptions.php');
-                    if (isset($_POST)) {
+                    if (isset($_POST) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'update_options_action')) {
                         // make the update. Returns true if successful, or false if not.
                         $updated = \ZwsContactsDatabase\SetOptions::update_options($_POST);
                     }
-                    $updated ? self::$notifications['update_options'] = 'Options updated!' : self::$notifications['update_options'] = 'An error occurred!';
+                    $updated ? self::$notifications['update_options'] = 'You have successfully changed some options!' : self::$notifications['update_options'] = 'No options changed!';
                     break;
                 case 'clear_cache':
                     if (self::clear_cache()) {
@@ -111,7 +112,7 @@ Class Admin {
 
         /* // define form elements // */
 
-        /* google api key */
+        /* general options */
 
         public static function google_api_key_form_field_element() {
             ?>
@@ -121,10 +122,30 @@ Class Admin {
                    <?php
                }
 
-               /* memcachced */
-
-               public static function memcached_server_active_element() {
+               public static function privacy_page_url_form_field_element() {
                    ?>
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of privacy policy page (relative link - e.g. /privacy-policy)</small>      
+            <input type="text" name="zws_contacts_database_plugin_privacy_policy_url" size="55" id="zws_contacts_database_plugin_privacy_policy_url" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_privacy_policy_url']; ?>" />
+                   <?php
+               }
+
+               public static function full_removal_on_uninstall_element() {
+                   ?>
+            <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small> 
+            <?php
+            // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
+            $true_checked = get_site_option('zws_contacts_database_remove_data') === 'TRUE' ? 'checked' : '';
+            $false_checked = get_site_option('zws_contacts_database_remove_data') === 'FALSE' ? 'checked' : '';
+            echo '<input type="radio" name="zws_contacts_database_remove_data" value="TRUE" ' . $true_checked . '>Yes
+            <br>
+            <input type="radio" name="zws_contacts_database_remove_data" value="FALSE" ' . $false_checked . '>No';
+        }
+
+        /* memcachced options */
+
+        public static function memcached_server_active_element() {
+            ?>
             <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Use Memcached to cache API requests</small> 
             <?php
             // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
@@ -159,6 +180,10 @@ Class Admin {
             <?php
         }
 
+        public static function nonce_element() {
+            wp_nonce_field('update_options_action', 'my_nonce_field');
+        }
+
         public static function settings_panel_fields() {
             // add the sections to the section groups
             add_settings_section('basic_options_section_group', 'Basic Configuration Options', null, 'basic_options_section');
@@ -166,6 +191,12 @@ Class Admin {
             // add the fields to the sections
             add_settings_field('zws_contacts_database_google_server_api_key', 'Google Server API Key', array('\ZwsContactsDatabase\Admin',
                 'google_api_key_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_google_server_api_key', 'Google Server API Key', array('\ZwsContactsDatabase\Admin',
+                'google_api_key_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_plugin_privacy_policy_url', 'Privacy policy URL', array('\ZwsContactsDatabase\Admin',
+                'privacy_page_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_remove_data', 'Fully remove all plugin\'s databases & options on uninstall?', array('\ZwsContactsDatabase\Admin',
+                'full_removal_on_uninstall_element'), 'basic_options_section', 'basic_options_section_group');
             add_settings_field('zws_contacts_database_memcached_active', 'Use cache?', array('\ZwsContactsDatabase\Admin',
                 'memcached_server_active_element'), 'memcached_options_section', 'basic_options_section_group');
             add_settings_field('zws_contacts_database_memcached_period', 'Memcached period', array('\ZwsContactsDatabase\Admin',
@@ -174,6 +205,9 @@ Class Admin {
                 'memcached_server_IP_element'), 'memcached_options_section', 'basic_options_section_group');
             add_settings_field('zws_contacts_database_memcached_port', 'Memcached port', array('\ZwsContactsDatabase\Admin',
                 'memcached_server_port_element'), 'memcached_options_section', 'basic_options_section_group');
+            // add the nonce field
+            add_settings_field('my_nonce_field', '', array('\ZwsContactsDatabase\Admin',
+                'nonce_element'), 'basic_options_section', 'basic_options_section_group');
         }
 
         public static function clear_cache() {
