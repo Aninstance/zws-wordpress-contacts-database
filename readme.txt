@@ -95,7 +95,8 @@ The current version is: 0.1
 == Changelog ==
 
 = 0.1 =
-First version of the plugin.
+
+First beta version of the plugin.
 
 == Support ==
 
