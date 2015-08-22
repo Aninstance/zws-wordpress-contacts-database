@@ -108,12 +108,53 @@ Class Admin {
             return True;
         }
 
-        // define form elements
+        /* // define form elements // */
+
+        /* google api key */
+
         public static function google_api_key_form_field_element() {
             ?>
             <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Your Google API Key (server)</small>      
             <input type="text" name="zws_contacts_database_google_server_api_key" size="55" id="zws_contacts_database_google_server_api_key" 
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key']; ?>" />
+                   <?php
+               }
+
+               /* memcachced */
+
+               public static function memcached_server_active_element() {
+                   ?>
+            <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Use Memcached to cache API requests</small> 
+            <?php
+            // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
+            $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'TRUE' ? 'checked' : '';
+            $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'FALSE' ? 'checked' : '';
+            echo '<input type="radio" name="zws_contacts_database_memcached_active" value="TRUE" ' . $true_checked . '>Yes
+            <br>
+            <input type="radio" name="zws_contacts_database_memcached_active" value="FALSE" ' . $false_checked . '>No';
+        }
+
+        public static function memcached_server_period_element() {
+            ?>
+            <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Length of time to cache content (in seconds)</small>      
+            <input type="text" name="zws_contacts_database_memcached_period" size="55" id="zws_contacts_database_memcached_period" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_period']; ?>" />
+                   <?php
+               }
+
+               public static function memcached_server_IP_element() {
+                   ?>
+            <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server IP (default 127.0.0.1)</small>      
+            <input type="text" name="zws_contacts_database_memcached_ip" size="55" id="zws_contacts_database_memcached_ip" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_ip']; ?>" />
+                   <?php
+               }
+
+               public static function memcached_server_port_element() {
+                   ?>
+            <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server port (default 11211)</small>      
+            <input type="text" name="zws_contacts_database_memcached_port" size="55" id="zws_contacts_database_memcached_port" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_port']; ?>" />
             <?php
         }
 
@@ -123,6 +164,14 @@ Class Admin {
             // add the fields to the sections
             add_settings_field('zws_contacts_database_google_server_api_key', 'Google Server API Key', array('\ZwsContactsDatabase\Admin',
                 'google_api_key_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_memcached_active', 'Use cache?', array('\ZwsContactsDatabase\Admin',
+                'memcached_server_active_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_memcached_period', 'Memcached period', array('\ZwsContactsDatabase\Admin',
+                'memcached_server_period_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_memcached_ip', 'Memached IP', array('\ZwsContactsDatabase\Admin',
+                'memcached_server_IP_element'), 'basic_options_section', 'basic_options_section_group');
+            add_settings_field('zws_contacts_database_memcached_port', 'Memcached port', array('\ZwsContactsDatabase\Admin',
+                'memcached_server_port_element'), 'basic_options_section', 'basic_options_section_group');
         }
 
         public static function clear_cache() {
@@ -152,4 +201,4 @@ Class Admin {
         }
 
     }
-   
+    
