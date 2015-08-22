@@ -14,7 +14,7 @@ namespace ZwsContactsDatabase;
 Class DistanceCalculator {
 
     // uses Google Distance Matrix API
-    const DISTANCE_MATRIX_API_KEY = '';
+    const OPTIONS_LABEL = 'zws_contacts_database_options';
     const DISTANCE_MATRIX_BASE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
     const DISTANCE_MATRIX_PARAMS = '&mode=driving&language=en-EN&units=imperial&sensor=false';
 
@@ -63,8 +63,9 @@ Class DistanceCalculator {
 
     public static function getDistance($target_postcode, $contact_postcode) {
         require_once(__DIR__ . '/QueryAPI.php');
-
-        $path = '?origins=' . $target_postcode . '&destinations=' . $contact_postcode . self::DISTANCE_MATRIX_PARAMS . '&key=' . self::DISTANCE_MATRIX_API_KEY;
+        
+        $google_api_key = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
+        $path = '?origins=' . $target_postcode . '&destinations=' . $contact_postcode . self::DISTANCE_MATRIX_PARAMS . '&key=' . $google_api_key;
         // $data = file_get_contents($url);
         $data = \ZwsContactsDatabase\QueryAPI::makeQuery(self::DISTANCE_MATRIX_BASE_URL, $path);
         if ($data['returned_data'] && $data['returned_data']['status'] === 'OK' && $data['returned_data']['rows'][0]['elements'][0]['status'] === "OK") {

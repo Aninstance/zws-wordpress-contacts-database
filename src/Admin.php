@@ -111,9 +111,9 @@ Class Admin {
         // define form elements
         public static function google_api_key_form_field_element() {
             ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Example help text ...</small>      
-            <input type="text" name="example_fieldname" size="55" id="example_fieldname" 
-                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['example_fieldname']; ?>" />
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Your Google API Key (server)</small>      
+            <input type="text" name="zws_contacts_database_google_server_api_key" size="55" id="zws_contacts_database_google_server_api_key" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key']; ?>" />
             <?php
         }
 
