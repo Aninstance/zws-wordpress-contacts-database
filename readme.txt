@@ -27,6 +27,8 @@ Please only install for testing purposes until at least version 0.2.
 
 However, if you do install < 0.2 on a live website, please re-download the zip and reinstall periodically, to ensure you always have the latest version.
 
+Because there is no settings page yet, you will need to edit DistanceCalculator.php and set the DISTANCE_MATRIX_API_KEY constant to your Google Distance Matrix API key.
+
 == Features ==
 
 * Contacts submit details into database. Details include:
