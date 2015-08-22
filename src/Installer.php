@@ -22,6 +22,7 @@ Class Installer {
     const DEFAULT_MEMCACHED_PORT = '11211';
     const DEFAULT_FULL_REMOVAL = 'FALSE';
     const DEFAULT_PRIVACY_POLICY_URL = '/privacy_policy';
+    const DEFAULT_GOOGLE_SERVER_API_KEY = '';
 
     private static $existing_stored_options = array();
 
@@ -35,6 +36,7 @@ Class Installer {
             'zws_contacts_database_memcached_port' => self::DEFAULT_MEMCACHED_PORT,
             'zws_contacts_database_plugin_db_version' => self::DB_VERSION,
             'zws_contacts_database_plugin_privacy_policy_url' => self::DEFAULT_PRIVACY_POLICY_URL,
+            'zws_contacts_database_google_server_api_key' => self::DEFAULT_GOOGLE_SERVER_API_KEY,
         );
 
         // set options array if does not exist

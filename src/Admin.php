@@ -77,8 +77,8 @@ Class Admin {
                 }
                 ?>">
                           <?php
-                          do_settings_sections("example_section");
-                          settings_fields("example_section_group");
+                          do_settings_sections("basic_options_section");
+                          settings_fields("basic_options_section_group");
                           submit_button();
                           ?>          
                 </form>
@@ -109,7 +109,7 @@ Class Admin {
         }
 
         // define form elements
-        public static function example_form_field_element_name() {
+        public static function google_api_key_form_field_element() {
             ?>
             <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Example help text ...</small>      
             <input type="text" name="example_fieldname" size="55" id="example_fieldname" 
@@ -119,10 +119,10 @@ Class Admin {
 
         public static function settings_panel_fields() {
             // add the sections to the section groups
-            add_settings_section('example_section_group', 'Example Settings Group', null, 'example_section');
+            add_settings_section('basic_options_section_group', 'Basic Configuration Options', null, 'basic_options_section');
             // add the fields to the sections
-            add_settings_field('example_fieldname', 'Example field label', array('\ZwsContactsDatabase\Admin',
-                'example_form_field_element_name'), 'example_section', 'example_section_group');
+            add_settings_field('zws_contacts_database_google_server_api_key', 'Google Server API Key', array('\ZwsContactsDatabase\Admin',
+                'google_api_key_form_field_element'), 'basic_options_section', 'basic_options_section_group');
         }
 
         public static function clear_cache() {
@@ -152,4 +152,4 @@ Class Admin {
         }
 
     }
-    
+   
