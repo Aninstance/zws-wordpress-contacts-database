@@ -54,7 +54,7 @@ The plugin has been tested with PHP versions 5.5.x and above.
 * Add form field to allow contacts to set times when they'd be available.
 * Modify code so only contacts available at the time of request are included in admin contacts view page.
 * Add feature to allow contacts to modify their own stored data.This would necessitate creating a password at sign-up.
-* Code settings page for existing options.
+* Code settings page for existing options - including setting the distance matrix api key (currently a constant in DistanceCalculator.php).
 * Add function to email administrators when new contacts register.
 * Allow greater ability to configure more options from settings page.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
