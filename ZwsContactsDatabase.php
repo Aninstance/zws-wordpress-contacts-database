@@ -64,7 +64,7 @@ Class ZwsContactsDatabase {
 // autoload the vendor packages
 require_once(__DIR__ . '/vendor/autoload.php');
 // include the filters
-require_once(__DIR__ . '/src/filters.php');
+require_once(__DIR__ . '/src/Filters.php');
 // add additional links on plugins page
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
 // create the administration page

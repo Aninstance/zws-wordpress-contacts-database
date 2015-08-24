@@ -25,21 +25,45 @@ Class AdminView {
             return false;
         }
 
-        if (isset($_GET['postback']) && esc_attr($_GET['postback']) === 'true') {
-// if form is being posted back, process the form
-            $posted_postcode = self::process_form();
-            if ($posted_postcode && $posted_postcode !== null) {
-                // if form processing successful, display nearest contacts. Returns true or false.
-                $success = true ? self::display_nearest($posted_postcode) : false;
-            } else {
-                $success = false;
+        // set success variable for return - will be changed on successful completion of action
+        $success = false;
+
+        if (!empty($_GET)) {
+            $safe_attr = array();
+            foreach ($_GET as $key => $value) {
+                $safe_attr[apply_filters('zws_filter_basic_sanitize', $key)] = apply_filters('zws_filter_basic_sanitize', $value);
+            }
+            if (!empty($safe_attr['postback'])) {
+                switch ($safe_attr['postback']) {
+                    case 'true':
+                        $posted_postcode = self::process_form();
+                        if ($posted_postcode && $posted_postcode !== null) {
+                            // if form processing successful, display nearest contacts. Returns true or false.
+                            $success = true ? self::display_nearest($posted_postcode) : false;
+                        } else {
+                            $success = false;
+                        }
+                        break;
+                    default:
+                        $success = true ? self::display_form() : false;
+                        break;
+                }
+            }
+            if (!empty($safe_attr['show_all'])) {
+                switch ($safe_attr['show_all']) {
+                    case 'true':
+                        $success = true ? self::display_all_records() : false;
+                        break;
+                    default:
+                        $success = true ? self::display_form() : false;
+                        break;
+                }
             }
         } else {
-// if form not being posted back, diplay the form
             $success = true ? self::display_form() : false;
         }
+// return null if successful, or false if not
         if ($success) {
-// return null if successful, or false if not.
             return null;
         } else {
             self::display_error('no_data');
@@ -49,7 +73,7 @@ Class AdminView {
 
     public static function display_form() {
 // method to display the target postcode entry form.
-        echo '<form action="' . self::set_url_query("postback=true") . '" method="post">';
+        echo '<form action="' . self::set_url_query(array('postback' , 'true')) . '" method="post">';
         echo '<p>';
         echo 'Please enter the target postcode (no spaces - e.g. AB329BR)<br />';
         echo '<input type="text" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["target_postcode"]) ? esc_attr($_POST["target_postcode"]) : '' ) . '" size="8" />';
@@ -77,7 +101,7 @@ Class AdminView {
             case 'no_data':
                 $error_string = '<h2>Nothing to see here ...</h2><p>Oh dear, it looks like there is nothing to display.</p>
             <p>This may be because there are currently no contacts available. Or, the more likely reason is that the postcode you entered is invalid.</p>
-            <p>Please <a href="' . self::set_url_query("postback=false") . '">re-enter the postcode to try again</a>!</p>';
+            <p>Please <a href="' . self::set_url_query(array('postback' , 'false')) . '">re-enter the postcode to try again</a>!</p>';
                 break;
             case 'not_authorised':
                 $error_string = '<h2>Access denied ...</h2><p>It seems you are not logged in as an administrative user. Please log in and try again.</p>';
@@ -102,7 +126,7 @@ Class AdminView {
             $contacts_array_safe = array();
 // display the  elements
             echo '<div class="contact-list"><h2>' . $how_many_contacts . ' Closest Contacts</h2>';
-            echo '<small><a href="' . self::set_url_query("postback=false") . '">Back to target submission form</a></small>';
+            echo '<small><a href="' . self::set_url_query(array('postback' , 'false')) . '">Back to target submission form</a></small>';
 
             foreach ($contacts_array as $key => $value) {
 // ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target.
@@ -117,7 +141,9 @@ Class AdminView {
                     $contacts_array_safe[$id_safe]['phone'] = sanitize_text_field($value['phone']);
                     $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
                     $contacts_array_safe[$id_safe]['max_radius'] = sanitize_text_field($value['max_radius']);
-                    $contacts_array_safe[$id_safe]['extra_info'] = nl2br(stripslashes(wp_kses_post($value['extra_info'])));
+                    $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
+                            stripslashes(
+                                    apply_filters('zws_filter_text_with_linebreak', $value['extra_info'])));
                 }
             }
 
@@ -188,12 +214,40 @@ Class AdminView {
         return false;
     }
 
-    // Helpers
-    public static function set_url_query($new_query) {
+// display all records
+    private static function display_all_records() {
+// hard code resuts per page and index length for now. Add to user-defined options later?
+        $page_size = 10;
+        $page_index_batch_size = 5;
+// grab all registered users from db
+        require_once(__DIR__ . '/Database.php');
+        $result_set = \ZwsContactsDatabase\Database::getAllRecords();
+// paginate and display the results
+        require_once(__DIR__ . '/ZwsPaginator.php');
+        return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size, $page_index_batch_size) : false;
+    }
+
+    // My helpers
+    private static function set_url_query($new_query) {
+        $param_name = $new_query[0];
+        $param_value = $new_query[1];
+        // regex for replacing existing parameter
+        $pattern = '/(.*?)(' . $param_name . '=[^&]*)(.*$)/i';
+        $replacement = '$1' . $param_name . '=' . $param_value . '$3';
+        // if no query string in current url
         if (empty($_SERVER['QUERY_STRING'])) {
-            return esc_url($_SERVER['REQUEST_URI'] . '?' . $new_query);
+            return esc_url($_SERVER['REQUEST_URI'] . '?' . $param_name . '=' . $param_value);
         } else {
-            return esc_url(str_replace($_SERVER['QUERY_STRING'], $new_query, $_SERVER['REQUEST_URI']));
+            // if new query name already exists in string
+            if (strpos(esc_url($_SERVER['QUERY_STRING']), $param_name)) {
+                return preg_replace($pattern, $replacement, esc_url($_SERVER['REQUEST_URI']));
+            } else {
+                return esc_url(str_replace($_SERVER['QUERY_STRING'], $_SERVER['QUERY_STRING'] .
+                                '&' .
+                                $param_name .
+                                '=' .
+                                $param_value, $_SERVER['REQUEST_URI']));
+            }
         }
     }
 

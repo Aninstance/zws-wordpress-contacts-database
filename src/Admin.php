@@ -31,7 +31,7 @@ Class Admin {
         if (isset($_GET['postback'])) {
             $updated = false;
             // check to determine if this is form postback
-            switch ($_GET['postback']) {
+            switch (apply_filters('zws_filter_basic_sanitize', $_GET['postback'])) {
                 case 'set_options':
                     require_once(__DIR__ . '/SetOptions.php');
                     if (isset($_POST) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'update_options_action')) {
@@ -71,7 +71,7 @@ Class Admin {
         <div class="forms"  style="position:relative;margin:1em;float:left;clear:left;">
             <div class="wrap" style="margin:1em;">
                 <form method="post" action="<?php
-                if ((isset($_GET['postback']) && $_GET['postback'] != 'set_options' ) || (!isset($_GET['postback']))) {
+                if ((isset($_GET['postback']) && apply_filters('zws_filter_basic_sanitize', $_GET['postback']) != 'set_options' ) || (!isset($_GET['postback']))) {
                     echo self::get_url() . '&postback=set_options';
                 } else {
                     echo self::get_url();
@@ -89,7 +89,7 @@ Class Admin {
             <!-- Clear cache button form  -->
             <div class="wrap" style="margin:1em;">
                 <form method="post" action="<?php
-                if (isset($_GET['postback']) && $_GET['postback'] != 'clear_cache' || (!isset($_GET['postback']))) {
+                if (isset($_GET['postback']) && apply_filters('zws_filter_basic_sanitize', $_GET['postback']) != 'clear_cache' || (!isset($_GET['postback']))) {
                     echo self::get_url() . '&postback=clear_cache';
                 } else {
                     echo self::get_url();
@@ -237,4 +237,3 @@ Class Admin {
         }
 
     }
-    
