@@ -2,6 +2,8 @@
 
 namespace ZwsContactsDatabase;
 
+use ZwsContactsDatabase\Helpers as Zelp;
+
 /**
  * Zws Paginator utility, used in Zws Contacts Database
  *
@@ -14,6 +16,7 @@ namespace ZwsContactsDatabase;
 Class ZwsPaginator {
 
     public static function paginate($set, $page_size = 10, $page_index_batch_size = 5) {
+        require_once (__DIR__ . '/Helpers.php');
         $set_size = count($set);
         $page = 1;
         // get the page number to display
@@ -21,25 +24,74 @@ Class ZwsPaginator {
             $page = apply_filters('zws_filter_validate_integer', $_GET['contacts_page']);
         }
         // display page 
-        echo '<div class="zws-contacts-database-all-entries"><ul class="zws-contacts-database-display-all-list">';
+        echo '<div class="zws-contacts-database-all-entries"><span class="zws-contacts-database-all-entries-headline" style="' . Zelp::getCss('header_style_tag') . '">All Database Entries</span>'
+        . '<ul class="zws-contacts-database-display-all-list" style="list-style:none";>';
         foreach (array_slice($set, (($page * $page_size) - $page_size), ($page * $page_size)) as $key => $value) {
-            echo '<li><ul class="zws-contacts-database-display-all-inner-list">';
+            echo '<li><div class="zws-contacts-database-display-all-inner-div" style="' . Zelp::getCss('entry_style_tag') . '"><ul class="zws-contacts-database-display-all-inner-list" style="list-style:none;">';
             foreach ($value as $entry => $entry_value) {
                 // do some specific formatting for certain fields
                 switch (apply_filters('zws_filter_basic_sanitize', $entry)) {
                     case 'email':
-                        echo '<li>Email : <a href="mailto:' . sanitize_email($entry_value) . '">' . sanitize_email($entry_value) . '</a></li>';
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Email :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"><a href="mailto:' . sanitize_email($entry_value) . '" style="' . Zelp::getCss('link_style_tag') . '">'
+                        . sanitize_email($entry_value) . '</a></span></li>';
+                        break;
+                    case 'phone' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Phone :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"><a href="tel:' . apply_filters('zws_filter_validate_integer', $entry_value) . '" style="' . Zelp::getCss('link_style_tag') . '">'
+                        . apply_filters('zws_filter_validate_integer', $entry_value) . '</a></span></li>';
+                        break;
+                    case 'id' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">User ID :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_validate_integer', $entry_value) . '</span></li>';
+                        break;
+                    case 'first_name' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">First Name :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_basic_sanitize', $entry_value) . '</span></li>';
+                        break;
+                    case 'last_name' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Last Name :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_basic_sanitize', $entry_value) . '</span></li>';
+                        break;
+                    case 'postcode' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Post Code :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_basic_sanitize', $entry_value) . '</span></li>';
+                        break;
+                    case 'max_radius' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Maximum Travel Distance To Target :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_validate_integer', $entry_value) . ' miles</span></li>';
+                        break;
+                    case 'extra_info' :
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Extra Information :</span>'
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' .
+                        nl2br(stripslashes(apply_filters('zws_filter_text_with_linebreak', $entry_value))) . '</span></li>';
+                        break;
+                    case 'pp_accepted' :
                         break;
                     case 'time':
                         break;
+                    case 'lat' :
+                        break;
+                    case 'lng' :
+                        break;
                     default:
-                        echo '<li>' . apply_filters('zws_filter_basic_sanitize', $entry) .
-                        ' : ' .
-                        nl2br(stripslashes(apply_filters('zws_filter_text_with_linebreak', $entry_value))) . '</li>';
+                        // anything else that comes from the db that hasn't been formatted above.
+                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
+                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">' . apply_filters('zws_filter_basic_sanitize', $entry) .
+                        ' :</span>' . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"' .
+                        nl2br(stripslashes(apply_filters('zws_filter_basic_sanitize', $entry_value))) . '</span></li>';
                         break;
                 }
             }
-            echo '</ul></li>';
+            echo '</ul></div></li>';
         }
         echo '</ul></div>';
         // create index and return true if successful
@@ -47,65 +99,41 @@ Class ZwsPaginator {
     }
 
     private static function create_index($set_size, $page_size, $page_index_batch_size) {
+        require_once (__DIR__ . '/Helpers.php');
 
         // function to create and display the index of page numbers.
         $number_of_pages = ceil($set_size / $page_size);
 
         // sub divide pages into batches and iterate
         if (!empty($_GET['page_batch'])) {
-            $current_batch = 1 ?
-                    apply_filters('zws_filter_validate_integer', $_GET['page_batch']) == 0 :
-                    apply_filters('zws_filter_validate_integer', $_GET['page_batch']);
+            $current_batch = apply_filters('zws_filter_validate_integer', $_GET['page_batch']);
         } else {
             $current_batch = 1;
         }
+        // set the initial page start, according to the current batch
+        $page_counter = (($current_batch * $page_index_batch_size ) - $page_index_batch_size) + 1;
         // set up div
         echo '<div class="zws-contacts-database-index">';
         // add back link
         if ($current_batch > 1) {
-            $back_button_query_string = self::set_url_query(array('page_batch=', ($current_batch - 1 )));
-            echo '<a href="' . $back_button_query_string . '"><- Back</a>';
+            // build query for batch
+            $back_button_query_string = \ZwsContactsDatabase\Helpers::set_url_query(array('page_batch' => ($current_batch - 1), 'contacts_page' => $page_counter - $page_index_batch_size));
+            echo '<a class="zws-contacts-database-display-index" style="' . Zelp::getCss('page_index') . '" href="' . $back_button_query_string . '"><-Back</a>';
         }
-        // set the initial page start, according to the current batch
-        $page_counter = (($current_batch * $page_index_batch_size ) - $page_index_batch_size) + 1;
         // for each batch, echo the page numbers with their links
         for ($i = 0; $i < $page_index_batch_size; $i++) {
-            $page_url_query_string = self::set_url_query(array('contacts_page', $page_counter));
-            echo '&nbsp;|&nbsp;<a href="' . $page_url_query_string . '">' . $page_counter . '</a>';
+            $page_url_query_string = \ZwsContactsDatabase\Helpers::set_url_query(array('contacts_page' => $page_counter));
+            echo '&nbsp;<a class="zws-contacts-database-display-index" style="' . Zelp::getCss('page_index') . '" href="' . $page_url_query_string . '">' . $page_counter . '</a>';
             $page_counter++;
         }
         // add forward button
-        if ($current_batch < ceil($set_size / $page_index_batch_size)) {
-            $forward_button_query_string = self::set_url_query(array('page_batch', ($current_batch + 1)));
-            echo '<a href="' . $forward_button_query_string . '">&nbsp;|&nbsp;Forward -></a>';
+        if ($current_batch < ceil($number_of_pages / $page_index_batch_size)) {
+            $forward_button_query_string = \ZwsContactsDatabase\Helpers::set_url_query(array('page_batch' => ($current_batch + 1), 'contacts_page' => $page_counter));
+            echo '&nbsp;<a class="zws-contacts-database-display-index" style="' . Zelp::getCss('page_index') . '" href="' . $forward_button_query_string . '">Forward-></a>';
         }
         // end div
         echo '</div>';
         return true;
-    }
-
-    // My helpers
-    private static function set_url_query($new_query) {
-        $param_name = $new_query[0];
-        $param_value = $new_query[1];
-        // regex for replacing existing parameter
-        $pattern = '/(.*?)(' . $param_name . '=[^&]*)(.*$)/i';
-        $replacement = '$1' . $param_name . '=' . $param_value . '$3';
-        // if no query string in current url
-        if (empty($_SERVER['QUERY_STRING'])) {
-            return esc_url($_SERVER['REQUEST_URI'] . '?' . $param_name . '=' . $param_value);
-        } else {
-            // if new query name already exists in string
-            if (strpos(esc_url($_SERVER['QUERY_STRING']), $param_name)) {
-                return preg_replace($pattern, $replacement, esc_url($_SERVER['REQUEST_URI']));
-            } else {
-                return esc_url(str_replace($_SERVER['QUERY_STRING'], $_SERVER['QUERY_STRING'] .
-                                '&' .
-                                $param_name .
-                                '=' .
-                                $param_value, $_SERVER['REQUEST_URI']));
-            }
-        }
     }
 
 }

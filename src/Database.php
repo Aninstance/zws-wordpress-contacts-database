@@ -21,8 +21,8 @@ Class Database {
 
 // updated database 
         global $wpdb;
-        $stored_table_name = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name'];
-        $installed_ver = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_db_version'];
+        $stored_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
+        $installed_ver = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_db_version']);
         if ($installed_ver !== $db_version) {
             $table_name = $wpdb->prefix . $stored_table_name;
             $sql = "CREATE TABLE $table_name (
@@ -60,7 +60,7 @@ Class Database {
     }
 
     public static function insert($safe_values) {
-        $saved_table_name = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name'];
+        $saved_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
         if (is_array($safe_values)) {
             global $wpdb;
             $table_name = $wpdb->prefix . $saved_table_name;
@@ -71,14 +71,14 @@ Class Database {
         return false;
     }
 
-    public static function getAllRecords() {
+    public static function getAllRecords($order_by = 'id') {
         // setup database connection options
-        $saved_table_name = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name'];
+        $saved_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
         global $wpdb;
         $table_name = $wpdb->prefix . $saved_table_name;
         // grab the data
         //$sql = $my_wpdb->prepare("SELECT * FROM $table_name ORDER BY %s;", 'id');
-        $sql = "SELECT * FROM " . $table_name . " ORDER BY id";
+        $sql = "SELECT * FROM " . $table_name . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
         return $wpdb->get_results($sql);
     }
 

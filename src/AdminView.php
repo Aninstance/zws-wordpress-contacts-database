@@ -72,8 +72,9 @@ Class AdminView {
     }
 
     public static function display_form() {
+        require_once(__DIR__ . '/Helpers.php');
 // method to display the target postcode entry form.
-        echo '<form action="' . self::set_url_query(array('postback' , 'true')) . '" method="post">';
+        echo '<form action="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'true')) . '" method="post">';
         echo '<p>';
         echo 'Please enter the target postcode (no spaces - e.g. AB329BR)<br />';
         echo '<input type="text" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["target_postcode"]) ? esc_attr($_POST["target_postcode"]) : '' ) . '" size="8" />';
@@ -97,11 +98,12 @@ Class AdminView {
     }
 
     public static function display_error($reason) {
+        require_once(__DIR__ . '/Helpers.php');
         switch ($reason) {
             case 'no_data':
                 $error_string = '<h2>Nothing to see here ...</h2><p>Oh dear, it looks like there is nothing to display.</p>
             <p>This may be because there are currently no contacts available. Or, the more likely reason is that the postcode you entered is invalid.</p>
-            <p>Please <a href="' . self::set_url_query(array('postback' , 'false')) . '">re-enter the postcode to try again</a>!</p>';
+            <p>Please <a href="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'false')) . '">re-enter the postcode to try again</a>!</p>';
                 break;
             case 'not_authorised':
                 $error_string = '<h2>Access denied ...</h2><p>It seems you are not logged in as an administrative user. Please log in and try again.</p>';
@@ -114,6 +116,7 @@ Class AdminView {
     }
 
     public static function display_nearest($target_postcode) {
+        require_once(__DIR__ . '/Helpers.php');
 // check params have been passed
         if (!isset($target_postcode)) {
             return false;
@@ -126,7 +129,7 @@ Class AdminView {
             $contacts_array_safe = array();
 // display the  elements
             echo '<div class="contact-list"><h2>' . $how_many_contacts . ' Closest Contacts</h2>';
-            echo '<small><a href="' . self::set_url_query(array('postback' , 'false')) . '">Back to target submission form</a></small>';
+            echo '<small><a href="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'false')) . '">Back to target submission form</a></small>';
 
             foreach ($contacts_array as $key => $value) {
 // ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target.
@@ -219,36 +222,13 @@ Class AdminView {
 // hard code resuts per page and index length for now. Add to user-defined options later?
         $page_size = 10;
         $page_index_batch_size = 5;
+        $order_by = 'last_name'; // allow to be configured by users in options later?
 // grab all registered users from db
         require_once(__DIR__ . '/Database.php');
-        $result_set = \ZwsContactsDatabase\Database::getAllRecords();
+        $result_set = \ZwsContactsDatabase\Database::getAllRecords($order_by);
 // paginate and display the results
         require_once(__DIR__ . '/ZwsPaginator.php');
         return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size, $page_index_batch_size) : false;
-    }
-
-    // My helpers
-    private static function set_url_query($new_query) {
-        $param_name = $new_query[0];
-        $param_value = $new_query[1];
-        // regex for replacing existing parameter
-        $pattern = '/(.*?)(' . $param_name . '=[^&]*)(.*$)/i';
-        $replacement = '$1' . $param_name . '=' . $param_value . '$3';
-        // if no query string in current url
-        if (empty($_SERVER['QUERY_STRING'])) {
-            return esc_url($_SERVER['REQUEST_URI'] . '?' . $param_name . '=' . $param_value);
-        } else {
-            // if new query name already exists in string
-            if (strpos(esc_url($_SERVER['QUERY_STRING']), $param_name)) {
-                return preg_replace($pattern, $replacement, esc_url($_SERVER['REQUEST_URI']));
-            } else {
-                return esc_url(str_replace($_SERVER['QUERY_STRING'], $_SERVER['QUERY_STRING'] .
-                                '&' .
-                                $param_name .
-                                '=' .
-                                $param_value, $_SERVER['REQUEST_URI']));
-            }
-        }
     }
 
 }
