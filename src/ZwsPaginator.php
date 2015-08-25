@@ -24,6 +24,8 @@ Class ZwsPaginator {
             $page = apply_filters('zws_filter_validate_integer', $_GET['contacts_page']);
         }
         // display page 
+        $dash_url = Zelp::set_url_query(array('show_all' => 'false'));
+        echo '<div style="' . Zelp::getCss('label_style_tag') . '"><button onclick="viewDatabase()">Back to admin dashboard</button><script>function viewDatabase() { window.location.href="' . html_entity_decode($dash_url) . '";}</script></div>';
         echo '<div class="zws-contacts-database-all-entries"><span class="zws-contacts-database-all-entries-headline" style="' . Zelp::getCss('header_style_tag') . '">All Database Entries</span>'
         . '<ul class="zws-contacts-database-display-all-list" style="list-style:none";>';
         foreach (array_slice($set, (($page * $page_size) - $page_size), ($page * $page_size)) as $key => $value) {

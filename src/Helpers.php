@@ -29,26 +29,32 @@ Class Helpers {
         return $request_uri;
     }
 
-    private static function create_query_string($param_name, $param_value, $request_uri) {
+    private static function create_query_string($param_name, $param_value, $requested_uri) {
         // returns a query string created from the input parameters.
+        
+        // make safe
+        $request_uri = esc_url($requested_uri);
+        // generate uri
         try {
             // generates and returns a new URI with the incoming parameters changed or added
             $pattern = '/(.*?)(' . $param_name . '=[^&]*)(.*$)/i';
             $replacement = '$1' . $param_name . '=' . $param_value . '$3';
             // if no query string in current url
             if (!strpos($request_uri, '?')) {
-                return $request_uri . '?' . $param_name . '=' . $param_value;
+                $return = $request_uri . '?' . $param_name . '=' . $param_value;
             } else {
                 // if new query name already exists in string
                 if (strpos($request_uri, $param_name)) {
-                    return preg_replace($pattern, $replacement, $request_uri);
+                    $return = preg_replace($pattern, $replacement, $request_uri);
                 } else {
-                    return $request_uri .= '&' . $param_name . '=' . $param_value;
+                    $return = $request_uri .= '&' . $param_name . '=' . $param_value;
                 }
             }
         } catch (Exception $e) {
             return false;
         }
+        // return url encoded string
+        return $return;
     }
 
     public static function getCss($id) {
@@ -74,7 +80,8 @@ Class Helpers {
                         . '-webkit-box-shadow: -5px 5px 5px 0px rgba(0,0,0,0.75);'
                         . '-moz-box-shadow: -5px 5px 5px 0px rgba(0,0,0,0.75);'
                         . 'box-shadow: -5px 5px 5px 0px rgba(0,0,0,0.75);'
-                        . 'margin-bottom:1em;';
+                        . 'margin:1em 0;'
+                        . 'text-transform:capitalize';
             case 'entry_style_tag':
                 return
                         'background-color:#345114;'

@@ -2,6 +2,8 @@
 
 namespace ZwsContactsDatabase;
 
+use ZwsContactsDatabase\Helpers as Zelp;
+
 /**
  * Administration view file for ZWS Contacts Database
  *
@@ -26,42 +28,38 @@ Class AdminView {
         }
 
         // set success variable for return - will be changed on successful completion of action
-        $success = false;
+        $success = null;
 
+        // sanitize all $_GET
         if (!empty($_GET)) {
             $safe_attr = array();
             foreach ($_GET as $key => $value) {
                 $safe_attr[apply_filters('zws_filter_basic_sanitize', $key)] = apply_filters('zws_filter_basic_sanitize', $value);
             }
-            if (!empty($safe_attr['postback'])) {
-                switch ($safe_attr['postback']) {
-                    case 'true':
-                        $posted_postcode = self::process_form();
-                        if ($posted_postcode && $posted_postcode !== null) {
-                            // if form processing successful, display nearest contacts. Returns true or false.
-                            $success = true ? self::display_nearest($posted_postcode) : false;
-                        } else {
-                            $success = false;
-                        }
-                        break;
-                    default:
-                        $success = true ? self::display_form() : false;
-                        break;
-                }
+        }
+
+        /* navigation stuff */
+
+        // if postback is set and is true, and show_all is not true
+        if (!empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
+            if (empty($safe_attr['show_all']) || $safe_attr['show_all'] !== 'true') {
+                $posted_postcode = self::process_form();
+                // if form processing successful, display nearest contacts. Returns true or false.
+                $success = true ? self::display_nearest($posted_postcode) : false;
             }
-            if (!empty($safe_attr['show_all'])) {
-                switch ($safe_attr['show_all']) {
-                    case 'true':
-                        $success = true ? self::display_all_records() : false;
-                        break;
-                    default:
-                        $success = true ? self::display_form() : false;
-                        break;
-                }
+        }
+        // if show_all is true and postback is not set or false
+        elseif (!empty($safe_attr['show_all']) && $safe_attr['show_all'] == 'true') {
+            if (empty($safe_attr['postback']) || $safe_attr['postback'] !== 'true') {
+                $success = true ? self::display_all_records() : false;
             }
-        } else {
+        }
+        // anything else (success still null), display the form
+        elseif ($success == null) {
             $success = true ? self::display_form() : false;
         }
+
+
 // return null if successful, or false if not
         if ($success) {
             return null;
@@ -74,14 +72,16 @@ Class AdminView {
     public static function display_form() {
         require_once(__DIR__ . '/Helpers.php');
 // method to display the target postcode entry form.
-        echo '<form action="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'true')) . '" method="post">';
-        echo '<p>';
-        echo 'Please enter the target postcode (no spaces - e.g. AB329BR)<br />';
-        echo '<input type="text" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["target_postcode"]) ? esc_attr($_POST["target_postcode"]) : '' ) . '" size="8" />';
-        echo '</p>';
+        echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Search for nearest drivers</h3>';
+        echo '<form action="' . Zelp::set_url_query(array('postback' => 'true')) . '" method="post">';
+        echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please submit target postcode below (no spaces - e.g. AB329BR)</p>';
+        echo '<p><input type="text" placeholder="Postcode" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["target_postcode"]) ? esc_attr($_POST["target_postcode"]) : '' ) . '" size="8" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
+        echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">View entire database</h3>';
+        $view_db_url = Zelp::set_url_query(array('show_all' => 'true', 'postback' => 'false'));
+        echo '<div><button onclick="viewDatabase()">View the database</button><script>function viewDatabase() { window.location.href="' . html_entity_decode($view_db_url) . '";}</script></div>';
         return true;
     }
 
