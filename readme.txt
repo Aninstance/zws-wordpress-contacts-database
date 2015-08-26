@@ -36,6 +36,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 * Administrators can browse the full database of submitted contacts.
+* Configurable map icons (administrators can set URL in admin page).
 
 == Requirements ==
 
@@ -46,7 +47,6 @@ The plugin has been tested with PHP versions 5.5.x and above.
 == Future development roadmap ==
 
 * Add facility for administrators EDIT and DELETE from the database.
-* Add feature to set map icon URLs from plugin's settings page.
 * Add form field to allow contacts to set times when they'd be available.
 * Modify code so only contacts available at the time of request are included in admin contacts view page.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
