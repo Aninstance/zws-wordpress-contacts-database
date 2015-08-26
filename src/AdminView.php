@@ -16,6 +16,7 @@ use ZwsContactsDatabase\Helpers as Zelp;
 Class AdminView {
 
     const GOOGLE_MAPS_API = 'https://maps.googleapis.com/maps/api/js';
+    const OPTIONS_LABEL = 'zws_contacts_database_options';
 
     public static function dashboard() {
 
@@ -116,12 +117,13 @@ Class AdminView {
     }
 
     public static function display_nearest($target_postcode) {
-        require_once(__DIR__ . '/Helpers.php');
 // check params have been passed
         if (!isset($target_postcode)) {
             return false;
         }
         require_once(__DIR__ . '/DistanceCalculator.php');
+        require_once(__DIR__ . '/Helpers.php');
+        $options = get_site_option(self::OPTIONS_LABEL);
         $success = false;
         $how_many_contacts = 5;
         $contacts_array = \ZwsContactsDatabase\DistanceCalculator::nearestContacts($how_many_contacts, $target_postcode);
@@ -154,12 +156,13 @@ Class AdminView {
             $map_config['contacts_array_safe'] = $contacts_array_safe;
             // set up additional map config
             $map_config['target_postcode'] = $target_postcode;
-            $map_config['contact_icon_url'] = 'https://www.zaziork.com/service-resources/ambulance_icon.png'; // icon URLs. ToDo: Make these user defined via options.
-            $map_config['target_icon_url'] = 'https://www.zaziork.com/service-resources/crow_icon_red.png';
-            $map_config['base_icon_url'] = 'https://www.zaziork.com/service-resources/animal_hospital.png';
+            $map_config['contact_icon_url'] = $options['zws_contacts_database_plugin_map_contact_icon_url']; // icon URLs. ToDo: Make these user defined via options.
+            $map_config['target_icon_url'] = $options['zws_contacts_database_plugin_map_target_icon_url'];
+            $map_config['base_icon_url'] = $options['zws_contacts_database_plugin_map_base_icon_url'];
             $map_config['base_coordinates'] = array('57.4382622', '-2.0930657'); // ToDo: allow modificaiton via options
             $map_config['base_name'] = "The New Arc";
             $map_config['users_id'] = get_current_user_id();
+            
             // display the map
             if (self::display_map($map_config)) {
                 $success = true;

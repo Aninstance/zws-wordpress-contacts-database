@@ -23,6 +23,9 @@ Class Installer {
     const DEFAULT_FULL_REMOVAL = 'FALSE';
     const DEFAULT_PRIVACY_POLICY_URL = '';
     const DEFAULT_GOOGLE_SERVER_API_KEY = '';
+    const DEFAULT_MAP_CONTACT_ICON = '';
+    const DEFAULT_MAP_BASE_ICON = '';
+    const DEFAULT_MAP_TARGET_ICON = '';
 
     private static $existing_stored_options = array();
 
@@ -37,6 +40,9 @@ Class Installer {
             'zws_contacts_database_plugin_db_version' => self::DB_VERSION,
             'zws_contacts_database_plugin_privacy_policy_url' => self::DEFAULT_PRIVACY_POLICY_URL,
             'zws_contacts_database_google_server_api_key' => self::DEFAULT_GOOGLE_SERVER_API_KEY,
+            'zws_contacts_database_plugin_map_contact_icon_url' => self::DEFAULT_MAP_CONTACT_ICON,
+            'zws_contacts_database_plugin_map_target_icon_url' => self::DEFAULT_MAP_TARGET_ICON,
+            'zws_contacts_database_plugin_map_base_icon_url' => self::DEFAULT_MAP_BASE_ICON,
         );
 
         // set options array if does not exist
@@ -55,7 +61,7 @@ Class Installer {
             // update the options with the newly updated existing_stored_options array
             update_site_option(self::OPTIONS_LABEL, self::$existing_stored_options);
         }
-        
+
         // the special option for removal of data on uninstall
         if (!get_site_option('zws_contact_database_remove_data')) {
             add_site_option('zws_contacts_database_remove_data', self::DEFAULT_FULL_REMOVAL);
