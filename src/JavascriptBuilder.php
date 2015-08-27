@@ -21,7 +21,7 @@ Class JavascriptBuilder {
         }
 
         // start off strings to be concatonated
-        $js_lat_str = $js_lng_str = $js_name_str = $js_postcode_str = $js_email_str = $js_phone_str = $js_notes_str = '';
+        $js_lat_str = $js_lng_str = $js_name_str = $js_postcode_str = $js_email_str = $js_phone_str = $js_notes_str = $js_earliest_str = $js_latest_str = '';
 
         // create string of longitute and latitudes for postcodes of contacts, to display on map
         $dupeCheck = array();
@@ -35,7 +35,6 @@ Class JavascriptBuilder {
                 $js_email_str .= $c . ':"' . $value['email'] . '",';
                 $js_phone_str .= $c . ':"' . $value['phone'] . '",';
                 $js_notes_str .= $c . ':"' . sanitize_text_field($value['extra_info']) . '",';
-                error_log($value['extra_info']);
                 array_push($dupeCheck, $value['postcode']);
                 $c++;
             }

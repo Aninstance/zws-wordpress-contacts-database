@@ -145,6 +145,10 @@ Class AdminView {
                     $contacts_array_safe[$id_safe]['last_name'] = sanitize_text_field($value['last_name']);
                     $contacts_array_safe[$id_safe]['phone'] = sanitize_text_field($value['phone']);
                     $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
+                    foreach (unserialize(DAYS) as $key => $day) {
+                        $contacts_array_safe[$id_safe]['earliest_time_' . $day] = sanitize_text_field($value['earliest_time_' . $day]);
+                        $contacts_array_safe[$id_safe]['latest_time_' . $day] = sanitize_text_field($value['latest_time_' . $day]);
+                    }
                     $contacts_array_safe[$id_safe]['max_radius'] = sanitize_text_field($value['max_radius']);
                     $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
                             stripslashes(
@@ -162,15 +166,18 @@ Class AdminView {
             $map_config['base_coordinates'] = array('57.4382622', '-2.0930657'); // ToDo: allow modificaiton via options
             $map_config['base_name'] = "The New Arc";
             $map_config['users_id'] = get_current_user_id();
-            
+
             // display the map
             if (self::display_map($map_config)) {
                 $success = true;
             }
+
             echo '<ol class="contact-info-list">';
+
+            $c = 0; // counter to give each entry's available times fields a unique class name for jQuery
             foreach ($contacts_array_safe as $key => $value) {
 // display textual elements
-                echo '<li  style="margin-bottom:1em;">';
+                echo '<li style="margin-bottom:1em;">';
                 echo '<ul class="contact-info-list-inner">';
                 echo '<li>Distance from target: ' . $value['distance'] . ' miles</li>';
                 echo '<li>Name of contact: ' . stripslashes($value['first_name']) . ' ' . stripslashes($value['last_name']) . '</li>';
@@ -178,8 +185,23 @@ Class AdminView {
                 echo '<li>Phone of contact: <a href="tel:' . $value['phone'] . '">' . $value['phone'] . '</a></li>';
                 echo '<li>Email of contact: <a href="mailto:' . $value['email'] . '">' . $value['email'] . '</a></li>';
                 echo '<li>Extra notes: ' . $value['extra_info'] . '</li>';
+                echo '<li><button id="modal_opener_' . $c . '">View available times</button><div id="zws-contacts-db-times-available_' . $c . '">'
+                . '<ul class="contact-info-list-inner">';
+                foreach (unserialize(DAYS) as $key => $day) {
+                    if ($value['earliest_time_' . $day] == null || $value['latest_time_' . $day] == null) {
+                        $earliest_time = $latest_time = 'Unavailable';
+                    } else {
+                        $earliest_time = $value['earliest_time_' . $day];
+                        $latest_time = $value['latest_time_' . $day];
+                    }
+                    echo '<h3>' . ucfirst($day) . '</h3>';
+                    echo '<li>Earliest :' . $earliest_time . '</li>';
+                    echo '<li style="border-bottom:1px solid silver;">Latest :' . $latest_time . '</li>';
+                }
+                echo '</ul></div></li>';
                 echo '</ul>';
                 echo '</li>';
+                $c++;
             }
             echo '</ol><div>';
         }

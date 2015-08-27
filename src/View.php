@@ -45,38 +45,62 @@ Class View {
 
     private static function create_form() {
         $privacy_policy_url = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_privacy_policy_url'];
-        $privacy_blurb = '<small class="form-privacy-checkbox">Please check the box to indicate that you have read and agree to our <a href="' . $privacy_policy_url . '" target="_blank">data protection policy</a>&nbsp;</small>';
+        $privacy_blurb = '<small class="form-privacy-checkbox">Please check the box to indicate that you have read and agree to our <a href="' . $privacy_policy_url .
+                '" target="_blank">data protection policy</a>&nbsp;</small>';
+
+        // load up the scripts for the 
+        wp_enqueue_script('jquery-timepicker', plugins_url('/../vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__), array('jquery'));
+        wp_enqueue_style('jquery-timepicker-css', plugins_url('/../vendor/jquery-timepicker/jquery.timepicker.css', __FILE__));
+        wp_enqueue_script('jquery-timepicker-init', plugins_url('/../inc/jquery.timepicker.init.js', __FILE__));
+
 // create the input form
         echo '<form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">';
-        echo '<p>';
+        echo '<h3>Your details</h3><p>';
         echo 'Your first name (required) <br />';
-        echo '<input type="text" name="first_name" placeholder="First name" pattern="[a-zA-Z0-9]+" value="' . ( isset($_POST["first_name"]) ? esc_attr($_POST["first_name"]) : '' ) . '" size="40" />';
+        echo '<input type="text" name="first_name" required="required" placeholder="First name" pattern="[a-zA-Z0-9]+" value="' . ( isset($_POST["first_name"]) ? esc_attr($_POST["first_name"]) : '' ) . '" size="40" />';
         echo '</p>';
         echo '<p>';
         echo 'Your last name (required) <br />';
-        echo '<input type="text" name="last_name" placeholder="Last name" pattern="[a-zA-Z0-9]+" value="' . ( isset($_POST["last_name"]) ? esc_attr($_POST["last_name"]) : '' ) . '" size="40" />';
+        echo '<input type="text" name="last_name" required="required" placeholder="Last name" pattern="[a-zA-Z0-9]+" value="' . ( isset($_POST["last_name"]) ? esc_attr($_POST["last_name"]) : '' ) . '" size="40" />';
         echo '</p>';
         echo '<p>';
         echo 'Your postcode (required - no spaces - e.g. AB329BR) <br />';
-        echo '<input type="text" name="postcode" placeholder="Postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["postcode"]) ? esc_attr($_POST["postcode"]) : '' ) . '" size="8" />';
+        echo '<input type="text" name="postcode" required="required" placeholder="Postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["postcode"]) ? esc_attr($_POST["postcode"]) : '' ) . '" size="8" />';
         echo '</p>';
         echo '<p>';
         echo 'Your phone number (required) <br />';
-        echo '<input type="text" name="phone" placeholder="Phone" pattern="[0-9]+" value="' . ( isset($_POST["phone"]) ? esc_attr($_POST["phone"]) : '' ) . '" size="40" />';
+        echo '<input type="text" name="phone" required="required" placeholder="Phone" pattern="[0-9]+" value="' . ( isset($_POST["phone"]) ? esc_attr($_POST["phone"]) : '' ) . '" size="40" />';
         echo '</p>';
         echo '<p>';
         echo 'Your Email (required) <br />';
-        echo '<input type="email" name="email" placeholder="Email" value="' . ( isset($_POST["email"]) ? esc_attr($_POST["email"]) : '' ) . '" size="40" />';
+        echo '<input type="email" name="email" required="required" placeholder="Email" value="' . ( isset($_POST["email"]) ? esc_attr($_POST["email"]) : '' ) . '" size="40" />';
         echo '</p>';
-        echo '<p>';
+        echo '<h3>How far can you cover?</h3><p>';
         echo 'Distance from your location you\'d cover (full miles, required)<br />';
-        echo '<input type="text" name="max_radius" placeholder="Distance" pattern="[0-9]+" value="' . ( isset($_POST["max_radius"]) ? esc_attr($_POST["max_radius"]) : '' ) . '" size="9" />';
+        echo '<input type="text" name="max_radius" required="required" placeholder="Distance" pattern="[0-9]+" value="' . ( isset($_POST["max_radius"]) ? esc_attr($_POST["max_radius"]) : '' ) . '" size="9" />';
         echo '</p>';
-        echo '<p>';
+        echo '<h3>When are you available?</h3><small style="display:inline-block;margin-bottom:1em;">Please select which times you would be available for each day. '
+        . 'Select "unavailable" for any day on which you would rather we did not contact you. Selecting "unavailable" for either the earliest or latest'
+                . ' slots would indicate you are unavailable for the entire day. <br>'
+                . 'If you are available for several short "blocks" of time during one particular day, just select the start of the earliest "block", '
+                . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section. '
+                . 'By default, the options below are set to "all day, every day". Please adjust as required!</small>';
+        foreach (unserialize(DAYS) as $value => $day) {
+            echo '<p>';
+            echo 'Times available on ' . ucfirst($day) . '<br>';
+            echo '<span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
+            echo 'Earliest available';
+            echo '<input id="zws-contacts-database-earlist-time-' . $day . '" required="required" type="text" name="earliest_time_' . $day . '" placeholder="Earlist time" value="' . ( isset($_POST["earliest_time_' . $day . '"]) ? esc_attr($_POST["earlist_time_' . $day . '"]) : '' ) . '" size="8" />';
+            echo '</span><span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
+            echo 'Latest available';
+            echo '<input id="zws-contacts-database-latest-time-' . $day . '" required="required" type="text" name="latest_time_' . $day . '" placeholder="Latest time" value="' . ( isset($_POST["latest_time_' . $day . '"]) ? esc_attr($_POST["latest_time_' . $day . '"]) : '' ) . '"/>';
+            echo '</span></p>';
+        }
+        echo '<h3>Anything else you\'d like to mention?</h3><p>';
         echo 'Any extra information <br />';
         echo '<textarea rows="10" cols="35" name="extra_info" placeholder="Extra information">' . ( isset($_POST["extra_info"]) ? esc_attr($_POST["extra_info"]) : '' ) . '</textarea>';
         echo '</p>';
-        echo '<p>';
+        echo '<h3>Complete registration</h3><p>';
         echo $privacy_blurb . '<input type="checkbox" name="privacy_accept" value="accept">';
         echo '</p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
@@ -86,7 +110,6 @@ Class View {
 
     private static function display_or_action() {
         $safe_values = array();
-
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) &&
                 isset($_POST['my_nonce_field']) &&
@@ -100,6 +123,19 @@ Class View {
             $safe_values['max_radius'] = sanitize_text_field($_POST['max_radius']);
             $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']);
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
+            foreach (unserialize(DAYS)as $key => $day) {
+                if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
+                    $safe_values['earliest_time_' . $day] = sanitize_text_field($_POST['earliest_time_' . $day]);
+                } else {
+                    $safe_values['earliest_time_' . $day] = null;
+                }
+                if (sanitize_text_field($_POST['latest_time_' . $day]) !== 'Unavailable') {
+                    $safe_values['latest_time_' . $day] = sanitize_text_field($_POST['latest_time_' . $day]);
+                } else {
+                    $safe_values['latest_time_' . $day] = null;
+                }
+            }
+
 // verify privacy policy has been accepted
             if (!$safe_values['pp_accepted']) {
                 return self::failure_view('privacy');
@@ -117,6 +153,8 @@ Class View {
             } else {
                 return self::failure_view();
             }
+
+
 // send to database
             require_once(__DIR__ . '/Database.php');
             if (\ZwsContactsDatabase\Database::insert($safe_values)) {

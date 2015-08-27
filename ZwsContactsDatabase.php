@@ -2,6 +2,9 @@
 
 namespace ZwsContactsDatabase;
 
+define("DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
+
+
 /**
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
@@ -36,6 +39,7 @@ namespace ZwsContactsDatabase;
  */
 define("SHORTCODE_TAG_FORM", "zwscontactsdatabase_public_form");
 define("SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
+
 //define("PATH_TO_INC", plugins_url('ZwsContactsDatabase/inc/', __FILE__));
 
 Class ZwsContactsDatabase {
@@ -59,12 +63,34 @@ Class ZwsContactsDatabase {
         return array_merge($mylinks, $links);
     }
 
+    public static function load_scripts() {
+        if (!is_admin()) {
+            // set up our scripts
+            $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.js', __FILE__);
+            $jquery_time_modal_js = plugins_url('/inc/jquery_time_modal.js', __FILE__);
+            wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
+            wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
+            wp_enqueue_script('jquery_ui_js');
+            wp_enqueue_script('jquery_time_modal_js');
+        }
+    }
+
+    public static function load_styles() {
+        // set up our scripts
+        $jquery_ui_css = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.css', __FILE__);
+        wp_register_style('jquery_ui_css', $jquery_ui_css);
+        wp_enqueue_style('jquery_ui_css');
+    }
+
 }
 
 // autoload the vendor packages
 require_once(__DIR__ . '/vendor/autoload.php');
 // include the filters
 require_once(__DIR__ . '/src/Filters.php');
+// add action for our enqueued scripts and stylesheets
+add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_scripts'));
+add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_styles'));
 // add additional links on plugins page
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
 // create the administration page

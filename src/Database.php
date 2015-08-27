@@ -17,12 +17,13 @@ Class Database {
 
     public static function update_database() {
         // increment this when database structure changed or name changed
-        $db_version = '1.0';
+        $db_version = '1.3';
 
 // updated database 
         global $wpdb;
         $stored_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
         $installed_ver = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_db_version']);
+        // create the complete create statement
         if ($installed_ver !== $db_version) {
             $table_name = $wpdb->prefix . $stored_table_name;
             $sql = "CREATE TABLE $table_name (
@@ -37,6 +38,20 @@ Class Database {
         email varchar(255) DEFAULT '' NOT NULL,
         max_radius mediumint(9) NOT NULL,
         extra_info varchar(255),
+        earliest_time_mondays varchar(5) NULL,
+        latest_time_mondays varchar(5) NULL,
+        earliest_time_tuesdays varchar(5) NULL,
+        latest_time_tuesdays varchar(5) NULL,
+        earliest_time_wednesdays varchar(5) NULL,
+        latest_time_wednesdays varchar(5) NULL,
+        earliest_time_thursdays varchar(5) NULL,
+        latest_time_thursdays varchar(5) NULL,
+        earliest_time_fridays varchar(5) NULL,
+        latest_time_fridays varchar(5) NULL,
+        earliest_time_saturdays varchar(5) NULL,
+        latest_time_saturdays varchar(5) NULL,
+        earliest_time_sundays varchar(5) NULL,
+        latest_time_sundays varchar(5) NULL,
         pp_accepted tinyint(1) DEFAULT '0' NOT NULL,
         CONSTRAINT uc_individuals UNIQUE (phone,email),
         PRIMARY KEY  id (id)

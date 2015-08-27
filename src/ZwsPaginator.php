@@ -28,6 +28,7 @@ Class ZwsPaginator {
         echo '<div style="' . Zelp::getCss('label_style_tag') . '"><button onclick="viewDatabase()">Back to admin dashboard</button><script>function viewDatabase() { window.location.href="' . html_entity_decode($dash_url) . '";}</script></div>';
         echo '<div class="zws-contacts-database-all-entries"><span class="zws-contacts-database-all-entries-headline" style="' . Zelp::getCss('header_style_tag') . '">All Database Entries</span>'
         . '<ul class="zws-contacts-database-display-all-list" style="list-style:none";>';
+        $c = 0; // set counter to append to modal classes to make each entry's class name unique for the jQuery.
         foreach (array_slice($set, (($page * $page_size) - $page_size), ($page * $page_size)) as $key => $value) {
             echo '<li><div class="zws-contacts-database-display-all-inner-div" style="' . Zelp::getCss('entry_style_tag') . '"><ul class="zws-contacts-database-display-all-inner-list" style="list-style:none;">';
             foreach ($value as $entry => $entry_value) {
@@ -85,15 +86,30 @@ Class ZwsPaginator {
                     case 'lng' :
                         break;
                     default:
-                        // anything else that comes from the db that hasn't been formatted above.
-                        echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
-                        . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">' . apply_filters('zws_filter_basic_sanitize', $entry) .
-                        ' :</span>' . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"' .
-                        nl2br(stripslashes(apply_filters('zws_filter_basic_sanitize', $entry_value))) . '</span></li>';
                         break;
                 }
             }
             echo '</ul></div></li>';
+            // times available
+            echo '<li><button id="modal_opener_' . $c . '">View available times</button>'
+            . '<div id="zws-contacts-db-times-available_' . $c . '">'
+            . '<ul class="contact-info-list-inner">';
+            // available times field
+            foreach (unserialize(DAYS) as $key => $day) {
+                $set_obj_property_earliest = 'earliest_time_' . $day;
+                $set_obj_property_latest = 'latest_time_' . $day;
+                if (apply_filters('zws_filter_basic_sanitize', $value->$set_obj_property_earliest) == null || apply_filters('zws_filter_basic_sanitize', $value->$set_obj_property_latest) == null) {
+                    $earliest_time = $latest_time = 'Unavailable';
+                } else {
+                    $earliest_time = $value->$set_obj_property_earliest;
+                    $latest_time = $value->$set_obj_property_latest;
+                }
+                echo '<h3>' . ucfirst($day) . '</h3>';
+                echo '<li>Earliest :' . $earliest_time . '</li>';
+                echo '<li style="border-bottom:1px solid silver;">Latest :' . $latest_time . '</li>';
+            }
+            echo '</ul></div></li>';
+            $c++;
         }
         echo '</ul></div>';
         // create index and return true if successful

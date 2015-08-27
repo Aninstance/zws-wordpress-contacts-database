@@ -39,9 +39,13 @@ Class ZwsFilters {
     }
     
     public static function validate_textfield_with_linebreaks($input) {
-        // set up allowed html for wp_kses filter (necessary 
+        // set up allowed html for wp_kses filter
         $allowed_html = array ();
         return wp_kses($input, $allowed_html);
+    }
+    
+        public static function validate_textfield_to_date_obj($input) {
+        return sanitize_text_field($input);
     }
 
 }
@@ -52,3 +56,4 @@ add_filter('zws_filter_validate_url', array('\ZwsContactsDatabase\ZwsFilters', '
 add_filter('zws_filter_validate_integer', array('\ZwsContactsDatabase\ZwsFilters', 'validate_interger'), 10, 1);
 add_filter('zws_filter_basic_sanitize', array('\ZwsContactsDatabase\ZwsFilters', 'validate_basic_sanitize_filter'), 10, 1);
 add_filter('zws_filter_text_with_linebreak', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_with_linebreaks'), 10, 1);
+add_filter('zws_filter_to_date_obj', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_to_date_obj'), 10, 1);
