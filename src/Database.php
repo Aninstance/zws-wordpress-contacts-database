@@ -100,7 +100,8 @@ Class Database {
     public static function getAllRecordsWhereIsNot($order_by = 'id', $where = null) {
         // method to get records from the database WHERE IS NOT. $where should be an array (field => value)
         if(!empty($where)) {
-            $where_statement = $where['field'] . ' IS NOT ' . $where['value'];
+            $where_statement = "`" . $where['field'] . "` != '" . $where['value'] . "'";
+            error_log($where_statement);
         } else {
             return false;
         }

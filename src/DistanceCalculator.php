@@ -32,7 +32,7 @@ Class DistanceCalculator {
             // set variabe for earliest_time field corresponding to 'today'
             $earliest_time_today = 'earliest_time_' . $days_of_week[current_time(date('N', time()))];
             $latest_time_today = 'latest_time_' . $days_of_week[current_time(date('N', time()))];
-            $result_set = \ZwsContactsDatabase\Database::getAllRecordsWhereIsNot('id', array('field' => $earliest_time_today, 'value' => 'NULL'));
+            $result_set = \ZwsContactsDatabase\Database::getAllRecordsWhereIsNot('id', array('field' => $earliest_time_today, 'value' => 'UNAVL'));
 
             // loop postcodes and get distances
             if (isset($result_set) && $result_set !== false && is_array($result_set)) {

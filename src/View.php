@@ -125,7 +125,7 @@ Class View {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
                     $safe_values['earliest_time_' . $day] = sanitize_text_field($_POST['earliest_time_' . $day]);
                 } else {
-                    $safe_values['earliest_time_' . $day] = 'NULL';
+                    $safe_values['earliest_time_' . $day] = 'UNAVL';
                 }
                 $safe_values['latest_time_' . $day] = sanitize_text_field($_POST['latest_time_' . $day]);
             }
