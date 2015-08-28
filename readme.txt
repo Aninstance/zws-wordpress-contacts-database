@@ -5,7 +5,7 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0 
 Tested up to: 4.3.0
-Stable tag: 0.2
+Stable tag: 0.3
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
 
@@ -53,7 +53,7 @@ The plugin has been tested with PHP versions 5.5.x and above.
 * Add function to email administrators when new contacts register.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
 * Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
-* Add ability for administrator to select not to include the day/time request. (When not, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
+* Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
 * Refactor code to tidy up the mess!
 
@@ -94,6 +94,12 @@ There are no frequently asked questions as yet.
 The current version is: 0.2
 
 == Changelog ==
+
+= 0.3 =
+
+* Ability for contacts to select the days and times that they're available added.
+* Ability for administrators to view the days/times that contacts are available when accessing the full database via the administration dashboard.
+* When using the nearest contacts search, only contacts available "today" are shown.
 
 = 0.2 =
 
