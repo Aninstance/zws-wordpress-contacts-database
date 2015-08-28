@@ -132,9 +132,13 @@ Class AdminView {
 // display the  elements
             echo '<div class="contact-list"><h2>' . $how_many_contacts . ' Closest Contacts</h2>';
             echo '<small><a href="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'false')) . '">Back to target submission form</a></small>';
-
+            // set variabe for earliest_time field corresponding to 'today'
+            $days_of_week = array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays');
+            $earliest_time_today = 'earliest_time_' . $days_of_week[current_time(date('N', time()))];
+            $latest_time_today = 'latest_time_' . $days_of_week[current_time(date('N', time()))];
             foreach ($contacts_array as $key => $value) {
-// ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target.
+// ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target ...
+                // ... only those who are available TODAY are returned from the DistanceCalculator::nearestContacts method, above.
                 if (sanitize_text_field($value['distance']) <= sanitize_text_field($value['max_radius'])) {
                     $id_safe = sanitize_text_field($key);
                     $contacts_array_safe[$id_safe]['distance'] = sanitize_text_field($value['distance']);
@@ -145,10 +149,8 @@ Class AdminView {
                     $contacts_array_safe[$id_safe]['last_name'] = sanitize_text_field($value['last_name']);
                     $contacts_array_safe[$id_safe]['phone'] = sanitize_text_field($value['phone']);
                     $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
-                    foreach (unserialize(DAYS) as $key => $day) {
-                        $contacts_array_safe[$id_safe]['earliest_time_' . $day] = sanitize_text_field($value['earliest_time_' . $day]);
-                        $contacts_array_safe[$id_safe]['latest_time_' . $day] = sanitize_text_field($value['latest_time_' . $day]);
-                    }
+                    $contacts_array_safe[$id_safe][$earliest_time_today] = sanitize_text_field($value[$earliest_time_today]);
+                    $contacts_array_safe[$id_safe][$latest_time_today] = sanitize_text_field($value[$latest_time_today]);
                     $contacts_array_safe[$id_safe]['max_radius'] = sanitize_text_field($value['max_radius']);
                     $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
                             stripslashes(
@@ -187,17 +189,8 @@ Class AdminView {
                 echo '<li>Extra notes: ' . $value['extra_info'] . '</li>';
                 echo '<li><button class="modal_opener_' . $c . '">View time that ' . $value['first_name'] . ' is available</button><div class="zws-contacts-db-times-available">'
                 . '<ul class="contact-info-list-inner_' . $c . '">';
-                foreach (unserialize(DAYS) as $key => $day) {
-                    if ($value['earliest_time_' . $day] == null || $value['latest_time_' . $day] == null) {
-                        $earliest_time = $latest_time = 'Unavailable';
-                    } else {
-                        $earliest_time = $value['earliest_time_' . $day];
-                        $latest_time = $value['latest_time_' . $day];
-                    }
-                    echo '<h3>' . ucfirst($day) . '</h3>';
-                    echo '<li>Earliest :' . $earliest_time . '</li>';
-                    echo '<li style="border-bottom:1px solid silver;">Latest :' . $latest_time . '</li>';
-                }
+                    echo '<li>Earliest: ' . $value[$earliest_time_today] . '</li>';
+                    echo '<li style="border-bottom:1px solid silver;">Latest: ' . $value[$latest_time_today] . '</li>';             
                 echo '</ul></div></li>';
                 echo '</ul>';
                 echo '</li>';

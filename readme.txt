@@ -37,6 +37,8 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 * Administrators can browse the full database of submitted contacts.
 * Configurable map icons (administrators can set URL in admin page).
+* Contacts are requested to select the days and times that they would be available when registering.
+* Only contacts who have indicated that they are available on the current day of the week are displayed when searching for the 'nearest contact'.
 
 == Requirements ==
 
@@ -47,12 +49,11 @@ The plugin has been tested with PHP versions 5.5.x and above.
 == Future development roadmap ==
 
 * Add facility for administrators EDIT and DELETE from the database.
-* Add form field to allow contacts to set times when they'd be available.
-* Modify code so only contacts available at the time of request are included in admin contacts view page.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
 * Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
+* Add ability for administrator to select not to include the day/time request. (When not, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
 * Refactor code to tidy up the mess!
 

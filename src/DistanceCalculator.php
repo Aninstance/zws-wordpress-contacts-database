@@ -25,10 +25,14 @@ Class DistanceCalculator {
         if (isset($target)) {
             // set up variables
             $distance_array = array();
-            
+
             // grab all registered users from db
             require_once(__DIR__ . '/Database.php');
-            $result_set = \ZwsContactsDatabase\Database::getAllRecords();
+            $days_of_week = array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays');
+            // set variabe for earliest_time field corresponding to 'today'
+            $earliest_time_today = 'earliest_time_' . $days_of_week[current_time(date('N', time()))];
+            $latest_time_today = 'latest_time_' . $days_of_week[current_time(date('N', time()))];
+            $result_set = \ZwsContactsDatabase\Database::getAllRecordsWhereIsNot('id', array('field' => $earliest_time_today, 'value' => 'NULL'));
 
             // loop postcodes and get distances
             if (isset($result_set) && $result_set !== false && is_array($result_set)) {
@@ -45,23 +49,11 @@ Class DistanceCalculator {
                             'last_name' => sanitize_text_field($row->last_name),
                             'phone' => sanitize_text_field($row->phone),
                             'email' => sanitize_email($row->email),
-                            'earliest_time_mondays' => sanitize_text_field($row->earliest_time_mondays),
-                            'latest_time_mondays' => sanitize_text_field($row->latest_time_mondays),
-                            'earliest_time_tuesdays' => sanitize_text_field($row->earliest_time_tuesdays),
-                            'latest_time_tuesdays' => sanitize_text_field($row->latest_time_tuesdays),
-                            'earliest_time_wednesdays' => sanitize_text_field($row->earliest_time_wednesdays),
-                            'latest_time_wednesdays' => sanitize_text_field($row->latest_time_wednesdays),
-                            'earliest_time_thursdays' => sanitize_text_field($row->earliest_time_thursdays),
-                            'latest_time_thursdays' => sanitize_text_field($row->latest_time_thursdays),
-                            'earliest_time_fridays' => sanitize_text_field($row->earliest_time_fridays),
-                            'latest_time_fridays' => sanitize_text_field($row->latest_time_fridays),
-                            'earliest_time_saturdays' => sanitize_text_field($row->earliest_time_saturdays),
-                            'latest_time_saturdays' => sanitize_text_field($row->latest_time_saturdays),
-                            'earliest_time_sundays' => sanitize_text_field($row->earliest_time_sundays),
-                            'latest_time_sundays' => sanitize_text_field($row->latest_time_sundays),
+                            $earliest_time_today => sanitize_text_field($row->$earliest_time_today),
+                            $latest_time_today => sanitize_text_field($row->$latest_time_today),
                             'max_radius' => sanitize_text_field($row->max_radius),
                             'extra_info' => esc_textarea($row->extra_info));
-                    } 
+                    }
                 }
                 if (!empty($distance_array)) {
                     // sort it
@@ -77,7 +69,7 @@ Class DistanceCalculator {
 
     public static function getDistance($target_postcode, $contact_postcode) {
         require_once(__DIR__ . '/QueryAPI.php');
-        
+
         $google_api_key = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
         $path = '?origins=' . $target_postcode . '&destinations=' . $contact_postcode . self::DISTANCE_MATRIX_PARAMS . '&key=' . $google_api_key;
         // $data = file_get_contents($url);
@@ -86,7 +78,7 @@ Class DistanceCalculator {
             if ($data['cached']) {
                 // error_log('THE DATA WAS CACHED ...'); // debug
             }
-            return  round((sanitize_text_field($data['returned_data']['rows'][0]['elements'][0]['distance']['value']) * 0.000621371), 0, PHP_ROUND_HALF_UP);
+            return round((sanitize_text_field($data['returned_data']['rows'][0]['elements'][0]['distance']['value']) * 0.000621371), 0, PHP_ROUND_HALF_UP);
         } else {
             error_log('An error occurred whilst attempting to get a distance, at \ZwsContactsDatabase\DistanceCalculator::getDistance');
             return false;

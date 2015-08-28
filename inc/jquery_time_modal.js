@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
         $("ul.contact-info-list-inner_" + index.toString()).dialog({
             autoOpen: false,
             modal: true,
-            show: {effect: "blind", duration: 800},
+            show: {effect: "fade", duration: 800},
             title: "Available Times",
             width: 500
         });

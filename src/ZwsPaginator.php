@@ -105,8 +105,8 @@ Class ZwsPaginator {
                     $latest_time = $value->$set_obj_property_latest;
                 }
                 echo '<h3>' . ucfirst($day) . '</h3>';
-                echo '<li>Earliest :' . $earliest_time . '</li>';
-                echo '<li style="border-bottom:1px solid silver;">Latest :' . $latest_time . '</li>';
+                echo '<li>Earliest: ' . $earliest_time . '</li>';
+                echo '<li style="border-bottom:1px solid silver;">Latest: ' . $latest_time . '</li>';
             }
             echo '</ul></div></li>';
             echo '</ul></div></li>';
