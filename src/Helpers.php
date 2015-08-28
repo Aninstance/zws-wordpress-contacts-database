@@ -31,7 +31,6 @@ Class Helpers {
 
     private static function create_query_string($param_name, $param_value, $requested_uri) {
         // returns a query string created from the input parameters.
-        
         // make safe
         $request_uri = esc_url($requested_uri);
         // generate uri
@@ -111,6 +110,10 @@ Class Helpers {
             case 'list_style_tag':
                 return
                         'margin:0.5em;';
+            case 'list_style_tag_button_li;':
+                return
+                        'margin-top:1em;'
+                        . 'color:yellow;';
             default:
                 return null;
         }

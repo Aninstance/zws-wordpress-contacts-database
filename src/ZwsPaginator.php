@@ -89,11 +89,11 @@ Class ZwsPaginator {
                         break;
                 }
             }
-            echo '</ul></div></li>';
             // times available
-            echo '<li><button class="modal_opener_' . $c . '">View available times</button>'
+            echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag_button_li') . '">'
+            . '<button class="modal_opener_' . $c . '">View times that ' . apply_filters('zws_filter_basic_sanitize', $value->first_name) . ' is available</button>'
             . '<div class="zws-contacts-db-times-available">'
-            . '<ul class="contact-info-list-inner_' . $c .'">';
+            . '<ul class="contact-info-list-inner_' . $c . '">';
             // available times field
             foreach (unserialize(DAYS) as $key => $day) {
                 $set_obj_property_earliest = 'earliest_time_' . $day;
@@ -108,6 +108,7 @@ Class ZwsPaginator {
                 echo '<li>Earliest :' . $earliest_time . '</li>';
                 echo '<li style="border-bottom:1px solid silver;">Latest :' . $latest_time . '</li>';
             }
+            echo '</ul></div></li>';
             echo '</ul></div></li>';
             $c++;
         }
