@@ -79,20 +79,18 @@ Class View {
         echo 'Distance from your location you\'d cover (full miles, required)<br />';
         echo '<input type="text" name="max_radius" required="required" placeholder="Distance" pattern="[0-9]+" value="' . ( isset($_POST["max_radius"]) ? esc_attr($_POST["max_radius"]) : '' ) . '" size="9" />';
         echo '</p>';
-        echo '<h3>When are you available?</h3><small style="display:inline-block;margin-bottom:1em;">Please select which times you would be available for each day. '
-        . 'Select "unavailable" for any day on which you would rather we did not contact you. Selecting "unavailable" for either the earliest or latest'
-                . ' slots would indicate you are unavailable for the entire day. <br>'
-                . 'If you are available for several short "blocks" of time during one particular day, just select the start of the earliest "block", '
-                . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section. '
-                . 'By default, the options below are set to "all day, every day". Please adjust as required!</small>';
+        echo '<h3>When are you available?</h3><p style="display:inline-block;margin-bottom:1em;font-size:0.7em;">"Unavailable" indicates you are unavailable for the entire day. <br>'
+                . 'If you are available for several periods during one particular day with breaks in between, just select the start of the earliest period, '
+                . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section.<br>'
+                . 'By default, the options below are set to "Unavailable every day". Please adjust as required!</p>';
         foreach (unserialize(DAYS) as $value => $day) {
             echo '<p>';
             echo 'Times available on ' . ucfirst($day) . '<br>';
             echo '<span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
-            echo 'Earliest available';
+            echo 'Earliest available<br>';
             echo '<input id="zws-contacts-database-earlist-time-' . $day . '" required="required" type="text" name="earliest_time_' . $day . '" placeholder="Earlist time" value="' . ( isset($_POST["earliest_time_' . $day . '"]) ? esc_attr($_POST["earlist_time_' . $day . '"]) : '' ) . '" size="8" />';
             echo '</span><span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
-            echo 'Latest available';
+            echo 'Latest available<br>';
             echo '<input id="zws-contacts-database-latest-time-' . $day . '" required="required" type="text" name="latest_time_' . $day . '" placeholder="Latest time" value="' . ( isset($_POST["latest_time_' . $day . '"]) ? esc_attr($_POST["latest_time_' . $day . '"]) : '' ) . '"/>';
             echo '</span></p>';
         }
