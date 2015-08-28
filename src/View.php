@@ -80,9 +80,9 @@ Class View {
         echo '<input type="text" name="max_radius" required="required" placeholder="Distance" pattern="[0-9]+" value="' . ( isset($_POST["max_radius"]) ? esc_attr($_POST["max_radius"]) : '' ) . '" size="9" />';
         echo '</p>';
         echo '<h3>When are you available?</h3><p style="display:inline-block;margin-bottom:1em;font-size:0.7em;">"Unavailable" indicates you are unavailable for the entire day. <br>'
-                . 'If you are available for several periods during one particular day with breaks in between, just select the start of the earliest period, '
-                . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section.<br>'
-                . 'By default, the options below are set to "Unavailable every day". Please adjust as required!</p>';
+        . 'If you are available for several periods during one particular day with breaks in between, just select the start of the earliest period, '
+        . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section.<br>'
+        . 'By default, the options below are set to "Unavailable every day". Please adjust as required!</p>';
         foreach (unserialize(DAYS) as $value => $day) {
             echo '<p>';
             echo 'Times available on ' . ucfirst($day) . '<br>';
@@ -125,13 +125,9 @@ Class View {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
                     $safe_values['earliest_time_' . $day] = sanitize_text_field($_POST['earliest_time_' . $day]);
                 } else {
-                    $safe_values['earliest_time_' . $day] = null;
+                    $safe_values['earliest_time_' . $day] = 'NULL';
                 }
-                if (sanitize_text_field($_POST['latest_time_' . $day]) !== 'Unavailable') {
-                    $safe_values['latest_time_' . $day] = sanitize_text_field($_POST['latest_time_' . $day]);
-                } else {
-                    $safe_values['latest_time_' . $day] = null;
-                }
+                $safe_values['latest_time_' . $day] = sanitize_text_field($_POST['latest_time_' . $day]);
             }
 
 // verify privacy policy has been accepted
