@@ -79,10 +79,11 @@ Class View {
         echo 'Distance from your location you\'d cover (full miles, required)<br />';
         echo '<input type="text" name="max_radius" required="required" placeholder="Distance" pattern="[0-9]+" value="' . ( isset($_POST["max_radius"]) ? esc_attr($_POST["max_radius"]) : '' ) . '" size="9" />';
         echo '</p>';
-        echo '<h3>When are you available?</h3><p style="display:inline-block;margin-bottom:1em;font-size:0.7em;">"Unavailable" indicates you are unavailable for the entire day. <br>'
-        . 'If you are available for several periods during one particular day with breaks in between, just select the start of the earliest period, '
-        . 'and the end of the latest. Then mention any times of unavailablity between those times in the "Extra information" section.<br>'
-        . 'By default, the options below are set to "Unavailable every day". Please adjust as required!</p>';
+        echo '<h3>When are you available?</h3><p style="display:inline-block;margin-bottom:1em;font-size:0.7em;">'
+        . 'Times are in 24 hour clock format (e.g. 00:00 = midnight; 02:30 = 2.30am, 14:30 = 2.30pm).<br>'
+        . '"Unavailable" indicates you are unavailable for the <strong>entire day</strong>.<br>'
+        . 'By default, the options below are set to <strong>"Unavailable"</strong> every day. Please adjust as required!<br>'
+        . 'Feel free to provide more detail in the "Extra information" section if necessary.</p>';
         foreach (unserialize(DAYS) as $value => $day) {
             echo '<p>';
             echo 'Times available on ' . ucfirst($day) . '<br>';
