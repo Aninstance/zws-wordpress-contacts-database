@@ -185,8 +185,8 @@ Class AdminView {
                 echo '<li>Phone of contact: <a href="tel:' . $value['phone'] . '">' . $value['phone'] . '</a></li>';
                 echo '<li>Email of contact: <a href="mailto:' . $value['email'] . '">' . $value['email'] . '</a></li>';
                 echo '<li>Extra notes: ' . $value['extra_info'] . '</li>';
-                echo '<li><button id="modal_opener_' . $c . '">View available times</button><div id="zws-contacts-db-times-available_' . $c . '">'
-                . '<ul class="contact-info-list-inner">';
+                echo '<li><button class="modal_opener_' . $c . '">View available times</button><div class="zws-contacts-db-times-available">'
+                . '<ul class="contact-info-list-inner_' . $c . '">';
                 foreach (unserialize(DAYS) as $key => $day) {
                     if ($value['earliest_time_' . $day] == null || $value['latest_time_' . $day] == null) {
                         $earliest_time = $latest_time = 'Unavailable';

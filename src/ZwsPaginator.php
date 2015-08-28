@@ -91,9 +91,9 @@ Class ZwsPaginator {
             }
             echo '</ul></div></li>';
             // times available
-            echo '<li><button id="modal_opener_' . $c . '">View available times</button>'
-            . '<div id="zws-contacts-db-times-available_' . $c . '">'
-            . '<ul class="contact-info-list-inner">';
+            echo '<li><button class="modal_opener_' . $c . '">View available times</button>'
+            . '<div class="zws-contacts-db-times-available">'
+            . '<ul class="contact-info-list-inner_' . $c .'">';
             // available times field
             foreach (unserialize(DAYS) as $key => $day) {
                 $set_obj_property_earliest = 'earliest_time_' . $day;
