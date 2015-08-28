@@ -91,7 +91,7 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.2
+The current version is: 0.3
 
 == Changelog ==
 
