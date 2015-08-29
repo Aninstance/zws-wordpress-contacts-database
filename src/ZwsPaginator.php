@@ -43,8 +43,8 @@ Class ZwsPaginator {
                     case 'phone' :
                         echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
                         . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">Phone :</span>'
-                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"><a href="tel:' . apply_filters('zws_filter_validate_integer', $entry_value) . '" style="' . Zelp::getCss('link_style_tag') . '">'
-                        . apply_filters('zws_filter_validate_integer', $entry_value) . '</a></span></li>';
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"><a href="tel:' . apply_filters('zws_filter_basic_sanitize', $entry_value) . '" style="' . Zelp::getCss('link_style_tag') . '">'
+                        . apply_filters('zws_filter_basic_sanitize', $entry_value) . '</a></span></li>';
                         break;
                     case 'id' :
                         echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
