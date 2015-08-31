@@ -116,7 +116,7 @@ Class View {
 // sanitise values
             $safe_values['first_name'] = sanitize_text_field($_POST['first_name']);
             $safe_values['last_name'] = sanitize_text_field($_POST['last_name']);
-            $safe_values['postcode'] = strtoupper(trim(sanitize_text_field($_POST['postcode']), ' '));
+            $safe_values['postcode'] = apply_filters('zws_filter_sanitize_postcode', $_POST['postcode']);
             $safe_values['phone'] = trim(self::removeNonNumeric(sanitize_text_field($_POST['phone'])));
             $safe_values['email'] = sanitize_email($_POST['email']);
             $safe_values['max_radius'] = sanitize_text_field($_POST['max_radius']);

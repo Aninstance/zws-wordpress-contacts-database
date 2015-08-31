@@ -14,8 +14,10 @@ namespace ZwsContactsDatabase;
 Class SetOptions {
 
     const OPTIONS_LABEL = 'zws_contacts_database_options';
+    const POSTCODE_FAILURE = 'The host base postcode is not recognised, therefore the options update failed!';
 
     public static function update_options($post) {
+        // note: incoming $post is UNFILTERD / UNSANITIZED $_POST data.
         $remove_data = get_site_option('zws_contacts_database_remove_data');
         // grab existing options
         $existing_options = get_site_option(self::OPTIONS_LABEL);
@@ -26,9 +28,25 @@ Class SetOptions {
                 case 'zws_api_consumer_memcached_period':
                     $existing_options[$key] = apply_filters('zws_filter_validate_integer', $value);
                     break;
+                case 'zws_contacts_database_plugin_base_postcode':
+                    // get coordiates of the postcode and add that (if it has been changed) ...
+                    if ($existing_options[$key] !== apply_filters('zws_filter_sanitize_postcode', $value)) {
+                        $existing_options['zws_contacts_database_plugin_base_coordinates'] = self::getBaseCoordinates(
+                                        apply_filters('zws_filter_sanitize_postcode', $value));
+                        // return false (set options failed and don't update any) if the base coordinates were not set.
+                        if ($existing_options['zws_contacts_database_plugin_base_coordinates'] == false ||
+                                empty($existing_options['zws_contacts_database_plugin_base_coordinates'])) {
+                            error_log('returning false');
+                            return false;
+                        }
+                    }
+                    // record the postcode in the db too
+                    $existing_options[$key] = apply_filters('zws_filter_sanitize_postcode', $value);
+                    break;
                 case 'zws_contacts_database_remove_data':
                     // this is an option of it's own, therefore do not add to the new options array
                     $remove_data = apply_filters('zws_filter_basic_sanitize', $value);
+                    break;
                 default:
                     $existing_options[$key] = apply_filters('zws_filter_basic_sanitize', $value);
                     break;
@@ -40,6 +58,34 @@ Class SetOptions {
         $update_remove_data = update_site_option('zws_contacts_database_remove_data', $remove_data);
         // return true if either of the updates change anything, or false if not.
         return true ? $update_options_array || $update_remove_data : false;
+    }
+
+    private static function getBaseCoordinates($postcode) {
+        // returns an array for the coordinates (lat, lng).
+        require_once(__DIR__ . '/QueryAPI.php');
+        $base_url = 'https://maps.googleapis.com/maps/api/geocode/json';
+        $path = '?address=' . $postcode . '&language=en-EN&sensor=false';
+        $result = \ZwsContactsDatabase\QueryAPI::makeQuery($base_url, $path);
+        // if successful return and there are some results ...
+        if ($result !== false && !empty($result['returned_data']['results'])) {
+            // grab and return the lat and lng
+            return array(0 =>
+                $result['returned_data']
+                ['results']
+                [0]
+                ['geometry']
+                ['location']
+                ['lat'],
+                1 =>
+                $result['returned_data']
+                ['results']
+                [0]
+                ['geometry']
+                ['location']
+                ['lng']);
+        }
+        echo '<strong style="display:block;margin-top:1em;color:red;font-size:1.5em";>' . self::POSTCODE_FAILURE . '</strong>';
+        return false;
     }
 
 }

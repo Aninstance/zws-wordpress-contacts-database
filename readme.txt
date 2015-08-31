@@ -54,8 +54,7 @@ The plugin has been tested with PHP versions 5.5.x and above.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
 * Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
-* Add presentation polish.
-* Refactor code to tidy up the mess!
+* Add presentation polish.* Refactor code to tidy up the mess!
 
 == Plugin Website ==
 

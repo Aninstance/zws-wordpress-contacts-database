@@ -45,6 +45,9 @@ Class Installer {
             'zws_contacts_database_plugin_map_target_icon_url' => self::DEFAULT_MAP_TARGET_ICON,
             'zws_contacts_database_plugin_map_base_icon_url' => self::DEFAULT_MAP_BASE_ICON,
             'zws_contacts_database_plugin_memcached_keybase' => self::MEMCACHED_KEY_BASE . '_' . rand(),
+            'zws_contacts_database_plugin_base_name' => '',
+            'zws_contacts_database_plugin_base_postcode' => '',
+            'zws_contacts_database_plugin_base_coordinates' => array()
         ); 
 
         // set options array if does not exist

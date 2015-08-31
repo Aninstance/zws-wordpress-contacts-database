@@ -72,7 +72,7 @@ Class QueryAPI {
             return false;
         }
 
-        // return the records
+        // return false if no records to return
         return false;
     }
 
