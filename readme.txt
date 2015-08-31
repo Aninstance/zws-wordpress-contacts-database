@@ -97,7 +97,7 @@ The current version is: 0.5
 
 = 0.5 =
 
-* UPDATES HERE ...
+* UPDATES HERE .....
 
 = 0.4 =
 
