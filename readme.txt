@@ -99,7 +99,7 @@ The current version is: 0.4
 
 * Added ability for administrators to define "home base" postcode and name from the settings page.
 * Made memcached key unique in order to allow multiple instances of the plugin to use the same memcached server.
-* Fixed a bug where some input may not have been correctly filtered.
+* [SECURITY FIX] Fixed a bug where some input may not have been correctly filtered.
 
 = 0.3 =
 
