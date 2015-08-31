@@ -17,7 +17,7 @@ Class Installer {
     const TABLE_NAME_NO_PREFIX = 'zws_contacts_database_plugin';
     const DB_VERSION = '0'; // NEVER CHANGE THIS. Increment new DB versions in db.php.
     const USE_MEMCACHED = 'FALSE';
-    const MEMCACHED_PERIOD = 3600;
+    const MEMCACHED_PERIOD = 86400;
     const DEFAULT_MEMCACHED_IP = '127.0.0.1';
     const DEFAULT_MEMCACHED_PORT = '11211';
     const DEFAULT_FULL_REMOVAL = 'FALSE';
@@ -26,6 +26,7 @@ Class Installer {
     const DEFAULT_MAP_CONTACT_ICON = '';
     const DEFAULT_MAP_BASE_ICON = '';
     const DEFAULT_MAP_TARGET_ICON = '';
+    const MEMCACHED_KEY_BASE = 'ZWS_CONTACTS_DATABASE_KEY';
 
     private static $existing_stored_options = array();
 
@@ -43,7 +44,11 @@ Class Installer {
             'zws_contacts_database_plugin_map_contact_icon_url' => self::DEFAULT_MAP_CONTACT_ICON,
             'zws_contacts_database_plugin_map_target_icon_url' => self::DEFAULT_MAP_TARGET_ICON,
             'zws_contacts_database_plugin_map_base_icon_url' => self::DEFAULT_MAP_BASE_ICON,
-        );
+            'zws_contacts_database_plugin_memcached_keybase' => self::MEMCACHED_KEY_BASE . '_' . rand(),
+            'zws_contacts_database_plugin_base_name' => '',
+            'zws_contacts_database_plugin_base_postcode' => '',
+            'zws_contacts_database_plugin_base_coordinates' => array()
+        ); 
 
         // set options array if does not exist
         if (!get_site_option(self::OPTIONS_LABEL)) {

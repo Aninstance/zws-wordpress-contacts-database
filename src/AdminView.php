@@ -90,7 +90,7 @@ Class AdminView {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
 // set the target postcode from the form post
-            $posted_postcode = strtoupper(trim(sanitize_text_field($_POST['target_postcode']), ' '));
+            $posted_postcode = apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
             if (!empty($posted_postcode)) {
                 return $posted_postcode;
             }
@@ -165,8 +165,9 @@ Class AdminView {
             $map_config['contact_icon_url'] = $options['zws_contacts_database_plugin_map_contact_icon_url']; // icon URLs. ToDo: Make these user defined via options.
             $map_config['target_icon_url'] = $options['zws_contacts_database_plugin_map_target_icon_url'];
             $map_config['base_icon_url'] = $options['zws_contacts_database_plugin_map_base_icon_url'];
-            $map_config['base_coordinates'] = array('57.4382622', '-2.0930657'); // ToDo: allow modificaiton via options
-            $map_config['base_name'] = "The New Arc";
+            $map_config['base_postcode'] = $options['zws_contacts_database_plugin_base_postcode'];
+            $map_config['base_name'] = $options['zws_contacts_database_plugin_base_name'];
+            $map_config['base_coordinates'] = $options['zws_contacts_database_plugin_base_coordinates'];
             $map_config['users_id'] = get_current_user_id();
 
             // display the map
@@ -203,8 +204,8 @@ Class AdminView {
     }
 
     public static function display_map($map_config) {
-// check params have been passed
-        if (!isset($map_config)) {
+// check params have been passed and that there is something to display
+        if (empty($map_config['contacts_array_safe'][0]['distance'])) {
             return false;
         }
 // method to display the Google map

@@ -14,7 +14,6 @@ namespace ZwsContactsDatabase;
 Class Admin {
 
     const OPTIONS_LABEL = 'zws_contacts_database_options';
-    const MEMCACHED_KEYBASE = 'ZWS_CONTACTS_DATABASE_KEY';
 
     public static $notifications = array();
 
@@ -156,8 +155,24 @@ Class Admin {
                 <?php
             }
 
-            public static function full_removal_on_uninstall_element() {
+            public static function base_postcode_form_field_element() {
                 ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Postcode of 'home base' (No spaces - e.g. AB467TR)</small>      
+                <input type="text" name="zws_contacts_database_plugin_base_postcode" size="55" id="zws_contacts_database_plugin_base_postcode" 
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_base_postcode']; ?>" />
+                       <?php
+                   }
+
+                   public static function base_name_form_field_element() {
+                       ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Display name of 'home base'</small>      
+                <input type="text" name="zws_contacts_database_plugin_base_name" size="55" id="zws_contacts_database_plugin_base_name" 
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_base_name']; ?>" />
+                       <?php
+                   }
+
+                   public static function full_removal_on_uninstall_element() {
+                       ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small> 
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
@@ -223,6 +238,10 @@ Class Admin {
                     'map_target_icon_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_map_base_icon_url', 'Map home base icon URL', array('\ZwsContactsDatabase\Admin',
                     'map_base_icon_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_base_postcode', 'Home base postcode', array('\ZwsContactsDatabase\Admin',
+                    'base_postcode_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_base_name', 'Home base display name', array('\ZwsContactsDatabase\Admin',
+                    'base_name_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_privacy_policy_url', 'Privacy policy URL', array('\ZwsContactsDatabase\Admin',
                     'privacy_page_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_remove_data', 'Fully remove all plugin\'s databases & options on uninstall?', array('\ZwsContactsDatabase\Admin',
@@ -244,10 +263,11 @@ Class Admin {
                 // method to clear the memcached cache
                 $memcached_ip = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_ip'];
                 $memcached_port = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_port'];
+                $memcached_key_base = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_memcached_keybase'];
                 if (class_exists('\Memcached')) {
                     $cache = new \Memcached();
                     if ($cache->addServer($memcached_ip, $memcached_port)) {
-                        if ($cache->delete(self::MEMCACHED_KEYBASE)) {
+                        if ($cache->delete($memcached_key_base)) {
                             return true;
                         }
                     }

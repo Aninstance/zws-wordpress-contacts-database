@@ -16,8 +16,7 @@ use GuzzleHttp\Client as Client;
 Class QueryAPI {
 
     const OPTIONS_LABEL = 'zws_contacts_database_options';
-
-    public static $memcached_key_base = 'ZWS_CONTACTS_DATABASE_KEY';
+    
     public static $error = 'An error has occurred!';
 
     public static function makeQuery($base_url, $path) {
@@ -31,13 +30,14 @@ Class QueryAPI {
         $memcached_error = 'Failed to save to cache! Please check the Memcache server IP and port on the Settings page, '
                 . 'and that Memcached is installed and running on your system. If all else fails, disable the Memcached feature.';
         $guzzle_error = 'Check the URL, path and protocol ...';
+        $memcached_key_base = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_memcached_keybase'];
         $memcached_request_identifier = md5($base_url) . ':' . md5($path);
 
 // Set up cache if activated in options
         if ($memcached_active === 'TRUE' && class_exists('\Memcached')) {
             $cache = new \Memcached();
             $cache->addServer($memcached_ip, $memcached_port);
-            $cache_key = self::$memcached_key_base;
+            $cache_key = $memcached_key_base;
 
 // Try to get records
             $memcached_cache_result = $cache->get($cache_key);
@@ -72,7 +72,7 @@ Class QueryAPI {
             return false;
         }
 
-        // return the records
+        // return false if no records to return
         return false;
     }
 
