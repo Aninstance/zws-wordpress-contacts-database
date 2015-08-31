@@ -100,8 +100,7 @@ Class Database {
     public static function getAllRecordsWhereIsNot($order_by = 'id', $where = null) {
         // method to get records from the database WHERE IS NOT. $where should be an array (field => value)
         if(!empty($where)) {
-            $where_statement = "`" . $where['field'] . "` != '" . $where['value'] . "'";
-            error_log($where_statement);
+            $where_statement = "`" . $where['field'] . "` <> '" . $where['value'] . "'";
         } else {
             return false;
         }
@@ -110,8 +109,12 @@ Class Database {
         $table_name = $wpdb->prefix . $saved_table_name;
         // grab the data
         //$sql = $my_wpdb->prepare("SELECT * FROM $table_name ORDER BY %s;", 'id');
+        try {
         $sql = "SELECT * FROM " . $table_name . " WHERE " . $where_statement . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
         return $wpdb->get_results($sql);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
 }

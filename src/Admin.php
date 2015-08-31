@@ -14,7 +14,6 @@ namespace ZwsContactsDatabase;
 Class Admin {
 
     const OPTIONS_LABEL = 'zws_contacts_database_options';
-    const MEMCACHED_KEYBASE = 'ZWS_CONTACTS_DATABASE_KEY';
 
     public static $notifications = array();
 
@@ -244,10 +243,11 @@ Class Admin {
                 // method to clear the memcached cache
                 $memcached_ip = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_ip'];
                 $memcached_port = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_port'];
+                $memcached_key_base= get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_memcached_keybase'];
                 if (class_exists('\Memcached')) {
                     $cache = new \Memcached();
                     if ($cache->addServer($memcached_ip, $memcached_port)) {
-                        if ($cache->delete(self::MEMCACHED_KEYBASE)) {
+                        if ($cache->delete($memcached_key_base)) {
                             return true;
                         }
                     }

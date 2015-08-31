@@ -203,8 +203,8 @@ Class AdminView {
     }
 
     public static function display_map($map_config) {
-// check params have been passed
-        if (!isset($map_config)) {
+// check params have been passed and that there is something to display
+        if (empty($map_config['contacts_array_safe'][0]['distance'])) {
             return false;
         }
 // method to display the Google map

@@ -35,25 +35,25 @@ Class DistanceCalculator {
             $result_set = \ZwsContactsDatabase\Database::getAllRecordsWhereIsNot('id', array('field' => $earliest_time_today, 'value' => 'UNAVL'));
 
             // loop postcodes and get distances
-            if (isset($result_set) && $result_set !== false && is_array($result_set)) {
-                foreach ($result_set as $key => $row) {
-                    // get distance from contact to each target. Returns false if error or target not found.
-                    $distance = \ZwsContactsDatabase\DistanceCalculator::getDistance(sanitize_text_field($target), sanitize_text_field($row->postcode));
-                    // if distance successfully returned add to the distance array
-                    if ($distance !== false) {
-                        $distance_array[sanitize_text_field($row->id)] = array('distance' => $distance,
-                            'postcode' => sanitize_text_field($row->postcode),
-                            'lng' => sanitize_text_field($row->lng),
-                            'lat' => sanitize_text_field($row->lat),
-                            'first_name' => sanitize_text_field($row->first_name),
-                            'last_name' => sanitize_text_field($row->last_name),
-                            'phone' => sanitize_text_field($row->phone),
-                            'email' => sanitize_email($row->email),
-                            $earliest_time_today => sanitize_text_field($row->$earliest_time_today),
-                            $latest_time_today => sanitize_text_field($row->$latest_time_today),
-                            'max_radius' => sanitize_text_field($row->max_radius),
-                            'extra_info' => esc_textarea($row->extra_info));
-                    }
+            if (!empty($result_set) && $result_set !== false && is_array($result_set)) {
+                    foreach ($result_set as $key => $row) {
+                        // get distance from contact to each target. Returns false if error or target not found.
+                        $distance = \ZwsContactsDatabase\DistanceCalculator::getDistance(sanitize_text_field($target), sanitize_text_field($row->postcode));
+                        // if distance successfully returned add to the distance array
+                        if ($distance !== false) {
+                            $distance_array[sanitize_text_field($row->id)] = array('distance' => $distance,
+                                'postcode' => sanitize_text_field($row->postcode),
+                                'lng' => sanitize_text_field($row->lng),
+                                'lat' => sanitize_text_field($row->lat),
+                                'first_name' => sanitize_text_field($row->first_name),
+                                'last_name' => sanitize_text_field($row->last_name),
+                                'phone' => sanitize_text_field($row->phone),
+                                'email' => sanitize_email($row->email),
+                                $earliest_time_today => sanitize_text_field($row->$earliest_time_today),
+                                $latest_time_today => sanitize_text_field($row->$latest_time_today),
+                                'max_radius' => sanitize_text_field($row->max_radius),
+                                'extra_info' => esc_textarea($row->extra_info));
+                        }
                 }
                 if (!empty($distance_array)) {
                     // sort it
