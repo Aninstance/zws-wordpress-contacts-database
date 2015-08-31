@@ -9,7 +9,7 @@ define("DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 0.4
+ * Version: 0.5
  * Author: Zaziork Web Solutions
  * Author URI: http://www.zaziork.com
  * Copyright (c) 2015 Zaziork Web Solutions. All rights reserved.
