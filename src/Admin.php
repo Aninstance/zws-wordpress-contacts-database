@@ -154,6 +154,15 @@ Class Admin {
 
                 <?php
             }
+            
+                           public static function map_zoom_form_field_element() {
+                   ?>
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Initial zoom factor of the map (suggest between 7 and 10)</small>      
+            <input type="text" name="zws_contacts_database_plugin_google_map_zoom" size="55" id="zws_contacts_database_plugin_google_map_zoom" 
+                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_google_map_zoom']; ?>" />
+
+                <?php
+            }
 
             public static function base_postcode_form_field_element() {
                 ?>
@@ -238,6 +247,8 @@ Class Admin {
                     'map_target_icon_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_map_base_icon_url', 'Map home base icon URL', array('\ZwsContactsDatabase\Admin',
                     'map_base_icon_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_google_map_zoom', 'Initial map zoom', array('\ZwsContactsDatabase\Admin',
+                    'map_zoom_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_base_postcode', 'Home base postcode', array('\ZwsContactsDatabase\Admin',
                     'base_postcode_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_base_name', 'Home base display name', array('\ZwsContactsDatabase\Admin',

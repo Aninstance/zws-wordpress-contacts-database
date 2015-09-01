@@ -50,7 +50,7 @@ Class JavascriptBuilder {
         var mapCanvas = document.getElementById(\'map-canvas\');
         var mapOptions = {
         center: LatLng,
-        zoom: 7,
+        zoom: ' . $map_config['zoom'] . ',
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         }
         var map = new google.maps.Map(mapCanvas, mapOptions)  

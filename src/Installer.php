@@ -27,6 +27,7 @@ Class Installer {
     const DEFAULT_MAP_BASE_ICON = '';
     const DEFAULT_MAP_TARGET_ICON = '';
     const MEMCACHED_KEY_BASE = 'ZWS_CONTACTS_DATABASE_KEY';
+    const GOOGLE_MAP_ZOOM = 7;
 
     private static $existing_stored_options = array();
 
@@ -45,6 +46,7 @@ Class Installer {
             'zws_contacts_database_plugin_map_target_icon_url' => self::DEFAULT_MAP_TARGET_ICON,
             'zws_contacts_database_plugin_map_base_icon_url' => self::DEFAULT_MAP_BASE_ICON,
             'zws_contacts_database_plugin_memcached_keybase' => self::MEMCACHED_KEY_BASE . '_' . rand(),
+            'zws_contacts_database_plugin_google_map_zoom' => self::GOOGLE_MAP_ZOOM,
             'zws_contacts_database_plugin_base_name' => '',
             'zws_contacts_database_plugin_base_postcode' => '',
             'zws_contacts_database_plugin_base_coordinates' => array()

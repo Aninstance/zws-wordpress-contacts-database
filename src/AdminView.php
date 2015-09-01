@@ -162,13 +162,14 @@ Class AdminView {
             $map_config['contacts_array_safe'] = $contacts_array_safe;
             // set up additional map config
             $map_config['target_postcode'] = $target_postcode;
-            $map_config['contact_icon_url'] = $options['zws_contacts_database_plugin_map_contact_icon_url']; // icon URLs. ToDo: Make these user defined via options.
-            $map_config['target_icon_url'] = $options['zws_contacts_database_plugin_map_target_icon_url'];
-            $map_config['base_icon_url'] = $options['zws_contacts_database_plugin_map_base_icon_url'];
-            $map_config['base_postcode'] = $options['zws_contacts_database_plugin_base_postcode'];
-            $map_config['base_name'] = $options['zws_contacts_database_plugin_base_name'];
+            $map_config['contact_icon_url'] = apply_filters('zws_filter_basic_sanitize', $options['zws_contacts_database_plugin_map_contact_icon_url']);
+            $map_config['target_icon_url'] = apply_filters('zws_filter_basic_sanitize', $options['zws_contacts_database_plugin_map_target_icon_url']);
+            $map_config['base_icon_url'] = apply_filters('zws_filter_basic_sanitize', $options['zws_contacts_database_plugin_map_base_icon_url']);
+            $map_config['base_postcode'] = apply_filters('zws_filter_sanitize_postcode', $options['zws_contacts_database_plugin_base_postcode']);
+            $map_config['base_name'] = apply_filters('zws_filter_basic_sanitize', $options['zws_contacts_database_plugin_base_name']);
             $map_config['base_coordinates'] = $options['zws_contacts_database_plugin_base_coordinates'];
             $map_config['users_id'] = get_current_user_id();
+            $map_config['zoom'] = apply_filters('zws_filter_validate_integer', $options['zws_contacts_database_plugin_google_map_zoom']);
 
             // display the map
             if (self::display_map($map_config)) {

@@ -28,6 +28,9 @@ Class SetOptions {
                 case 'zws_api_consumer_memcached_period':
                     $existing_options[$key] = apply_filters('zws_filter_validate_integer', $value);
                     break;
+                case 'zws_contacts_database_plugin_google_map_zoom':
+                    $existing_options[$key] = apply_filters('zws_filter_validate_integer', $value);
+                    break;
                 case 'zws_contacts_database_plugin_base_postcode':
                     // get coordiates of the postcode and add that (if it has been changed) ...
                     if ($existing_options[$key] !== apply_filters('zws_filter_sanitize_postcode', $value)) {
@@ -35,7 +38,8 @@ Class SetOptions {
                                         apply_filters('zws_filter_sanitize_postcode', $value));
                         // return false (set options failed and don't update any) if the base coordinates were not set.
                         if ($existing_options['zws_contacts_database_plugin_base_coordinates'] == false ||
-                                empty($existing_options['zws_contacts_database_plugin_base_coordinates'])) {
+                                empty($existing_options['zws_contacts_database_plugin_base_coordinates']) ||
+                                !is_array($existing_options['zws_contacts_database_plugin_base_coordinates'])) {
                             error_log('returning false');
                             return false;
                         }

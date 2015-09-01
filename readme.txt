@@ -97,7 +97,7 @@ The current version is: 0.5
 
 = 0.5 =
 
-* UPDATES HERE .....
+* Added ability to set an option for the initial Google Map zoom factor from the settings menu.
 
 = 0.4 =
 
