@@ -98,6 +98,7 @@ The current version is: 0.5
 = 0.5 =
 
 * Added ability to set an option for the initial Google Map zoom factor from the settings menu.
+* Updated Guzzle to latest release version.
 
 = 0.4 =
 
