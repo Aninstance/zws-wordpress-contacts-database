@@ -68,10 +68,13 @@ Class ZwsContactsDatabase {
             // set up our scripts
             $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.js', __FILE__);
             $jquery_time_modal_js = plugins_url('/inc/jquery_time_modal.js', __FILE__);
+            $jquery_user_mod_modal_js = plugins_url('/inc/jquery_user_mod_modal.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
             wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
+            wp_register_script('jquery_user_mod_modal_js', $jquery_user_mod_modal_js, array('jquery_ui_js'));
             wp_enqueue_script('jquery_ui_js');
             wp_enqueue_script('jquery_time_modal_js');
+            wp_enqueue_script('jquery_user_mod_modal_js');
         }
     }
 

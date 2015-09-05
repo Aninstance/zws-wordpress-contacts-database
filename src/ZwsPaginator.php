@@ -49,7 +49,9 @@ Class ZwsPaginator {
                     case 'id' :
                         echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
                         . '<span class="zws-db-label" style="' . Zelp::getCss('label_style_tag') . '">User ID :</span>'
-                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '">' . apply_filters('zws_filter_validate_integer', $entry_value) . '</span></li>';
+                        . '<span class="zws-db-data" style="' . Zelp::getCss('data_style_tag') . '"><button id="user_mod_button_' . $c . '">' . apply_filters('zws_filter_validate_integer', $entry_value) . '</button></span></li>';
+                        // user mod div
+                        echo self::user_mod($c, apply_filters('zws_filter_validate_integer', $entry_value));
                         break;
                     case 'first_name' :
                         echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag') . '">'
@@ -109,12 +111,20 @@ Class ZwsPaginator {
                 echo '<li style="border-bottom:1px solid silver;">Latest: ' . $latest_time . '</li>';
             }
             echo '</ul></div></li>';
+            // end of user details list
             echo '</ul></div></li>';
             $c++;
         }
         echo '</ul></div>';
         // create index and return true if successful
         return true ? self::create_index($set_size, $page_size, $page_index_batch_size) : false;
+    }
+
+    private static function user_mod($list_position, $user_id) {
+        $return_string = '<div class="zws_contacts_db_user_mod_outer"><div class="zws_contacts_db_user_mod_' . $list_position . '">
+            <p>stuff goes here ... for user ' . $user_id . '</p>
+            </div></div>';
+        return $return_string;
     }
 
     private static function create_index($set_size, $page_size, $page_index_batch_size) {
