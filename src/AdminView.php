@@ -42,18 +42,25 @@ Class AdminView {
         /* navigation stuff */
 
         // if postback is set and is true, and show_all is not true
-        if (!empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
-            if (empty($safe_attr['show_all']) || $safe_attr['show_all'] !== 'true') {
-                $posted_postcode = self::process_form();
-                // if form processing successful, display nearest contacts. Returns true or false.
-                $success = true ? self::display_nearest($posted_postcode) : false;
-            }
+        if (!empty($safe_attr['postback']) && $safe_attr['postback'] == 'true' &&
+                (empty($safe_attr['show_all']) || $safe_attr['show_all'] !== 'true')) {
+            $posted_postcode = self::process_form();
+            // if form processing successful, display nearest contacts. Returns true or false.
+            $success = true ? self::display_nearest($posted_postcode) : false;
         }
         // if show_all is true and postback is not set or false
-        elseif (!empty($safe_attr['show_all']) && $safe_attr['show_all'] == 'true') {
-            if (empty($safe_attr['postback']) || $safe_attr['postback'] !== 'true') {
-                $success = true ? self::display_all_records() : false;
-            }
+        elseif (!empty($safe_attr['show_all']) &&
+                $safe_attr['show_all'] == 'true' &&
+                (empty($safe_attr['postback']) || $safe_attr['postback'] !== 'true')) {
+            $success = true ? self::display_all_records() : false;
+        }
+        // if show_all is true and postback is true (i.e. process record update form incoming from ZwsPaginator)
+        elseif (!empty($safe_attr['show_all']) &&
+                $safe_attr['show_all'] == 'true' &&
+                (!empty($safe_attr['postback']) || $safe_attr['postback'] == 'true')) {
+            require_once(__DIR__ . '/ZwsPaginator.php');
+            echo \ZwsContactsDatabase\ZwsPaginator::process_form($_POST);
+            self::display_all_records();
         }
         // anything else (success still null), display the form
         elseif ($success == null) {
@@ -191,8 +198,8 @@ Class AdminView {
                 echo '<li>Extra notes: ' . $value['extra_info'] . '</li>';
                 echo '<li><button class="modal_opener_' . $c . '">View time that ' . $value['first_name'] . ' is available</button><div class="zws-contacts-db-times-available">'
                 . '<ul class="contact-info-list-inner_' . $c . '">';
-                    echo '<li>Earliest: ' . $value[$earliest_time_today] . '</li>';
-                    echo '<li style="border-bottom:1px solid silver;">Latest: ' . $value[$latest_time_today] . '</li>';             
+                echo '<li>Earliest: ' . $value[$earliest_time_today] . '</li>';
+                echo '<li style="border-bottom:1px solid silver;">Latest: ' . $value[$latest_time_today] . '</li>';
                 echo '</ul></div></li>';
                 echo '</ul>';
                 echo '</li>';

@@ -51,6 +51,10 @@ Class ZwsFilters {
         return sanitize_text_field($input);
     }
 
+    public static function enforce_numeric($input) {
+        return sanitize_text_field(trim(preg_replace('/\D/', '', $input)));
+    }
+
 }
 
 /* ADD THE FILTERS */
@@ -61,3 +65,4 @@ add_filter('zws_filter_basic_sanitize', array('\ZwsContactsDatabase\ZwsFilters',
 add_filter('zws_filter_text_with_linebreak', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_with_linebreaks'), 10, 1);
 add_filter('zws_filter_to_date_obj', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_to_date_obj'), 10, 1);
 add_filter('zws_filter_sanitize_postcode', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_postcode'), 10, 1);
+add_filter('zws_filter_enforce_numeric', array('\ZwsContactsDatabase\ZwsFilters', 'enforce_numeric'), 10, 1);

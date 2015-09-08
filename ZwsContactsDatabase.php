@@ -69,20 +69,32 @@ Class ZwsContactsDatabase {
             $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.js', __FILE__);
             $jquery_time_modal_js = plugins_url('/inc/jquery_time_modal.js', __FILE__);
             $jquery_user_mod_modal_js = plugins_url('/inc/jquery_user_mod_modal.js', __FILE__);
+            $jquery_timepicker_js = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__);
+            $jquery_timepicker_init_js = plugins_url('/inc/jquery.timepicker.init.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
             wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
             wp_register_script('jquery_user_mod_modal_js', $jquery_user_mod_modal_js, array('jquery_ui_js'));
+            wp_register_script('jquery_timepicker_js', $jquery_timepicker_js, array('jquery_ui_js'));
+            wp_register_script('jquery_timepicker_init_js', $jquery_timepicker_init_js, array('jquery_ui_js'));
             wp_enqueue_script('jquery_ui_js');
             wp_enqueue_script('jquery_time_modal_js');
             wp_enqueue_script('jquery_user_mod_modal_js');
+            wp_enqueue_script('jquery_timepicker_js');
+            wp_enqueue_script('jquery_timepicker_init_js');
         }
     }
 
     public static function load_styles() {
         // set up our scripts
         $jquery_ui_css = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.css', __FILE__);
+        $jquery_timepicker_css = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.css', __FILE__);
+        $zws_contacts_db_css = plugins_url('/inc/zws-contacts-database.css', __FILE__);
         wp_register_style('jquery_ui_css', $jquery_ui_css);
+        wp_register_style('jquery_timepicker_css', $jquery_timepicker_css);
+        wp_register_style('zws_contacts_db_css', $zws_contacts_db_css);
         wp_enqueue_style('jquery_ui_css');
+        wp_enqueue_style('jquery_timepicker_css');
+        wp_enqueue_style('zws_contacts_db_css');
     }
 
 }

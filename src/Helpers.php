@@ -13,8 +13,8 @@ namespace ZwsContactsDatabase;
  */
 Class Helpers {
 
-    public static function set_url_query($new_query = null) {
-        // returns the complete requested URI with the incoming parameters changed or added    
+    public static function set_url_query($new_query = array()) {
+        // takes array (query_name => query_value) and returns the complete CURRENT URI with the incoming parameters changed or added    
         if (empty($new_query)) {
             return false;
         }
@@ -36,7 +36,7 @@ Class Helpers {
         // generate uri
         try {
             // generates and returns a new URI with the incoming parameters changed or added
-            $pattern = '/(.*?)(' . $param_name . '=[^&]*)(.*$)/i';
+            $pattern = '/(.*?)(' . $param_name . '[^&]*)(.*$)/i';
             $replacement = '$1' . $param_name . '=' . $param_value . '$3';
             // if no query string in current url
             if (!strpos($request_uri, '?')) {
@@ -114,6 +114,19 @@ Class Helpers {
                 return
                         'margin-top:1em;'
                         . 'color:yellow;';
+            case 'zws-contacts-db-success-message':
+                return
+                        'background-color:green;'
+                        . 'padding:0.5em;'
+                        . 'margin-bottom:0.5em;'
+                        . 'text-align:center;'
+                        . 'color:yellow;';
+            case 'zws-contacts-db-failure-message':
+                return
+                        'background-color:yellow;'
+                        . 'padding:0.5em;'
+                        . 'margin-bottom:0.5em;'
+                        . 'color:red;';
             default:
                 return null;
         }

@@ -48,11 +48,6 @@ Class View {
         $privacy_blurb = '<small class="form-privacy-checkbox">Please check the box to indicate that you have read and agree to our <a href="' . $privacy_policy_url .
                 '" target="_blank">data protection policy</a>&nbsp;</small>';
 
-        // load up the scripts for the 
-        wp_enqueue_script('jquery-timepicker', plugins_url('/../vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__), array('jquery'));
-        wp_enqueue_style('jquery-timepicker-css', plugins_url('/../vendor/jquery-timepicker/jquery.timepicker.css', __FILE__));
-        wp_enqueue_script('jquery-timepicker-init', plugins_url('/../inc/jquery.timepicker.init.js', __FILE__));
-
 // create the input form
         echo '<form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">';
         echo '<h3>Your details</h3><p>';
@@ -85,15 +80,19 @@ Class View {
         . 'By default, the options below are set to <strong>"Unavailable"</strong> every day. Please adjust as required!<br>'
         . 'Feel free to provide more detail in the "Extra information" section if necessary.</p>';
         foreach (unserialize(DAYS) as $value => $day) {
-            echo '<p>';
+            // note: put the time selectors inside a div with class of zws-contacts-db-modal, as sharing jquery.timepicker.init.js file 
+            // with update datebase form (displayed in a modal in ZwsPaginator) - where that class is necessary
+            // as there are multiple divs using same class, but only the active modal has the zws-contacts-db-modal class added when the modal is opened,
+            // which allows only the active class (open modal) to be targeted in jquery.timepicker.init.js.
+            echo '<div class="zws-contacts-db-modal"><p>';
             echo 'Times available on ' . ucfirst($day) . '<br>';
             echo '<span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
             echo 'Earliest available<br>';
-            echo '<input id="zws-contacts-database-earlist-time-' . $day . '" required="required" type="text" name="earliest_time_' . $day . '" placeholder="Earlist time" value="' . ( isset($_POST["earliest_time_' . $day . '"]) ? esc_attr($_POST["earlist_time_' . $day . '"]) : '' ) . '" size="8" />';
+            echo '<input id="zws-contacts-database-earlist-time-' . $day . '" required="required" type="text" name="earliest_time_' . $day . '" value="' . ( isset($_POST["earliest_time_' . $day . '"]) ? esc_attr($_POST["earlist_time_' . $day . '"]) : '' ) . '" size="8" />';
             echo '</span><span class="zws-contacts-database-split-input-class" style="display:inline-block;width:35%;margin-right:1em;">';
             echo 'Latest available<br>';
-            echo '<input id="zws-contacts-database-latest-time-' . $day . '" required="required" type="text" name="latest_time_' . $day . '" placeholder="Latest time" value="' . ( isset($_POST["latest_time_' . $day . '"]) ? esc_attr($_POST["latest_time_' . $day . '"]) : '' ) . '"/>';
-            echo '</span></p>';
+            echo '<input id="zws-contacts-database-latest-time-' . $day . '" required="required" type="text" name="latest_time_' . $day . '" value="' . ( isset($_POST["latest_time_' . $day . '"]) ? esc_attr($_POST["latest_time_' . $day . '"]) : '' ) . '"/>';
+            echo '</span></p></div>';
         }
         echo '<h3>Anything else you\'d like to mention?</h3><p>';
         echo 'Any extra information <br />';
@@ -112,23 +111,23 @@ Class View {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) &&
                 isset($_POST['my_nonce_field']) &&
-                wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
+                wp_verify_nonce(apply_filters('zws_filter_basic_sanitize', $_POST['my_nonce_field']), 'submit_details_action')) {
 // sanitise values
-            $safe_values['first_name'] = sanitize_text_field($_POST['first_name']);
-            $safe_values['last_name'] = sanitize_text_field($_POST['last_name']);
+            $safe_values['first_name'] = apply_filters('zws_filter_basic_sanitize', $_POST['first_name']);
+            $safe_values['last_name'] = apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
             $safe_values['postcode'] = apply_filters('zws_filter_sanitize_postcode', $_POST['postcode']);
-            $safe_values['phone'] = trim(self::removeNonNumeric(sanitize_text_field($_POST['phone'])));
-            $safe_values['email'] = sanitize_email($_POST['email']);
-            $safe_values['max_radius'] = sanitize_text_field($_POST['max_radius']);
+            $safe_values['phone'] = apply_filters('zws_filter_enforce_numeric', ($_POST['phone']));
+            $safe_values['email'] = apply_filters('zws_filter_basic_sanitize', $_POST['email']);
+            $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $_POST['max_radius']);
             $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']);
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
             foreach (unserialize(DAYS)as $key => $day) {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
-                    $safe_values['earliest_time_' . $day] = sanitize_text_field($_POST['earliest_time_' . $day]);
+                    $safe_values['earliest_time_' . $day] = apply_filters('zws_filter_basic_sanitize', $_POST['earliest_time_' . $day]);
                 } else {
                     $safe_values['earliest_time_' . $day] = 'UNAVL';
                 }
-                $safe_values['latest_time_' . $day] = sanitize_text_field($_POST['latest_time_' . $day]);
+                $safe_values['latest_time_' . $day] = apply_filters('zws_filter_basic_sanitize', $_POST['latest_time_' . $day]);
             }
 
 // verify privacy policy has been accepted
@@ -182,11 +181,6 @@ Class View {
                 break;
         }
         echo $message;
-    }
-
-    // helper
-    private static function removeNonNumeric($input) {
-        return preg_replace('/\D/', '', $input);
     }
 
 }

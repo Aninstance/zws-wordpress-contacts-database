@@ -17,7 +17,7 @@ Class Database {
 
     public static function update_database() {
         // increment this when database structure changed or name changed
-        $db_version = '1.3';
+        $db_version = '1.0';
 
 // updated database 
         global $wpdb;
@@ -53,7 +53,8 @@ Class Database {
         earliest_time_sundays varchar(5) NULL,
         latest_time_sundays varchar(5) NULL,
         pp_accepted tinyint(1) DEFAULT '0' NOT NULL,
-        CONSTRAINT uc_individuals UNIQUE (phone,email),
+        CONSTRAINT UNIQUE  (phone),
+        CONSTRAINT UNIQUE  (email),
         PRIMARY KEY  id (id)
 	);";
             require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -82,6 +83,18 @@ Class Database {
             // insert data
             $safe_values['time'] = current_time('mysql');
             return $wpdb->insert($table_name, $safe_values);
+        }
+        return false;
+    }
+    
+        public static function update($safe_values, $where) {
+        $saved_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
+        if (is_array($safe_values)) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . $saved_table_name;
+            // insert data
+            $safe_values['time'] = current_time('mysql');
+            return $wpdb->update($table_name, $safe_values, $where);
         }
         return false;
     }
