@@ -60,7 +60,7 @@ Class AdminView {
                 (!empty($safe_attr['postback']) || $safe_attr['postback'] == 'true')) {
             require_once(__DIR__ . '/ZwsPaginator.php');
             echo \ZwsContactsDatabase\ZwsPaginator::process_form($_POST);
-            self::display_all_records();
+            $success = true ? self::display_all_records() : false;
         }
         // anything else (success still null), display the form
         elseif ($success == null) {
