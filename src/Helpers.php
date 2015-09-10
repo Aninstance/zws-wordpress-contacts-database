@@ -22,8 +22,7 @@ Class Helpers {
         $request_uri = esc_url($_SERVER['REQUEST_URI']);
 
         foreach ($new_query as $param_name => $param_value) {       
-            if ($request_uri !== false) {
-                error_log('>>>>>>>>>>>>>>>>>>' . $param_value);
+            if ($request_uri !== false) {   
                 $request_uri = self::create_query_string($param_name, $param_value, $request_uri);
             }
         }
@@ -70,8 +69,7 @@ Class Helpers {
         } catch (Exception $e) {
             return false;
         }
-        // return url encoded string
-        error_log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' . $return);
+        // return url encoded string     
         return $return;
     }
 

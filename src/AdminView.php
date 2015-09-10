@@ -111,7 +111,7 @@ Class AdminView {
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Get records for name</h3>';
         echo '<form action="' . Zelp::set_url_query_cleared(array('getname' => 'true')) . '" method="post">';
         echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please enter the LAST NAME of the contact you require</p>';
-        echo '<p><input type="text" placeholder="last_name" name="last_name" pattern="[a-zA-Z0-9]+" maxlength="21" value="" size="21" /></p>';
+        echo '<p><input type="text" placeholder="Last name" name="last_name" pattern="[a-zA-Z0-9]+" maxlength="21" value="" size="21" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
