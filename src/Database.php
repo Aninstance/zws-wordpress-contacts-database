@@ -86,8 +86,8 @@ Class Database {
         }
         return false;
     }
-    
-        public static function update($safe_values, $where) {
+
+    public static function update($safe_values, $where) {
         $saved_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
         if (is_array($safe_values)) {
             global $wpdb;
@@ -105,14 +105,32 @@ Class Database {
         global $wpdb;
         $table_name = $wpdb->prefix . $saved_table_name;
         // grab the data
-        //$sql = $my_wpdb->prepare("SELECT * FROM $table_name ORDER BY %s;", 'id');
         $sql = "SELECT * FROM " . $table_name . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
         return $wpdb->get_results($sql);
     }
-    
+
+    public static function getAllRecordsWhere($order_by = 'id', $where = null) {
+        // method to get records from the database WHERE IS NOT. $where should be an array (field => value)
+        if (!empty($where)) {
+            $where_statement = "`" . $where['field'] . "` = '" . $where['value'] . "'";
+        } else {
+            return false;
+        }
+        $saved_table_name = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_table_name']);
+        global $wpdb;
+        $table_name = $wpdb->prefix . $saved_table_name;
+        // grab the data
+        try {
+            $sql = "SELECT * FROM " . $table_name . " WHERE " . $where_statement . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
+            return $wpdb->get_results($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public static function getAllRecordsWhereIsNot($order_by = 'id', $where = null) {
         // method to get records from the database WHERE IS NOT. $where should be an array (field => value)
-        if(!empty($where)) {
+        if (!empty($where)) {
             $where_statement = "`" . $where['field'] . "` <> '" . $where['value'] . "'";
         } else {
             return false;
@@ -123,8 +141,8 @@ Class Database {
         // grab the data
         //$sql = $my_wpdb->prepare("SELECT * FROM $table_name ORDER BY %s;", 'id');
         try {
-        $sql = "SELECT * FROM " . $table_name . " WHERE " . $where_statement . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
-        return $wpdb->get_results($sql);
+            $sql = "SELECT * FROM " . $table_name . " WHERE " . $where_statement . " ORDER BY " . apply_filters('zws_filter_basic_sanitize', $order_by) . "";
+            return $wpdb->get_results($sql);
         } catch (Exception $e) {
             return false;
         }

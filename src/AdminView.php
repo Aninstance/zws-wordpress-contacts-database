@@ -41,32 +41,53 @@ Class AdminView {
 
         /* navigation stuff */
 
-        // if postback is set and is true, and show_all is not true
-        if (!empty($safe_attr['postback']) && $safe_attr['postback'] == 'true' &&
-                (empty($safe_attr['show_all']) || $safe_attr['show_all'] !== 'true')) {
-            $posted_postcode = self::process_form();
-            // if form processing successful, display nearest contacts. Returns true or false.
-            $success = true ? self::display_nearest($posted_postcode) : false;
+        // PROCESS THE POSTCODE SEARCH FORM AND SHOW NEAREST CONTACTS
+        if (!$success && !empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
+            // if postcode_search is true
+            if (!empty($safe_attr['postcode_search']) && $safe_attr['postcode_search'] == 'true') {
+                $posted_postcode = self::process_form();
+                // if form processing successful, display nearest contacts. Returns true or false.
+                $success = true ? self::display_nearest($posted_postcode) : false;
+            }
         }
-        // if show_all is true and postback is not set or false
-        elseif (!empty($safe_attr['show_all']) &&
-                $safe_attr['show_all'] == 'true' &&
-                (empty($safe_attr['postback']) || $safe_attr['postback'] !== 'true')) {
-            $success = true ? self::display_all_records() : false;
+        // PROCESS THE NAME SEARCH FORM
+        if (!$success && (empty($safe_attr['postback']) || $safe_attr['postback'] !== 'true')) {
+            // if get_name is true
+            if (!empty($safe_attr['getname']) && $safe_attr['getname'] == 'true') {
+                if (empty($safe_attr['lastname'])) {
+                    $name_to_query = self::process_form();
+                } else {
+                    $name_to_query = $safe_attr['lastname'];
+                }
+                // if form processing successful, display records. Returns true or false.
+                $success = true ? self::get_records_for_name($name_to_query) : false;
+            }
         }
-        // if show_all is true and postback is true (i.e. process record update form incoming from ZwsPaginator)
-        elseif (!empty($safe_attr['show_all']) &&
-                $safe_attr['show_all'] == 'true' &&
-                (!empty($safe_attr['postback']) || $safe_attr['postback'] == 'true')) {
-            require_once(__DIR__ . '/ZwsPaginator.php');
-            echo \ZwsContactsDatabase\ZwsPaginator::process_form($_POST);
-            $success = true ? self::display_all_records() : false;
+        // PROCESS THE RECORDS UPDATE FORM (incoming from ZwsPaginator)
+        if (!$success && !empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
+            // if update is true
+            if (!empty($safe_attr['update']) && $safe_attr['update'] == 'true') {
+                require_once(__DIR__ . '/ZwsPaginator.php');
+                echo \ZwsContactsDatabase\ZwsPaginator::process_form($_POST);
+                // if coming from name search
+                if (!empty($safe_attr['getname']) && $safe_attr['getname'] == 'true') {
+                    $success = true ? self::get_records_for_name($safe_attr['lastname']) : false;
+                } else {
+                    $success = true ? self::display_all_records() : false;
+                }
+            }
         }
-        // anything else (success still null), display the form
-        elseif ($success == null) {
+        // SHOW ALL RECORDS
+        if (!$success) {
+            // if show_all is true
+            if (!empty($safe_attr['show_all']) && $safe_attr['show_all'] == 'true') {
+                $success = true ? self::display_all_records() : false;
+            }
+        }
+        // DEFAULT - SHOW DASHBOARD
+        if (!$success) {
             $success = true ? self::display_form() : false;
         }
-
 
 // return null if successful, or false if not
         if ($success) {
@@ -81,14 +102,21 @@ Class AdminView {
         require_once(__DIR__ . '/Helpers.php');
 // method to display the target postcode entry form.
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Search for nearest drivers</h3>';
-        echo '<form action="' . Zelp::set_url_query(array('postback' => 'true')) . '" method="post">';
+        echo '<form action="' . Zelp::set_url_query_cleared(array('postback' => 'true', 'postcode_search' => 'true')) . '" method="post">';
         echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please submit target postcode below (no spaces - e.g. AB329BR)</p>';
-        echo '<p><input type="text" placeholder="Postcode" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["target_postcode"]) ? esc_attr($_POST["target_postcode"]) : '' ) . '" size="8" /></p>';
+        echo '<p><input type="text" placeholder="Postcode" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="" size="8" /></p>';
+        wp_nonce_field('submit_details_action', 'my_nonce_field');
+        echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
+        echo '</form>';
+        echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Get records for name</h3>';
+        echo '<form action="' . Zelp::set_url_query_cleared(array('getname' => 'true')) . '" method="post">';
+        echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please enter the LAST NAME of the contact you require</p>';
+        echo '<p><input type="text" placeholder="last_name" name="last_name" pattern="[a-zA-Z0-9]+" maxlength="21" value="" size="21" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">View entire database</h3>';
-        $view_db_url = Zelp::set_url_query(array('show_all' => 'true', 'postback' => 'false'));
+        $view_db_url = Zelp::set_url_query_cleared(array('show_all' => 'true', 'postback' => 'false'));
         echo '<div><button onclick="viewDatabase()">View the database</button><script>function viewDatabase() { window.location.href="' . html_entity_decode($view_db_url) . '";}</script></div>';
         return true;
     }
@@ -97,9 +125,11 @@ Class AdminView {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
 // set the target postcode from the form post
-            $posted_postcode = apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
-            if (!empty($posted_postcode)) {
-                return $posted_postcode;
+            if (!empty($_POST['target_postcode'])) {
+                return apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
+            }
+            if (!empty($_POST['last_name'])) {
+                return apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
             }
         }
         return false;
@@ -111,7 +141,7 @@ Class AdminView {
             case 'no_data':
                 $error_string = '<h2>Nothing to see here ...</h2><p>Oh dear, it looks like there is nothing to display.</p>
             <p>This may be because there are currently no contacts available. Or, the more likely reason is that the postcode you entered is invalid.</p>
-            <p>Please <a href="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'false')) . '">re-enter the postcode to try again</a>!</p>';
+            <p>Please <a href="' . \ZwsContactsDatabase\Helpers::set_url_query_cleared(array('postback' => 'false')) . '">re-enter the postcode to try again</a>!</p>';
                 break;
             case 'not_authorised':
                 $error_string = '<h2>Access denied ...</h2><p>It seems you are not logged in as an administrative user. Please log in and try again.</p>';
@@ -138,7 +168,7 @@ Class AdminView {
             $contacts_array_safe = array();
 // display the  elements
             echo '<div class="contact-list"><h2>' . $how_many_contacts . ' Closest Contacts</h2>';
-            echo '<small><a href="' . \ZwsContactsDatabase\Helpers::set_url_query(array('postback' => 'false')) . '">Back to target submission form</a></small>';
+            echo '<small><a href="' . \ZwsContactsDatabase\Helpers::set_url_query_cleared(array('postback' => 'false')) . '">Back to administration dashboard</a></small>';
             // set variabe for earliest_time field corresponding to 'today'
             $days_of_week = array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays');
             $earliest_time_today = 'earliest_time_' . $days_of_week[current_time(date('N', time()))];
@@ -146,19 +176,19 @@ Class AdminView {
             foreach ($contacts_array as $key => $value) {
 // ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target ...
                 // ... only those who are available TODAY are returned from the DistanceCalculator::nearestContacts method, above.
-                if (sanitize_text_field($value['distance']) <= sanitize_text_field($value['max_radius'])) {
+                if (apply_filters('zws_filter_enforce_numeric', $value['distance']) <= apply_filters('zws_filter_enforce_numeric', $value['max_radius'])) {
                     $id_safe = sanitize_text_field($key);
-                    $contacts_array_safe[$id_safe]['distance'] = sanitize_text_field($value['distance']);
-                    $contacts_array_safe[$id_safe]['postcode'] = sanitize_text_field($value['postcode']);
-                    $contacts_array_safe[$id_safe]['lat'] = sanitize_text_field($value['lat']);
-                    $contacts_array_safe[$id_safe]['lng'] = sanitize_text_field($value['lng']);
-                    $contacts_array_safe[$id_safe]['first_name'] = sanitize_text_field($value['first_name']);
-                    $contacts_array_safe[$id_safe]['last_name'] = sanitize_text_field($value['last_name']);
-                    $contacts_array_safe[$id_safe]['phone'] = sanitize_text_field($value['phone']);
+                    $contacts_array_safe[$id_safe]['distance'] = apply_filters('zws_filter_enforce_numeric', $value['distance']);
+                    $contacts_array_safe[$id_safe]['postcode'] = apply_filters('zws_filter_basic_sanitize', $value['postcode']);
+                    $contacts_array_safe[$id_safe]['lat'] = apply_filters('zws_filter_basic_sanitize', $value['lat']);
+                    $contacts_array_safe[$id_safe]['lng'] = apply_filters('zws_filter_basic_sanitize', $value['lng']);
+                    $contacts_array_safe[$id_safe]['first_name'] = apply_filters('zws_filter_basic_sanitize', $value['first_name']);
+                    $contacts_array_safe[$id_safe]['last_name'] = apply_filters('zws_filter_basic_sanitize', $value['last_name']);
+                    $contacts_array_safe[$id_safe]['phone'] = apply_filters('zws_filter_enforce_numeric', $value['phone']);
                     $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
-                    $contacts_array_safe[$id_safe][$earliest_time_today] = sanitize_text_field($value[$earliest_time_today]);
-                    $contacts_array_safe[$id_safe][$latest_time_today] = sanitize_text_field($value[$latest_time_today]);
-                    $contacts_array_safe[$id_safe]['max_radius'] = sanitize_text_field($value['max_radius']);
+                    $contacts_array_safe[$id_safe][$earliest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$earliest_time_today]);
+                    $contacts_array_safe[$id_safe][$latest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$latest_time_today]);
+                    $contacts_array_safe[$id_safe]['max_radius'] = apply_filters('zws_filter_enforce_numeric', $value['max_radius']);
                     $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
                             stripslashes(
                                     apply_filters('zws_filter_text_with_linebreak', $value['extra_info'])));
@@ -247,15 +277,25 @@ Class AdminView {
 // display all records
     private static function display_all_records() {
 // hard code resuts per page and index length for now. Add to user-defined options later?
-        $page_size = 10;
-        $page_index_batch_size = 5;
+        $page_size = 5;
         $order_by = 'last_name'; // allow to be configured by users in options later?
 // grab all registered users from db
         require_once(__DIR__ . '/Database.php');
         $result_set = \ZwsContactsDatabase\Database::getAllRecords($order_by);
 // paginate and display the results
         require_once(__DIR__ . '/ZwsPaginator.php');
-        return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size, $page_index_batch_size) : false;
+        return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size) : false;
+    }
+
+// display individual contact record
+    private static function get_records_for_name($last_name) {
+// grab all registered users from db
+        require_once(__DIR__ . '/Database.php');
+        $result_set = \ZwsContactsDatabase\Database::getAllRecordsWhere('id', array('field' => 'last_name', 'value' => $last_name));
+// display the results
+        require_once(__DIR__ . '/ZwsPaginator.php');
+        $page_size = 5;
+        return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size, $last_name) : false;
     }
 
 }

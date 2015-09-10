@@ -21,7 +21,25 @@ Class Helpers {
 
         $request_uri = esc_url($_SERVER['REQUEST_URI']);
 
-        foreach ($new_query as $param_name => $param_value) {
+        foreach ($new_query as $param_name => $param_value) {       
+            if ($request_uri !== false) {
+                error_log('>>>>>>>>>>>>>>>>>>' . $param_value);
+                $request_uri = self::create_query_string($param_name, $param_value, $request_uri);
+            }
+        }
+        return $request_uri;
+    }
+
+    public static function set_url_query_cleared($new_query = array()) {
+        // takes array (query_name => query_value) and returns the complete CURRENT URI with the incoming parameters changed or added    
+        if (empty($new_query)) {
+            return false;
+        }
+
+        // get the request url WITHOUT any query parameters
+        $request_uri = esc_url($url = strtok($_SERVER["REQUEST_URI"], '?'));
+
+        foreach ($new_query as $param_name => $param_value) {     
             if ($request_uri !== false) {
                 $request_uri = self::create_query_string($param_name, $param_value, $request_uri);
             }
@@ -36,14 +54,14 @@ Class Helpers {
         // generate uri
         try {
             // generates and returns a new URI with the incoming parameters changed or added
-            $pattern = '/(.*?)(' . $param_name . '[^&]*)(.*$)/i';
+            $pattern = '/(.*?[&|\?])(' . $param_name . '=[^&]*)(.*$)/i';
             $replacement = '$1' . $param_name . '=' . $param_value . '$3';
             // if no query string in current url
             if (!strpos($request_uri, '?')) {
                 $return = $request_uri . '?' . $param_name . '=' . $param_value;
             } else {
                 // if new query name already exists in string
-                if (strpos($request_uri, $param_name)) {
+                if (preg_match('/\b' . $param_name . '\b/i', $request_uri)) {
                     $return = preg_replace($pattern, $replacement, $request_uri);
                 } else {
                     $return = $request_uri .= '&' . $param_name . '=' . $param_value;
@@ -53,6 +71,7 @@ Class Helpers {
             return false;
         }
         // return url encoded string
+        error_log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' . $return);
         return $return;
     }
 
