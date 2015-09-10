@@ -36,6 +36,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 * Administrators can browse and edit the full database of submitted contacts.
+* Administrators can search for a contact's record by name.
 * Configurable map icons (administrators can set URL in admin page).
 * Contacts are requested to select the days and times that they would be available when registering.
 * Only contacts who have indicated that they are available on the current day of the week are displayed when searching for the 'nearest contact'.
@@ -49,7 +50,7 @@ The plugin has been tested with PHP versions 5.5.x and above.
 == Future development roadmap ==
 
 * Add facility for administrators to DELETE from the database.
-* Add facility for administrators to access a contact's record by submitting name.
+* Add facility for administrators to access a contact's record by submitting a phone number or email address.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
 * All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
@@ -101,6 +102,7 @@ The current version is: 0.5
 * Added ability to set an option for the initial Google Map zoom factor from the settings menu.
 * Updated Guzzle to latest release version.
 * Added ability for administrator to update the contact's details, via a button on contact's details pane in the 'view entire database' view.
+* Added ability for administrators to search for a contact's record by name.
 
 = 0.4 =
 
