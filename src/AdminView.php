@@ -84,8 +84,8 @@ Class AdminView {
                 $success = true ? self::display_all_records() : false;
             }
         }
-        // DEFAULT - SHOW DASHBOARD
-        if (!$success) {
+        // DEFAULT - SHOW DASHBOARD IF NO OTHER ACTION SUCCESSFULLY COMPLETED AND NOT A POSTBACK
+        if (!$success && (empty($safe_attr['postback']) || $safe_attr['postback'] != 'true')) {
             $success = true ? self::display_form() : false;
         }
 

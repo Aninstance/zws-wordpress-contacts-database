@@ -74,6 +74,7 @@ Class DistanceCalculator {
         $path = '?origins=' . $target_postcode . '&destinations=' . $contact_postcode . self::DISTANCE_MATRIX_PARAMS . '&key=' . $google_api_key;
         // $data = file_get_contents($url);
         $data = \ZwsContactsDatabase\QueryAPI::makeQuery(self::DISTANCE_MATRIX_BASE_URL, $path);
+        
         if ($data['returned_data'] && $data['returned_data']['status'] === 'OK' && $data['returned_data']['rows'][0]['elements'][0]['status'] === "OK") {
             if ($data['cached']) {
                 // error_log('THE DATA WAS CACHED ...'); // debug
