@@ -21,9 +21,7 @@ Class AdminView {
     public static function dashboard() {
 
 // check to ensure user has at least 'editor' privileges
-        $user = wp_get_current_user();
-        $allowed_roles = array('editor', 'administrator');
-        if (!array_intersect($allowed_roles, $user->roles)) {
+        if (!self::authenticate()) {
             self::display_error('not_authorised');
             return false;
         }
@@ -40,6 +38,18 @@ Class AdminView {
         }
 
         /* navigation stuff */
+
+        // IF URL BEING ACCESSED AS CALLBACK TO DELETE A RECORD FROM THE DATABASE
+        if (!empty($safe_attr['delete'])) {
+            if (self::delete_record($safe_attr['delete'])) {
+                // if successful deletion, echo value for ajax returned data to confirm
+                echo 'DELETION_SUCCESSFUL';
+                return true;
+            } else {
+                echo 'DELETION_ERROR';
+                return false;
+            }
+        }
 
         // PROCESS THE POSTCODE SEARCH FORM AND SHOW NEAREST CONTACTS
         if (!$success && !empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
@@ -287,6 +297,12 @@ Class AdminView {
         return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size) : false;
     }
 
+// delete record
+    private static function delete_record($record_id) {
+        require_once(__DIR__ . '/Database.php');
+        return true ? \ZwsContactsDatabase\Database::deleteRecord($record_id) : false;
+    }
+
 // display individual contact record
     private static function get_records_for_name($last_name) {
 // grab all registered users from db
@@ -296,6 +312,13 @@ Class AdminView {
         require_once(__DIR__ . '/ZwsPaginator.php');
         $page_size = 5;
         return true ? \ZwsContactsDatabase\ZwsPaginator::paginate($result_set, $page_size, $last_name) : false;
+    }
+
+    public static function authenticate() {
+        // method to check that users are authenticated as 'editor' or above
+        $user = wp_get_current_user();
+        $allowed_roles = array('editor', 'administrator');
+        return true ? array_intersect($allowed_roles, $user->roles) : false;
     }
 
 }

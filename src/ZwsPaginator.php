@@ -21,9 +21,14 @@ Class ZwsPaginator {
 
     public static function paginate($set, $page_size = 10, $last_name = 'null') {
         require_once (__DIR__ . '/Helpers.php');
+
         // set up the page variables
         $set_size = count($set);
         $page = 1;
+        // check set has been correctly returned from the db
+        if (!is_array($set)) {
+            return false;
+        }
         // get the page number to display
         if (isset($_GET['contacts_page'])) {
             $page = apply_filters('zws_filter_validate_integer', $_GET['contacts_page']);
@@ -42,7 +47,7 @@ Class ZwsPaginator {
             return false;
         }
         foreach ($page_chunks[$page - 1] as $key => $value) {
-            echo '<li><div class="zws-contacts-database-display-all-inner-div" style="' . Zelp::getCss('entry_style_tag') . '"><ul class="zws-contacts-database-display-all-inner-list" style="list-style:none;">';
+            echo '<li><div class="zws-contacts-database-display-all-inner-div_' . $c . '" style="' . Zelp::getCss('entry_style_tag') . '"><ul class="zws-contacts-database-display-all-inner-list" style="list-style:none;">';
             foreach ($value as $entry => $entry_value) {
                 // do some specific formatting for certain fields
                 switch (apply_filters('zws_filter_basic_sanitize', $entry)) {
@@ -123,6 +128,12 @@ Class ZwsPaginator {
                 echo '<li style="border-bottom:1px solid silver;">Latest: ' . $latest_time . '</li>';
             }
             echo '</ul></div></li>';
+            echo '<li class="zws-contacts-database-display-all-inner-list-li" style="' . Zelp::getCss('list_style_tag_button_li') . '">'
+            . '<button id="zws-contacts-db-record-delete-button_' . $c . '" class="zws-confirm-delete">Remove ' . apply_filters('zws_filter_basic_sanitize', $value->first_name) . ' from database</button></li>';
+            // display delete dialog modal
+            echo '<div class="zws_contacts_db_delete_modal_outer">';
+            echo '<div id="zws_contacts_db_delete_modal_' . $c . '">' . self::delete_dialog_content($c, $value) . '</div>';
+            echo '</div>';
             // end of user details list
             echo '</ul></div></li>';
             $c++;
@@ -209,6 +220,21 @@ Class ZwsPaginator {
                 . '</p>'
                 . '<input type="hidden" name="id" id="id" value="' . esc_attr($values->id) . '"/>';
         return $form_content;
+    }
+
+    private static function delete_dialog_content($record_loop_display_ref, $values) {
+        // incoming list of the values in the displayed page (chunk).
+        $content = false;
+        if (!empty($values)) {
+            $content = '<div class="zws-contacts-db-deletion-confirm"><strong id="zws-contacts-db-delete-blurb">Are you really sure you wish to delete ' .
+                    esc_attr($values->first_name) .
+                    ' '
+                    . esc_attr($values->last_name) .
+                    '\'s record from the database? This is permanent and cannot be undone!</strong></div>' .
+                    '<button class="zws-contacts-db-delete-btn" id="zws-contacts-db-record-delete-record-button_' . $record_loop_display_ref . '" value="' . esc_attr($values->id) . '">Delete Record</button>' .
+                    '<button class="zws-contacts-db-delete-cancel-btn">Keep Record</button>';
+        }
+        return $content;
     }
 
     public static function process_form($post) {

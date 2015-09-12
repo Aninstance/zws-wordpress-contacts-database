@@ -71,16 +71,19 @@ Class ZwsContactsDatabase {
             $jquery_user_mod_modal_js = plugins_url('/inc/jquery_user_mod_modal.js', __FILE__);
             $jquery_timepicker_js = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__);
             $jquery_timepicker_init_js = plugins_url('/inc/jquery.timepicker.init.js', __FILE__);
+            $jquery_delete_record_js = plugins_url('/inc/jquery.deleteRecord.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
             wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
             wp_register_script('jquery_user_mod_modal_js', $jquery_user_mod_modal_js, array('jquery_ui_js'));
             wp_register_script('jquery_timepicker_js', $jquery_timepicker_js, array('jquery_ui_js'));
             wp_register_script('jquery_timepicker_init_js', $jquery_timepicker_init_js, array('jquery_ui_js'));
+            wp_register_script('jquery_delete_record_js', $jquery_delete_record_js, array('jquery_ui_js'));
             wp_enqueue_script('jquery_ui_js');
             wp_enqueue_script('jquery_time_modal_js');
             wp_enqueue_script('jquery_user_mod_modal_js');
             wp_enqueue_script('jquery_timepicker_js');
             wp_enqueue_script('jquery_timepicker_init_js');
+            wp_enqueue_script('jquery_delete_record_js');
         }
     }
 
@@ -97,6 +100,12 @@ Class ZwsContactsDatabase {
         wp_enqueue_style('zws_contacts_db_css');
     }
 
+    // prevent caching in adminview
+    public static function add_no_cache() {
+        header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
+        header("Pragma: no-cache"); //HTTP 1.0
+    }
+
 }
 
 // autoload the vendor packages
@@ -106,6 +115,8 @@ require_once(__DIR__ . '/src/Filters.php');
 // add action for our enqueued scripts and stylesheets
 add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_scripts'));
 add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_styles'));
+// add action to send additional headers
+add_action('send_headers', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_no_cache'));
 // add additional links on plugins page
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
 // create the administration page

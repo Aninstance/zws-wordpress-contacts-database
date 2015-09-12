@@ -35,6 +35,7 @@ Class QueryAPI {
 
 // Set up cache if activated in options
         if ($memcached_active === 'TRUE' && class_exists('\Memcached')) {
+            error_log('Memcached identified as active ...');
             $cache = new \Memcached();
             $cache->addServer($memcached_ip, $memcached_port);
             $cache_key = $memcached_key_base;
@@ -42,6 +43,7 @@ Class QueryAPI {
 // Try to get records
             $memcached_cache_result = $cache->get($cache_key);
             if (isset($memcached_cache_result[$memcached_request_identifier])) {
+                error_log('Returning cached ...');
                 return array('cached' => true, 'returned_data' => $memcached_cache_result[$memcached_request_identifier]);
             }
         }
