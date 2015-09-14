@@ -1,9 +1,9 @@
-=== ZWS Contacts Database === 
+=== ZWS Contacts Database ===
 
 Donate link: https://www.zaziork.com/donate
 Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
-Requires at least: 3.0 
+Requires at least: 3.0
 Tested up to: 4.3.0
 Stable tag: 0.5
 License: GPLv2 or later
@@ -35,7 +35,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Administrators submit postcode, which queries database and returns nearest contacts to the target (provided target is within contact's maximum radius).
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
-* Administrators can browse and edit the full database of submitted contacts.
+* Administrators can browse, edit and delete records from the full database of submitted contacts.
 * Administrators can search for a contact's record by name.
 * Configurable map icons (administrators can set URL in admin page).
 * Contacts are requested to select the days and times that they would be available when registering.
@@ -49,7 +49,6 @@ The plugin has been tested with PHP versions 5.5.x and above.
 
 == Future development roadmap ==
 
-* Add facility for administrators to DELETE from the database.
 * Add facility for administrators to access a contact's record by submitting a phone number or email address.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
@@ -75,7 +74,7 @@ Alternatively, the latest version of the plugin may be installed via a zip file,
 
 After downloading the zip, change the name of the unzipped directory to "ZwsContactsDatabase", upload the plugin to the '/wp-content/plugins/' directory, then activate through the 'Plugins' menu in WordPress.
 
-Once installed, the contacts submission form can be added to a post or page using the shortcode: 
+Once installed, the contacts submission form can be added to a post or page using the shortcode:
 
 [zwscontactsdatabase_public_form].
 
@@ -103,6 +102,8 @@ The current version is: 0.5
 * Updated Guzzle to latest release version.
 * Added ability for administrator to update the contact's details, via a button on contact's details pane in the 'view entire database' view.
 * Added ability for administrators to search for a contact's record by name.
+* Added ability for administrators to delete a record from the database.
+* [SECURITY FIX] Added extra layer of security to ensure all database related methods cannot be accessed from the UI by users with privileges below that of editor.
 
 = 0.4 =
 
@@ -128,6 +129,6 @@ First beta version of the plugin.
 
 The plugin is to be used entirely at the user's own risk.
 
-Support and/or implementation of feature requests are not guaranteed, however comments and/or requests for free support are welcome. 
+Support and/or implementation of feature requests are not guaranteed, however comments and/or requests for free support are welcome.
 
 For premium support, please contact the author via the plugin website: https://www.zaziork.com/contact
