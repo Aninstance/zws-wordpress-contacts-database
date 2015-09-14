@@ -33,18 +33,18 @@ jQuery(document).ready(function ($) {
                                 // close the dialog
                                 $("div#zws_contacts_db_delete_modal_" + index.toString()).dialog().dialog("close");
                                 // ensure blurb has been replaced
-                                $('#zws-contacts-db-delete-blurb')
+                                $("#zws-contacts-db-delete-blurb_" + index.toString())
                                         .text(deletionBlurb);
                             } else {
                                 // alert that the deletion failed
-                                $('#zws-contacts-db-delete-blurb')
-                                        .text('Deletion of this record failed. Please contact your technical support.');
+                                $("#zws-contacts-db-delete-blurb_" + index.toString())
+                                        .text("Deletion of this record failed. Please contact your technical support.");
                             }
                         })
                         .fail(function () {
                             // failure
-                            $('#zws-contacts-db-delete-blurb')
-                                    .text('Deletion of this record failed. Please contact your technical support.');
+                            $("#zws-contacts-db-delete-blurb_" + index.toString())
+                                    .text("Deletion of this record failed. Please contact your technical support.");
                         })
                         .always(function () {
                             // completed
@@ -56,7 +56,7 @@ jQuery(document).ready(function ($) {
             // close the dialog
             $("div#zws_contacts_db_delete_modal_" + index.toString()).dialog().dialog("close");
             // ensure blurb has been replaced
-            $('#zws-contacts-db-delete-blurb')
+            $("#zws-contacts-db-delete-blurb_" + index.toString())
                     .text(deletionBlurb);
         });
     });

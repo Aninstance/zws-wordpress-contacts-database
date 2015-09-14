@@ -226,7 +226,7 @@ Class ZwsPaginator {
         // incoming list of the values in the displayed page (chunk).
         $content = false;
         if (!empty($values)) {
-            $content = '<div class="zws-contacts-db-deletion-confirm"><strong id="zws-contacts-db-delete-blurb">Are you really sure you wish to delete ' .
+            $content = '<div class="zws-contacts-db-deletion-confirm"><strong id="zws-contacts-db-delete-blurb_' . esc_attr($values->id) . '">Are you really sure you wish to delete ' .
                     esc_attr($values->first_name) .
                     ' '
                     . esc_attr($values->last_name) .
