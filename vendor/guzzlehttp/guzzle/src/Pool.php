@@ -20,7 +20,7 @@ class Pool implements PromisorInterface
 {
     /** @var EachPromise */
     private $each;
-
+    
     /**
      * @param ClientInterface $client   Client used to send the requests.
      * @param array|\Iterator $requests Requests or functions that return
@@ -54,9 +54,9 @@ class Pool implements PromisorInterface
         $requests = function () use ($iterable, $client, $opts) {
             foreach ($iterable as $rfn) {
                 if ($rfn instanceof RequestInterface) {
-                    yield $client->sendAsync($rfn, $opts);
+                    yield ($client->sendAsync($rfn, $opts));
                 } elseif (is_callable($rfn)) {
-                    yield $rfn($opts);
+                    yield ($rfn($opts));
                 } else {
                     throw new \InvalidArgumentException('Each value yielded by '
                         . 'the iterator must be a Psr7\Http\Message\RequestInterface '

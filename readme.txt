@@ -45,7 +45,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 
 You will need to have Memcached installed on your system to make use of the Cache feature.
 
-The plugin has been tested with PHP versions 5.5.x and above.
+The plugin has been tested with PHP versions 5.6.x and above.
 
 == Future development roadmap ==
 
