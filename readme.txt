@@ -62,7 +62,7 @@ The plugin has been tested with PHP versions 5.6.x and above.
 
 The URL of this plugin's website is: https://www.zaziork.com/zws-contacts-database/
 
-The URL of this plugin's Wordpress page is: [Not yet published in the WordPress directory].
+The URL of this plugin's Wordpress page is: https://wordpress.org/plugins/zws-contacts-database/
 
 == Installation ==
 
