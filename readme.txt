@@ -66,7 +66,7 @@ The URL of this plugin's Wordpress page is: https://wordpress.org/plugins/zws-co
 
 == Installation ==
 
-To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button. [Not yet published in the WordPress directory].
+To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button.
 
 When it's installed, simply activate, then navigate to the Settings page to update the defaults to your liking.
 
@@ -76,11 +76,11 @@ After downloading the zip, change the name of the unzipped directory to "ZwsCont
 
 Once installed, the contacts submission form can be added to a post or page using the shortcode:
 
-[zwscontactsdatabase_public_form].
+[zwscontactsdatabase_public_form]
 
 The administration page where contacts may be viewed and displayed on a map in relation to a "target" postcode can be inserted to a post or page using the shortcode:
 
-[zwscontactsdatabase_results_page].
+[zwscontactsdatabase_results_page]
 
 Be sure to visit the plugin's settings page (available via the Wordpress admin section settings sidebar), to configure the plugin for your system.
 
