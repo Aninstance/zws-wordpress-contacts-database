@@ -66,6 +66,8 @@ The URL of this plugin's Wordpress page is: [Not yet published in the WordPress 
 
 == Installation ==
 
+Note: We do sell installation, configuration and support services. If you'd be interested in hiring us to get this up and running for you, please get in touch at: https://www.zaziork.com/contact/
+
 To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button. [Not yet published in the WordPress directory].
 
 When it's installed, simply activate, then navigate to the Settings page to update the defaults to your liking.
