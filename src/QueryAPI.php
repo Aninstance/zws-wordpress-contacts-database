@@ -16,7 +16,7 @@ use GuzzleHttp\Client as Client;
 Class QueryAPI {
 
     const OPTIONS_LABEL = 'zws_contacts_database_options';
-    
+
     public static $error = 'An error has occurred!';
 
     public static function makeQuery($base_url, $path) {
@@ -30,6 +30,7 @@ Class QueryAPI {
         $memcached_error = 'Failed to save to cache! Please check the Memcache server IP and port on the Settings page, '
                 . 'and that Memcached is installed and running on your system. If all else fails, disable the Memcached feature.';
         $guzzle_error = 'Check the URL, path and protocol ...';
+        $connection_timeout = 'The connection to the API timed out ...';
         $memcached_key_base = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_memcached_keybase'];
         $memcached_request_identifier = md5($base_url) . ':' . md5($path);
 
@@ -48,7 +49,7 @@ Class QueryAPI {
             }
         }
         try {
-            $client = new Client(['base_uri' => $base_url]);
+            $client = new Client(['base_uri' => $base_url, 'timeout' => 3.0, 'connect_timeout' => 2.0]);
             $request = $client->get($path);
             if ($request->getStatusCode() === 200) {
                 // assign returned json_decoded records to a variable
@@ -66,6 +67,8 @@ Class QueryAPI {
             } else {
                 return false;
             }
+        } catch (GuzzleHttp\Exception\ConnectException $e) {
+            error_log($connection_timeout);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             error_log($guzzle_error . ' | ' . $e);
             return false;

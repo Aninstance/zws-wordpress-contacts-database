@@ -51,10 +51,10 @@ Class AdminView {
             }
         }
 
-        // PROCESS THE POSTCODE SEARCH FORM AND SHOW NEAREST CONTACTS
+        // PROCESS THE POSTCODE / ADDRESS SEARCH FORM AND SHOW NEAREST CONTACTS
         if (!$success && !empty($safe_attr['postback']) && $safe_attr['postback'] == 'true') {
             // if postcode_search is true
-            if (!empty($safe_attr['postcode_search']) && $safe_attr['postcode_search'] == 'true') {
+            if (!empty($safe_attr['postcode_address_search']) && $safe_attr['postcode_address_search'] == 'true') {
                 $posted_postcode = self::process_form();
                 // if form processing successful, display nearest contacts. Returns true or false.
                 $success = true ? self::display_nearest($posted_postcode) : false;
@@ -110,11 +110,11 @@ Class AdminView {
 
     public static function display_form() {
         require_once(__DIR__ . '/Helpers.php');
-// method to display the target postcode entry form.
+// method to display the target postcode / address entry form.
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Search for nearest drivers</h3>';
-        echo '<form action="' . Zelp::set_url_query_cleared(array('postback' => 'true', 'postcode_search' => 'true')) . '" method="post">';
-        echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please submit target postcode below (no spaces - e.g. AB329BR)</p>';
-        echo '<p><input type="text" placeholder="Postcode" name="target_postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="" size="8" /></p>';
+        echo '<form action="' . Zelp::set_url_query_cleared(array('postback' => 'true', 'postcode_address_search' => 'true')) . '" method="post">';
+        echo '<p style="' . Zelp::getCss('label_style_tag') . '">Target postcode (type address or postcode)</p>';
+        echo '<p><input type="text" id="target_postcode" data-geo="postal_code" placeholder="Postcode (or type address) ..." name="target_postcode" pattern="[a-zA-Z0-9|\s]+" maxlength="255" value="" size="" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
@@ -135,14 +135,20 @@ Class AdminView {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
 // set the target postcode from the form post
-            if (!empty($_POST['target_postcode'])) {
+            if (!empty(apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']))) {
                 return apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
-            }
-            if (!empty($_POST['last_name'])) {
+            } elseif (!empty(apply_filters('zws_filter_basic_sanitize', $_POST['last_name']))) {
                 return apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
             }
+            return false;
         }
-        return false;
+    }
+
+    private static function address_to_postcode($address) {
+        // method to extract the postcode from the address json object
+        $postcode = 'AB564TE'; // debug
+        error_log($address);
+        return $postcode;
     }
 
     public static function display_error($reason) {
@@ -253,7 +259,7 @@ Class AdminView {
 
     public static function display_map($map_config) {
 // check params have been passed and that there is something to display
-        if (empty($map_config['contacts_array_safe'][0]['distance'])) {
+        if (!isset($map_config['contacts_array_safe'][0]['distance'])) {
             return false;
         }
 // method to display the Google map

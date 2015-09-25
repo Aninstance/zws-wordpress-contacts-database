@@ -13,7 +13,11 @@ Plugin to create and administer a contacts database and calculate nearest contac
 
 This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given UK postcode.
 
-An example use case: The plugin is being developed for use initially on a wildlife hospital website, to allow people to register as "wildlife ambulances".
+The plugin is currently configured for UK addresses. If you are not in the UK and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
+
+= Example use case =
+
+The plugin is being developed for use initially on a wildlife hospital website, to allow people to register as "wildlife ambulances".
 
 When a casualty is reported, the administrator enters the postcode, and is presented with the 5 closest contacts ("ambulances") to the casualty who are within their specified maximum travel distance. The casualty and the contacts are also plotted on a Google map.
 
@@ -32,7 +36,7 @@ If you are installing from the master zip file from GitHub, please re-download t
     - Email address
     - Maximum radius prepared to travel to target
     - Free form extra information
-* Administrators submit postcode, which queries database and returns nearest contacts to the target (provided target is within contact's maximum radius).
+* Administrators submit target address, which is automatically converted to a postcode, after which database is queried and nearest contacts to target are returned (provided target is within contact's maximum radius).
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 * Administrators can browse, edit and delete records from the full database of submitted contacts.
@@ -52,8 +56,7 @@ The plugin has been tested with PHP versions 5.6.x and above.
 * Add facility for administrators to access a contact's record by submitting a phone number or email address.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
-* All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
-* Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
+* Add selection of country, to extend functionality to other countries besides the UK (swap out the google API country attribute).
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
 * Refactor code to tidy up the mess!
@@ -100,7 +103,9 @@ The current version is: 0.6
 
 = 0.6 =
 
-* CHANGES HERE .......
+* Fixed bug where map failed to display if target shared same postcode as contact where only one contact to display.
+* Added timeout for Google distance  matrix api calls.
+* Added ability for administrators to obtain target postcode by simply typing the address of the target (uses jQuery and Google GeoCoding).
 
 = 0.5 =
 
