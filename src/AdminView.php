@@ -114,14 +114,14 @@ Class AdminView {
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Search for nearest drivers</h3>';
         echo '<form action="' . Zelp::set_url_query_cleared(array('postback' => 'true', 'postcode_address_search' => 'true')) . '" method="post">';
         echo '<p style="' . Zelp::getCss('label_style_tag') . '">Target postcode (type address or postcode)</p>';
-        echo '<p><input type="text" id="target_postcode" data-geo="postal_code" placeholder="Postcode (or type address) ..." name="target_postcode" pattern="[a-zA-Z0-9|\s]+" maxlength="255" value="" size="" /></p>';
+        echo '<p><input type="text" id="target_postcode" data-geo="postal_code" placeholder="Postcode / address" name="target_postcode" pattern="[a-zA-Z0-9|\s]+" maxlength="255" value="" style="width:85%" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Get records for name</h3>';
         echo '<form action="' . Zelp::set_url_query_cleared(array('getname' => 'true')) . '" method="post">';
         echo '<p style="' . Zelp::getCss('label_style_tag') . '">Please enter the LAST NAME of the contact you require</p>';
-        echo '<p><input type="text" placeholder="Last name" name="last_name" pattern="[a-zA-Z0-9]+" maxlength="21" value="" size="21" /></p>';
+        echo '<p><input type="text" placeholder="Last name" name="last_name" pattern="[a-zA-Z0-9]+" maxlength="21" value="" style="width:85%" /></p>';
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
