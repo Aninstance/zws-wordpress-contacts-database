@@ -144,13 +144,6 @@ Class AdminView {
         }
     }
 
-    private static function address_to_postcode($address) {
-        // method to extract the postcode from the address json object
-        $postcode = 'AB564TE'; // debug
-        error_log($address);
-        return $postcode;
-    }
-
     public static function display_error($reason) {
         require_once(__DIR__ . '/Helpers.php');
         switch ($reason) {
