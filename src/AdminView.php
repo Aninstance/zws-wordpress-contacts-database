@@ -135,10 +135,12 @@ Class AdminView {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
 // set the target postcode from the form post
-            if (!empty(apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']))) {
-                return apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
-            } elseif (!empty(apply_filters('zws_filter_basic_sanitize', $_POST['last_name']))) {
-                return apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
+            $target_postcode = apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
+            $last_name = apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
+            if (!empty($target_postcode)) {
+                return $target_postcode;
+            } elseif ($last_name) {
+                return $last_name;
             }
             return false;
         }
