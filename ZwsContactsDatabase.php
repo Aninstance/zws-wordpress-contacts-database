@@ -9,7 +9,7 @@ define("DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 0.5
+ * Version: 0.6
  * Author: Zaziork Web Solutions
  * Author URI: http://www.zaziork.com
  * Copyright (c) 2015 Zaziork Web Solutions. All rights reserved.
@@ -72,18 +72,27 @@ Class ZwsContactsDatabase {
             $jquery_timepicker_js = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__);
             $jquery_timepicker_init_js = plugins_url('/inc/jquery.timepicker.init.js', __FILE__);
             $jquery_delete_record_js = plugins_url('/inc/jquery.deleteRecord.js', __FILE__);
+            $jquery_maps_with_places_js = 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false';
+            $jquery_geocomplete_js = plugins_url('/vendor/jquery.geocomplete/jquery.geocomplete.min.js', __FILE__);
+            $jquery_geocomplete_init_js = plugins_url('/inc/jquery.geocomplete.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
             wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
             wp_register_script('jquery_user_mod_modal_js', $jquery_user_mod_modal_js, array('jquery_ui_js'));
             wp_register_script('jquery_timepicker_js', $jquery_timepicker_js, array('jquery_ui_js'));
             wp_register_script('jquery_timepicker_init_js', $jquery_timepicker_init_js, array('jquery_ui_js'));
             wp_register_script('jquery_delete_record_js', $jquery_delete_record_js, array('jquery_ui_js'));
+            wp_register_script('jquery_places_library_js', $jquery_maps_with_places_js, array('jquery_ui_js'));
+            wp_register_script('jquery_geocomplete_js', $jquery_geocomplete_js, array('jquery_places_library_js'));
+            wp_register_script('jquery_geocomplete_init_js', $jquery_geocomplete_init_js, array('jquery_geocomplete_js'));
             wp_enqueue_script('jquery_ui_js');
             wp_enqueue_script('jquery_time_modal_js');
             wp_enqueue_script('jquery_user_mod_modal_js');
             wp_enqueue_script('jquery_timepicker_js');
             wp_enqueue_script('jquery_timepicker_init_js');
             wp_enqueue_script('jquery_delete_record_js');
+            wp_enqueue_script('jquery_places_library');
+            wp_enqueue_script('jquery_geocomplete_js');
+            wp_enqueue_script('jquery_geocomplete_init_js');
         }
     }
 

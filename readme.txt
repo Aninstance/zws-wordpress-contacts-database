@@ -5,7 +5,7 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
 Tested up to: 4.3.0
-Stable tag: 0.5
+Stable tag: 0.6
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
 
@@ -13,7 +13,11 @@ Plugin to create and administer a contacts database and calculate nearest contac
 
 This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given UK postcode.
 
-An example use case: The plugin is being developed for use initially on a wildlife hospital website, to allow people to register as "wildlife ambulances".
+The plugin is currently configured for UK addresses. If you are not in the UK and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
+
+= Example use case =
+
+The plugin is being developed for use initially on a wildlife hospital website, to allow people to register as "wildlife ambulances".
 
 When a casualty is reported, the administrator enters the postcode, and is presented with the 5 closest contacts ("ambulances") to the casualty who are within their specified maximum travel distance. The casualty and the contacts are also plotted on a Google map.
 
@@ -32,7 +36,7 @@ If you are installing from the master zip file from GitHub, please re-download t
     - Email address
     - Maximum radius prepared to travel to target
     - Free form extra information
-* Administrators submit postcode, which queries database and returns nearest contacts to the target (provided target is within contact's maximum radius).
+* Administrators submit target address, which is automatically converted to a postcode, after which database is queried and nearest contacts to target are returned (provided target is within contact's maximum radius).
 * Contact information for the nearest contacts to the target are displayed, together with a Google Map upon which the target, contacts and home base are marked.
 * Uses Memcached to cache requests to the Google Distance Matrix API, to improve speed and limit API requests.
 * Administrators can browse, edit and delete records from the full database of submitted contacts.
@@ -45,15 +49,14 @@ If you are installing from the master zip file from GitHub, please re-download t
 
 You will need to have Memcached installed on your system to make use of the Cache feature.
 
-The plugin has been tested with PHP versions 5.5.x and above.
+The plugin has been tested with PHP versions 5.6.x and above.
 
 == Future development roadmap ==
 
 * Add facility for administrators to access a contact's record by submitting a phone number or email address.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add function to email administrators when new contacts register.
-* All selection of country, to extend functionality to other countries besides the UK; e.g. USA zipcodes, then lock down to country specific searches.
-* Swap out the target postcode form, for AJAX address search form, and use that when calculating distances instead of: target postcode => contacts postcodes.
+* Add selection of country, to extend functionality to other countries besides the UK (swap out the google API country attribute).
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
 * Refactor code to tidy up the mess!
@@ -62,13 +65,13 @@ The plugin has been tested with PHP versions 5.5.x and above.
 
 The URL of this plugin's website is: https://www.zaziork.com/zws-contacts-database/
 
-The URL of this plugin's Wordpress page is: [Not yet published in the WordPress directory].
+The URL of this plugin's Wordpress page is: https://wordpress.org/plugins/zws-contacts-database/
 
 == Installation ==
 
 Note: We do sell installation, configuration and support services. If you'd be interested in hiring us to get this up and running for you, please get in touch at: https://www.zaziork.com/contact/
 
-To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button. [Not yet published in the WordPress directory].
+To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button.
 
 When it's installed, simply activate, then navigate to the Settings page to update the defaults to your liking.
 
@@ -78,11 +81,11 @@ After downloading the zip, change the name of the unzipped directory to "ZwsCont
 
 Once installed, the contacts submission form can be added to a post or page using the shortcode:
 
-[zwscontactsdatabase_public_form].
+[zwscontactsdatabase_public_form]
 
 The administration page where contacts may be viewed and displayed on a map in relation to a "target" postcode can be inserted to a post or page using the shortcode:
 
-[zwscontactsdatabase_results_page].
+[zwscontactsdatabase_results_page]
 
 Be sure to visit the plugin's settings page (available via the Wordpress admin section settings sidebar), to configure the plugin for your system.
 
@@ -94,9 +97,15 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.5
+The current version is: 0.6
 
 == Changelog ==
+
+= 0.6 =
+
+* Fixed bug where map failed to display if target shared same postcode as contact where only one contact to display.
+* Added timeout for Google distance  matrix api calls.
+* Added ability for administrators to obtain target postcode by simply typing the address of the target (uses jQuery and Google GeoCoding).
 
 = 0.5 =
 
