@@ -154,12 +154,12 @@ Class Admin {
 
                 <?php
             }
-            
-                           public static function map_zoom_form_field_element() {
-                   ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Initial zoom factor of the map (suggest between 7 and 10)</small>      
-            <input type="text" name="zws_contacts_database_plugin_google_map_zoom" size="55" id="zws_contacts_database_plugin_google_map_zoom" 
-                   value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_google_map_zoom']; ?>" />
+
+            public static function map_zoom_form_field_element() {
+                ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Initial zoom factor of the map (suggest between 7 and 10)</small>      
+                <input type="text" name="zws_contacts_database_plugin_google_map_zoom" size="55" id="zws_contacts_database_plugin_google_map_zoom" 
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_google_map_zoom']; ?>" />
 
                 <?php
             }
@@ -177,6 +177,29 @@ Class Admin {
                 <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Display name of 'home base'</small>      
                 <input type="text" name="zws_contacts_database_plugin_base_name" size="55" id="zws_contacts_database_plugin_base_name" 
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_base_name']; ?>" />
+                       <?php
+                   }
+
+                   public static function admin_email_active_form_field_element() {
+                       ?>
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to administrator(s) upon new registrations</small> 
+                <?php
+                // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
+                $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active'] === 'TRUE' ? 'checked' : '';
+                $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active'] === 'FALSE' ? 'checked' : '';
+                echo '<input type="radio" name="zws_contacts_database_plugin_admin_email_active" value="TRUE" ' . $true_checked . '>Yes
+                      <br>
+                      <input type="radio" name="zws_contacts_database_plugin_admin_email_active" value="FALSE" ' . $false_checked . '>No';
+            }
+
+            public static function admin_email_form_field_element() {
+                ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Notification email address(es). Separate multiple with a space (e.g. first@email1.com second@email2.com)</small> 
+                <input type="text" name="zws_contacts_database_plugin_admin_email" size="55" id="zws_contacts_database_plugin_admin_email" 
+                       value="<?php
+                       // stored as an array, so implode to string to echo back ...
+                       echo implode(' ', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']);
+                       ?>" />
                        <?php
                    }
 
@@ -253,6 +276,10 @@ Class Admin {
                     'base_postcode_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_base_name', 'Home base display name', array('\ZwsContactsDatabase\Admin',
                     'base_name_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_admin_email_active', 'Notifiations', array('\ZwsContactsDatabase\Admin',
+                    'admin_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_admin_email', 'Notification email address(es)', array('\ZwsContactsDatabase\Admin',
+                    'admin_email_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_privacy_policy_url', 'Privacy policy URL', array('\ZwsContactsDatabase\Admin',
                     'privacy_page_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_remove_data', 'Fully remove all plugin\'s databases & options on uninstall?', array('\ZwsContactsDatabase\Admin',

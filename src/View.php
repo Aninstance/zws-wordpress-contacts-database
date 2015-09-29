@@ -152,6 +152,11 @@ Class View {
 // send to database
             require_once(__DIR__ . '/Database.php');
             if (\ZwsContactsDatabase\Database::insert($safe_values)) {
+                // email admins
+                if (!self::email_admins($safe_values)) {
+                    error_log('Error sending email to administrator ...');
+                }
+                // return success
                 return self::success_view();
             } else {
                 return self::failure_view();
@@ -181,6 +186,58 @@ Class View {
                 break;
         }
         echo $message;
+    }
+
+    private static function email_admins($safe_values) {
+        // method to email admins with details of new registrant
+        if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
+            // grab admin emails array from options (note, unfiltered)
+            $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
+            // loop emails, validate it is an email, construct headers and message, send email
+            if (!empty($emails)) {
+                $subject = 'A new contact has registered!'; // allow admin config as an option in future ...
+                $message = "A new contact has registered using ZWS Contacts Database!\r\n"
+                        . "The name of the contact is: {$safe_values['first_name']}  {$safe_values['last_name']}\r\n"
+                        . "Full details are availabe via your adminstration dashboard."; // allow admin config as option in future ...
+                // wrap lines if more than 70 characters ...
+                $message = wordwrap($message, 70, "\r\n");
+                // reply to
+                $reply_to = "noreply@{$_SERVER['SERVER_NAME']}";
+                //to
+                $primary_email = apply_filters(
+                        'zws_filter_basic_sanitize', $emails[0]);
+                $to = "{$primary_email}";
+                // from
+                $from = "ZWS Contacts Database <noreply@{$_SERVER['SERVER_NAME']}>";
+                // count number of admin email addresses to sent to ...
+                $emails_count = count($emails);
+                $cc = '';
+                // if more than one email, construct CC header
+                if ($emails_count > 1) {
+                    foreach ($emails as $key => $email) {
+                        if (is_email(apply_filters(
+                                                'zws_filter_basic_sanitize', $email)) && $key > 0) {
+                            $cc .= apply_filters('zws_basic_sanitize', $email) . ', ';
+                        }
+                    }
+                    // trim trailing comma and space
+                    $cc = rtrim($cc);
+                }
+                // construct headers
+                $headers = array();
+                array_push($headers, "From: {$from}");
+                array_push($headers, "Cc: {$cc}");
+                array_push($headers, "Reply-To: {$reply_to}");
+                array_push($headers, "Subject: {$subject}");
+                array_push($headers, "X-Mailer: PHP/" . phpversion());
+                error_log(implode("\r\n", $headers));
+                $extras = "-fnoreply@{$_SERVER['SERVER_NAME']} -rnoreply@{$_SERVER['SERVER_NAME']}";
+                // send email
+                mail($to, $subject, $message, implode("\r\n", $headers), $extras);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

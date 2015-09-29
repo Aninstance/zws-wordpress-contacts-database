@@ -47,6 +47,28 @@ Class SetOptions {
                     // record the postcode in the db too
                     $existing_options[$key] = apply_filters('zws_filter_sanitize_postcode', $value);
                     break;
+                case 'zws_contacts_database_plugin_admin_email':
+                    // input is space separated email addresses. Explode string into array and set if value has changed.
+                    if ($existing_options['zws_contacts_database_plugin_admin_email'] !== apply_filters('zws_filter_basic_sanitize', $value)) {
+                        // explode to array
+                        $emails = explode(' ', apply_filters('zws_filter_basic_sanitize', $value));
+                        // strip any extra spaces and validate as emails
+                        $validated_emails = array();
+                        foreach ($emails as $k => $email) {
+                            // trim off any extra whitespace
+                            $email = trim($email);
+                            // add validated to new array
+                            if (is_email($email)) {
+                                array_push($validated_emails, $email);
+                            }
+                        }
+                        if (!empty($validated_emails)) {
+                            $existing_options['zws_contacts_database_plugin_admin_email'] = $validated_emails;
+                        } else {
+                            $existing_options['zws_contacts_database_plugin_admin_email'] = '';
+                        }
+                    }
+                    break;
                 case 'zws_contacts_database_remove_data':
                     // this is an option of it's own, therefore do not add to the new options array
                     $remove_data = apply_filters('zws_filter_basic_sanitize', $value);

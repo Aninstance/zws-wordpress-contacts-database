@@ -44,6 +44,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Configurable map icons (administrators can set URL in admin page).
 * Contacts are requested to select the days and times that they would be available when registering.
 * Only contacts who have indicated that they are available on the current day of the week are displayed when searching for the 'nearest contact'.
+* Option for administrators to receive email notifications when new contacts register.
 
 == Requirements ==
 
@@ -54,8 +55,8 @@ The plugin has been tested with PHP versions 5.6.x and above.
 == Future development roadmap ==
 
 * Add facility for administrators to access a contact's record by submitting a phone number or email address.
+* Add ability for administrators to define the notification email subject and message from the admin page.
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
-* Add function to email administrators when new contacts register.
 * Add selection of country, to extend functionality to other countries besides the UK (swap out the google API country attribute).
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
@@ -103,7 +104,7 @@ The current version is: 0.7
 
 = 0.7 =
 
-* CHANGES HERE ...
+* Added option for email to be sent to administrator upon new registrants.
 
 = 0.6 =
 
