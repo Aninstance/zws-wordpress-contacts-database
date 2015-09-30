@@ -29,7 +29,8 @@ Class Installer {
     const MEMCACHED_KEY_BASE = 'ZWS_CONTACTS_DATABASE_KEY';
     const GOOGLE_MAP_ZOOM = 7;
     const ADMIN_EMAIL_ACTIVE = 'FALSE';
-    
+    const REG_EMAIL_ACTIVE = 'FALSE';
+
     private static $existing_stored_options = array();
 
     public static function install() {
@@ -52,7 +53,11 @@ Class Installer {
             'zws_contacts_database_plugin_base_postcode' => '',
             'zws_contacts_database_plugin_base_coordinates' => array(),
             'zws_contacts_database_plugin_admin_email_active' => self::ADMIN_EMAIL_ACTIVE,
-            'zws_contacts_database_plugin_admin_email' => array()
+            'zws_contacts_database_plugin_admin_email' => array(),
+            'reg_email_active_form_field_element' => self::REG_EMAIL_ACTIVE,
+            'zws_contacts_database_plugin_reg_email_from' => '',
+            'zws_contacts_database_plugin_reg_email_subject' => '',
+            'zws_contacts_database_plugin_reg_email' => ''
         );
 
         // set options array if does not exist

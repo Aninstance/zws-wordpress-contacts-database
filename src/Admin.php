@@ -200,8 +200,44 @@ Class Admin {
                 . "{$emails}</textarea>";
             }
 
-            public static function full_removal_on_uninstall_element() {
+            public static function reg_email_active_form_field_element() {
                 ?>
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to new registrants</small> 
+                <?php
+                // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
+                $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active'] === 'TRUE' ? 'checked' : '';
+                $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active'] === 'FALSE' ? 'checked' : '';
+                echo '<input type="radio" name="zws_contacts_database_plugin_reg_email_active" value="TRUE" ' . $true_checked . '>Yes
+                      <br>
+                      <input type="radio" name="zws_contacts_database_plugin_admin_email_active" value="FALSE" ' . $false_checked . '>No';
+            }
+
+            public static function reg_email_from_address_form_field_element() {
+                ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The "From" email address of the notification email sent to registrants in form: THE NAME, name@domain.com</small>      
+                <input type="text" name="zws_contacts_database_plugin_reg_email_from" size="55" id="zws_contacts_database_plugin_reg_email_from" placeholder="My name, me@domain.com"
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from']; ?>" />
+                       <?php
+                   }
+
+                   public static function reg_email_subject_form_field_element() {
+                       ?>
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 25 characters)</small>      
+                <input type="text" name="zws_contacts_database_plugin_reg_email_subject" size="55" maxlength="25" id="zws_contacts_database_plugin_reg_email_subject"
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']; ?>" />
+                       <?php
+                   }
+
+                   public static function reg_email_form_field_element() {
+                       $message = apply_filters('zws_filter_text_with_linebreak', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email']);
+                       echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
+                       . "Text of confirmation email to be sent to new registrants.</small>";
+                       echo "<textarea name=\"zws_contacts_database_plugin_reg_email\" id=\"zws_contacts_database_plugin_reg_email\" cols=\"55\" rows=\"3\">"
+                       . "{$message}</textarea>";
+                   }
+
+                   public static function full_removal_on_uninstall_element() {
+                       ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small> 
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
@@ -282,6 +318,14 @@ Class Admin {
                     'admin_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_admin_email', 'Notification email address(es)', array('\ZwsContactsDatabase\Admin',
                     'admin_email_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_reg_email_active', 'Sent notifiation to registrants?', array('\ZwsContactsDatabase\Admin',
+                    'reg_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_reg_email_from', 'Notification email "From" address', array('\ZwsContactsDatabase\Admin',
+                    'reg_email_from_address_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_reg_email_subject', 'Notification email text', array('\ZwsContactsDatabase\Admin',
+                    'reg_email_subject_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_reg_email', 'Notification email text', array('\ZwsContactsDatabase\Admin',
+                    'reg_email_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_privacy_policy_url', 'Privacy policy URL', array('\ZwsContactsDatabase\Admin',
                     'privacy_page_url_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_remove_data', 'Fully remove all plugin\'s databases & options on uninstall?', array('\ZwsContactsDatabase\Admin',

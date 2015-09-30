@@ -73,6 +73,20 @@ Class SetOptions {
                     // this is an option of it's own, therefore do not add to the new options array
                     $remove_data = apply_filters('zws_filter_basic_sanitize', $value);
                     break;
+                case 'zws_contacts_database_plugin_reg_email_from':
+                    // validate it's an email
+                    if (is_email($value)) {
+                        $existing_options['zws_contacts_database_plugin_reg_email_from'] = apply_filters('zws_filter_basic_sanitize', $value);
+                    }
+                    break;
+                case 'zws_contacts_database_plugin_reg_email_subject':
+                    // validate it's no more than 25 characters
+                    $safe_value = apply_filters('zws_filter_basic_sanitize', $value);
+                    $existing_options['zws_contacts_database_plugin_reg_email_subject'] = substr($safe_value, 0, 25);
+                    break;
+                case 'zws_contacts_database_plugin_reg_email':
+                    // ensure text is sanitised but allow linebreaks to be retained
+                    $existing_options[$key] = apply_filters('zws_filter_text_with_linebreak', $value);
                 default:
                     $existing_options[$key] = apply_filters('zws_filter_basic_sanitize', $value);
                     break;

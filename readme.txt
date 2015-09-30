@@ -45,6 +45,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Contacts are requested to select the days and times that they would be available when registering.
 * Only contacts who have indicated that they are available on the current day of the week are displayed when searching for the 'nearest contact'.
 * Option for administrators to receive email notifications when new contacts register.
+* Option to configure a confirmation email and have it sent to new registrants upon registration.
 
 == Requirements ==
 
@@ -105,6 +106,7 @@ The current version is: 0.7
 = 0.7 =
 
 * Added option for email to be sent to administrator upon new registrants.
+* Added option for email to be sent to new registrants to confirm their registration.
 
 = 0.6 =
 
