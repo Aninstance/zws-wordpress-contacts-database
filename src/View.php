@@ -153,7 +153,7 @@ Class View {
             require_once(__DIR__ . '/Database.php');
             if (\ZwsContactsDatabase\Database::insert($safe_values)) {
                 // email admins
-                if (!self::email_admins($safe_values)) {
+                if (!self::email_notifications($safe_values)) {
                     error_log('Error sending email to administrator ...');
                 }
                 // return success
@@ -188,12 +188,18 @@ Class View {
         echo $message;
     }
 
-    private static function email_admins($safe_values) {
-        // method to email admins with details of new registrant
+    private static function email_notifications($safe_values) {
+        //// method to email admins with details of new registrant
+        // initial setup and checks
         $admin_email = get_site_option('admin_email');
         if (!is_email($admin_email)) {
             return false;
         }
+        $registrant_email = $safe_values['email'];
+        if (!is_email($registrant_email)) {
+            return false;
+        }
+        // email admins
         if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
             // grab admin emails array from options (note, unfiltered)
             $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
@@ -239,6 +245,14 @@ Class View {
                 mail($to, $subject, $message, implode("\r\n", $headers), $extras);
                 return true;
             }
+        }
+        // email registrants
+        if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active']) {
+            $reg_subject = apply_filters(
+                    'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']);
+            $reg_message = apply_filters(
+                    'zws_filter_text_with_linebreak', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email']);
+            // ... to do: finish this - email out!
         }
         return false;
     }

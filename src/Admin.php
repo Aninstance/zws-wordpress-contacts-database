@@ -193,7 +193,11 @@ Class Admin {
             }
 
             public static function admin_email_form_field_element() {
-                $emails = implode(' ', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']);
+                $emails = '';
+                if (is_array(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']) &&
+                        !empty(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'])) {
+                    $emails = implode(' ', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']);
+                }
                 echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
                 . "Notification email address(es). Separate multiple with a space (e.g. first@email1.com second@email2.com)</small>";
                 echo "<textarea name=\"zws_contacts_database_plugin_admin_email\" id=\"zws_contacts_database_plugin_admin_email\" cols=\"55\" rows=\"3\">"
@@ -209,19 +213,21 @@ Class Admin {
                 $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active'] === 'FALSE' ? 'checked' : '';
                 echo '<input type="radio" name="zws_contacts_database_plugin_reg_email_active" value="TRUE" ' . $true_checked . '>Yes
                       <br>
-                      <input type="radio" name="zws_contacts_database_plugin_admin_email_active" value="FALSE" ' . $false_checked . '>No';
+                      <input type="radio" name="zws_contacts_database_plugin_reg_email_active" value="FALSE" ' . $false_checked . '>No';
             }
 
             public static function reg_email_from_address_form_field_element() {
-                ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The "From" email address of the notification email sent to registrants in form: THE NAME, name@domain.com</small>      
-                <input type="text" name="zws_contacts_database_plugin_reg_email_from" size="55" id="zws_contacts_database_plugin_reg_email_from" placeholder="My name, me@domain.com"
-                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from']; ?>" />
-                       <?php
-                   }
+                $reg_email = '';
+                if (is_array(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from']) && !empty(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'])) {
+                    $reg_email = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'][0] .
+                            ', ' . get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'][1];
+                }
+                echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">The \"From\" email address of the notification email sent to registrants in form: THE NAME, name@domain.com</small>";
+                echo "<input type=\"text\" name=\"zws_contacts_database_plugin_reg_email_from\" size=\"55\" id=\"zws_contacts_database_plugin_reg_email_from\" placeholder=\"My name, me@domain.com\" value=\"{$reg_email}\"/>";
+            }
 
-                   public static function reg_email_subject_form_field_element() {
-                       ?>
+            public static function reg_email_subject_form_field_element() {
+                ?>
                 <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 25 characters)</small>      
                 <input type="text" name="zws_contacts_database_plugin_reg_email_subject" size="55" maxlength="25" id="zws_contacts_database_plugin_reg_email_subject"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']; ?>" />
@@ -229,11 +235,11 @@ Class Admin {
                    }
 
                    public static function reg_email_form_field_element() {
-                       $message = apply_filters('zws_filter_text_with_linebreak', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email']);
+                       $message = self::get_notification_email();
                        echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
                        . "Text of confirmation email to be sent to new registrants.</small>";
                        echo "<textarea name=\"zws_contacts_database_plugin_reg_email\" id=\"zws_contacts_database_plugin_reg_email\" cols=\"55\" rows=\"3\">"
-                       . "{$message}</textarea>";
+                       . $message . "</textarea>";
                    }
 
                    public static function full_removal_on_uninstall_element() {
@@ -314,15 +320,15 @@ Class Admin {
                     'base_postcode_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_base_name', 'Home base display name', array('\ZwsContactsDatabase\Admin',
                     'base_name_form_field_element'), 'basic_options_section', 'basic_options_section_group');
-                add_settings_field('zws_contacts_database_plugin_admin_email_active', 'Notifiations', array('\ZwsContactsDatabase\Admin',
+                add_settings_field('zws_contacts_database_plugin_admin_email_active', 'Notifications', array('\ZwsContactsDatabase\Admin',
                     'admin_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_admin_email', 'Notification email address(es)', array('\ZwsContactsDatabase\Admin',
                     'admin_email_form_field_element'), 'basic_options_section', 'basic_options_section_group');
-                add_settings_field('zws_contacts_database_plugin_reg_email_active', 'Sent notifiation to registrants?', array('\ZwsContactsDatabase\Admin',
+                add_settings_field('zws_contacts_database_plugin_reg_email_active', 'Send notifiation to registrants?', array('\ZwsContactsDatabase\Admin',
                     'reg_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_reg_email_from', 'Notification email "From" address', array('\ZwsContactsDatabase\Admin',
                     'reg_email_from_address_form_field_element'), 'basic_options_section', 'basic_options_section_group');
-                add_settings_field('zws_contacts_database_plugin_reg_email_subject', 'Notification email text', array('\ZwsContactsDatabase\Admin',
+                add_settings_field('zws_contacts_database_plugin_reg_email_subject', 'Notification subject text', array('\ZwsContactsDatabase\Admin',
                     'reg_email_subject_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_reg_email', 'Notification email text', array('\ZwsContactsDatabase\Admin',
                     'reg_email_form_field_element'), 'basic_options_section', 'basic_options_section_group');
@@ -368,6 +374,14 @@ Class Admin {
                     $protocol = 'http';
                 }
                 return $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            }
+
+            private static function get_notification_email() {
+                // method that returns a string containing the notification email file
+                $email = stripslashes(
+                                apply_filters('zws_filter_text_with_linebreak', "This is a test ... \r\nYes, a test so it is!"));
+                // ... To do: replace above with actual email file ...
+                return $email;
             }
 
         }

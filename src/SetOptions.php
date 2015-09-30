@@ -74,9 +74,11 @@ Class SetOptions {
                     $remove_data = apply_filters('zws_filter_basic_sanitize', $value);
                     break;
                 case 'zws_contacts_database_plugin_reg_email_from':
-                    // validate it's an email
-                    if (is_email($value)) {
-                        $existing_options['zws_contacts_database_plugin_reg_email_from'] = apply_filters('zws_filter_basic_sanitize', $value);
+                    // break into name and email, validate it's an email, and store as array.
+                    $safe_value = apply_filters('zws_filter_basic_sanitize', $value);
+                    $email_array = explode(',', $safe_value);
+                    if (is_email(trim($email_array[1]))) {
+                        $existing_options['zws_contacts_database_plugin_reg_email_from'] = $email_array;
                     }
                     break;
                 case 'zws_contacts_database_plugin_reg_email_subject':
@@ -85,8 +87,10 @@ Class SetOptions {
                     $existing_options['zws_contacts_database_plugin_reg_email_subject'] = substr($safe_value, 0, 25);
                     break;
                 case 'zws_contacts_database_plugin_reg_email':
-                    // ensure text is sanitised but allow linebreaks to be retained
-                    $existing_options[$key] = apply_filters('zws_filter_text_with_linebreak', $value);
+                    // ensure text is sanitised but allow linebreaks to be retained.
+                    $email = apply_filters('zws_filter_text_with_linebreak', $value);
+                    // write to file
+                    ////////////// ....... To Do .......
                 default:
                     $existing_options[$key] = apply_filters('zws_filter_basic_sanitize', $value);
                     break;
