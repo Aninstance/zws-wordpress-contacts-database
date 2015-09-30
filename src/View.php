@@ -190,6 +190,7 @@ Class View {
 
     private static function email_admins($safe_values) {
         // method to email admins with details of new registrant
+        $admin_email = get_site_option('admin_email');
         if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
             // grab admin emails array from options (note, unfiltered)
             $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
@@ -202,13 +203,13 @@ Class View {
                 // wrap lines if more than 70 characters ...
                 $message = wordwrap($message, 70, "\r\n");
                 // reply to
-                $reply_to = "noreply@{$_SERVER['SERVER_NAME']}";
+                $reply_to = $admin_email;
                 //to
                 $primary_email = apply_filters(
                         'zws_filter_basic_sanitize', $emails[0]);
                 $to = "{$primary_email}";
                 // from
-                $from = "ZWS Contacts Database <noreply@{$_SERVER['SERVER_NAME']}>";
+                $from = "ZWS Contacts Database <{$admin_email}>";
                 // count number of admin email addresses to sent to ...
                 $emails_count = count($emails);
                 $cc = '';
@@ -228,10 +229,9 @@ Class View {
                 array_push($headers, "From: {$from}");
                 array_push($headers, "Cc: {$cc}");
                 array_push($headers, "Reply-To: {$reply_to}");
-                array_push($headers, "Subject: {$subject}");
                 array_push($headers, "X-Mailer: PHP/" . phpversion());
                 error_log(implode("\r\n", $headers));
-                $extras = "-fnoreply@{$_SERVER['SERVER_NAME']} -rnoreply@{$_SERVER['SERVER_NAME']}";
+                $extras = "-f{$admin_email} -r{$admin_email}";
                 // send email
                 mail($to, $subject, $message, implode("\r\n", $headers), $extras);
                 return true;
