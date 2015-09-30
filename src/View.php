@@ -191,6 +191,9 @@ Class View {
     private static function email_admins($safe_values) {
         // method to email admins with details of new registrant
         $admin_email = get_site_option('admin_email');
+        if (!is_email($admin_email)) {
+            return false;
+        }
         if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
             // grab admin emails array from options (note, unfiltered)
             $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
@@ -198,7 +201,7 @@ Class View {
             if (!empty($emails)) {
                 $subject = 'A new contact has registered!'; // allow admin config as an option in future ...
                 $message = "A new contact has registered using ZWS Contacts Database!\r\n"
-                        . "The name of the contact is: {$safe_values['first_name']}  {$safe_values['last_name']}\r\n"
+                        . "The name of the contact is: {$safe_values['first_name']} {$safe_values['last_name']}\r\n"
                         . "Full details are availabe via your adminstration dashboard."; // allow admin config as option in future ...
                 // wrap lines if more than 70 characters ...
                 $message = wordwrap($message, 70, "\r\n");
