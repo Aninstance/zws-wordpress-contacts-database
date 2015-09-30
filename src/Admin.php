@@ -193,18 +193,15 @@ Class Admin {
             }
 
             public static function admin_email_form_field_element() {
-                ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Notification email address(es). Separate multiple with a space (e.g. first@email1.com second@email2.com)</small> 
-                <input type="text" name="zws_contacts_database_plugin_admin_email" size="55" id="zws_contacts_database_plugin_admin_email" 
-                       value="<?php
-                       // stored as an array, so implode to string to echo back ...
-                       echo implode(' ', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']);
-                       ?>" />
-                       <?php
-                   }
+                $emails = implode(' ', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email']);
+                echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
+                . "Notification email address(es). Separate multiple with a space (e.g. first@email1.com second@email2.com)</small>";
+                echo "<textarea name=\"zws_contacts_database_plugin_admin_email\" id=\"zws_contacts_database_plugin_admin_email\" cols=\"55\" rows=\"3\">"
+                . "{$emails}</textarea>";
+            }
 
-                   public static function full_removal_on_uninstall_element() {
-                       ?>
+            public static function full_removal_on_uninstall_element() {
+                ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small> 
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
@@ -219,21 +216,26 @@ Class Admin {
 
             public static function memcached_server_active_element() {
                 ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Use Memcached to cache API requests</small> 
-                <?php
-                // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
-                $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'TRUE' ? 'checked' : '';
-                $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'FALSE' ? 'checked' : '';
-                echo '<input type="radio" name="zws_contacts_database_memcached_active" value="TRUE" ' . $true_checked . '>Yes
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;
+                       margin-bottom:1em;
+                       ">Use Memcached to cache API requests</small> 
+                       <?php
+                       // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
+                       $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'TRUE' ? 'checked' : '';
+                       $false_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'FALSE' ? 'checked' : '';
+                       echo '<input type="radio" name="zws_contacts_database_memcached_active" value="TRUE" ' . $true_checked . '>Yes
             <br>
             <input type="radio" name="zws_contacts_database_memcached_active" value="FALSE" ' . $false_checked . '>No';
-            }
+                   }
 
-            public static function memcached_server_period_element() {
-                ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Length of time to cache content (in seconds)</small>      
+                   public static function memcached_server_period_element() {
+                       ?>
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;
+                       margin-bottom:1em;
+                       ">Length of time to cache content (in seconds)</small>      
                 <input type="text" name="zws_contacts_database_memcached_period" size="55" id="zws_contacts_database_memcached_period" 
-                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_period']; ?>" />
+                       value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_period'];
+                       ?>" />
                        <?php
                    }
 
