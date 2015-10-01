@@ -307,7 +307,7 @@ Class View {
             $email = str_replace($last_name_tag, $safe_values['last_name'], $email);
             // replace admin-name tag
             $email = str_replace($site_name_tag, get_site_option('blogname'), $email);
-            return stripslashes(apply_filters('zws_filter_text_with_linebreak', $email));
+            return stripslashes(htmlspecialchars_decode(apply_filters('zws_filter_text_with_linebreak', $email)));
         } catch (Exception $e) {
             return false;
         }
