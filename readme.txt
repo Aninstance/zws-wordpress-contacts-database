@@ -56,7 +56,8 @@ The plugin has been tested with PHP versions 5.6.x and above.
 == Future development roadmap ==
 
 * Add facility for administrators to access a contact's record by submitting a phone number or email address.
-* Add ability for administrators to define the notification email subject and message from the admin page.
+* Add ability for administrators to define the administrator's notification email subject and message from the admin page.
+* Add feature to optionally require new registrants to confirm their email address before their account is made 'live' (hook into registration confirmation email that is already an option).
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
 * Add selection of country, to extend functionality to other countries besides the UK (swap out the google API country attribute).
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
