@@ -261,12 +261,22 @@ Class View {
                         $reg_email = wordwrap($formatted_reg_email, 70, "\r\n");
                     }
                 }
+                // from
+                $reg_from = get_site_option('blogname') . ' <' . get_site_option('admin_email') . '>';
+                // overwrite with user saved value if exists
+                if (is_array(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from']) &&
+                        !empty(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'])) {
+                    if (is_email(get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'][1])) {
+                        $reg_from = apply_filters(
+                                        'zws_filter_basic_sanitize', get_site_option(
+                                                self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'][0]) .
+                                ' <' . get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_from'][1] . '>';
+                    }
+                }
                 // reply to
                 $reg_reply_to = $admin_email;
                 // to
                 $reg_to = $safe_values['email'];
-                // from
-                $reg_from = get_site_option('blogname') . " <{$admin_email}>";
                 // construct headers
                 $reg_headers = array();
                 array_push($reg_headers, "From: {$reg_from}");

@@ -30,6 +30,7 @@ Class Installer {
     const GOOGLE_MAP_ZOOM = 7;
     const ADMIN_EMAIL_ACTIVE = 'FALSE';
     const REG_EMAIL_ACTIVE = 'FALSE';
+    const REG_EMAIL_SUBJECT = 'Thank you for your registration!';
 
     private static $existing_stored_options = array();
 
@@ -55,8 +56,8 @@ Class Installer {
             'zws_contacts_database_plugin_admin_email_active' => self::ADMIN_EMAIL_ACTIVE,
             'zws_contacts_database_plugin_admin_email' => array(),
             'zws_contacts_database_plugin_reg_email_active' => self::REG_EMAIL_ACTIVE,
-            'zws_contacts_database_plugin_reg_email_from' => array(),
-            'zws_contacts_database_plugin_reg_email_subject' => ''
+            'zws_contacts_database_plugin_reg_email_from' => array(get_site_option('blogname'), get_site_option('admin_email')),
+            'zws_contacts_database_plugin_reg_email_subject' => self::REG_EMAIL_SUBJECT
         );
 
         // set options array if does not exist

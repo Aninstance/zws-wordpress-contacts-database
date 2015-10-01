@@ -237,8 +237,9 @@ Class Admin {
                    public static function reg_email_form_field_element() {
                        $message = self::get_notification_email();
                        echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
-                       . "Text of confirmation email to be sent to new registrants. May include the following tags: {{first-name}}, {{last-name}}, {{site-name}}</small>";
-                       echo "<textarea name=\"zws_contacts_database_plugin_reg_email\" id=\"zws_contacts_database_plugin_reg_email\" cols=\"55\" rows=\"3\">"
+                       . "Text of confirmation email to be sent to new registrants. May include the following tags: {{first-name}}, {{last-name}}, {{site-name}}.</small>"
+                       . "<small>N.B. This email WILL be overwritten with a default if you reinstall the plugin, regardless of whether you retain other options upon uninstall.</small>";
+                       echo "<textarea name=\"zws_contacts_database_plugin_reg_email\" id=\"zws_contacts_database_plugin_reg_email\" cols=\"55\" rows=\"11\">"
                        . $message . "</textarea>";
                    }
 

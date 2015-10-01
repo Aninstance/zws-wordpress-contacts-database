@@ -77,7 +77,9 @@ Class SetOptions {
                     // break into name and email, validate it's an email, and store as array.
                     $safe_value = apply_filters('zws_filter_basic_sanitize', $value);
                     $email_array = explode(',', $safe_value);
-                    if (is_email(trim($email_array[1]))) {
+                    // trim whitespace
+                    $email_array[1] = trim($email_array[1]);
+                    if (is_email($email_array[1])) {
                         $existing_options['zws_contacts_database_plugin_reg_email_from'] = $email_array;
                     }
                     break;
