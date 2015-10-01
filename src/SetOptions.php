@@ -90,7 +90,9 @@ Class SetOptions {
                     // ensure text is sanitised but allow linebreaks to be retained.
                     $email = apply_filters('zws_filter_text_with_linebreak', $value);
                     // write to file
-                    ////////////// ....... To Do .......
+                    $filename = __DIR__ . '/../inc/registration_confirmation.tpl';
+                    file_put_contents($filename, $email, LOCK_EX);
+                    break;
                 default:
                     $existing_options[$key] = apply_filters('zws_filter_basic_sanitize', $value);
                     break;

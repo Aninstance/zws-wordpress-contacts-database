@@ -237,7 +237,7 @@ Class Admin {
                    public static function reg_email_form_field_element() {
                        $message = self::get_notification_email();
                        echo "<small class=\"zws-database-creator-form-helper\" style=\"display:block;margin-bottom:1em;\">"
-                       . "Text of confirmation email to be sent to new registrants.</small>";
+                       . "Text of confirmation email to be sent to new registrants. May include the following tags: {{first-name}}, {{last-name}}, {{site-name}}</small>";
                        echo "<textarea name=\"zws_contacts_database_plugin_reg_email\" id=\"zws_contacts_database_plugin_reg_email\" cols=\"55\" rows=\"3\">"
                        . $message . "</textarea>";
                    }
@@ -377,11 +377,13 @@ Class Admin {
             }
 
             private static function get_notification_email() {
-                // method that returns a string containing the notification email file
-                $email = stripslashes(
-                                apply_filters('zws_filter_text_with_linebreak', "This is a test ... \r\nYes, a test so it is!"));
-                // ... To do: replace above with actual email file ...
-                return $email;
+                /// method that returns a string containing the notification email file
+                $email_file_url = __DIR__ . '/../inc/registration_confirmation.tpl';
+                if (file_get_contents($email_file_url) !== false) {
+                    return file_get_contents($email_file_url);
+                } else {
+                    return 'There is currently no email saved';
+                }
             }
 
         }

@@ -200,61 +200,107 @@ Class View {
             return false;
         }
         // email admins
-        if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
-            // grab admin emails array from options (note, unfiltered)
-            $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
-            // loop emails, validate it is an email, construct headers and message, send email
-            if (!empty($emails)) {
-                $subject = 'A new contact has registered!'; // allow admin config as an option in future ...
-                $message = "A new contact has registered using ZWS Contacts Database!\r\n"
-                        . "The name of the contact is: {$safe_values['first_name']} {$safe_values['last_name']}\r\n"
-                        . "Full details are availabe via your adminstration dashboard."; // allow admin config as option in future ...
-                // wrap lines if more than 70 characters ...
-                $message = wordwrap($message, 70, "\r\n");
-                // reply to
-                $reply_to = $admin_email;
-                //to
-                $primary_email = apply_filters(
-                        'zws_filter_basic_sanitize', $emails[0]);
-                $to = "{$primary_email}";
-                // from
-                $from = "ZWS Contacts Database <{$admin_email}>";
-                // count number of admin email addresses to sent to ...
-                $emails_count = count($emails);
-                $cc = '';
-                // if more than one email, construct CC header
-                if ($emails_count > 1) {
-                    foreach ($emails as $key => $email) {
-                        if (is_email(apply_filters(
-                                                'zws_filter_basic_sanitize', $email)) && $key > 0) {
-                            $cc .= apply_filters('zws_basic_sanitize', $email) . ', ';
+        try {
+            if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active']) {
+                // grab admin emails array from options (note, unfiltered)
+                $emails = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email'];
+                // loop emails, validate it is an email, construct headers and message, send email
+                if (!empty($emails)) {
+                    $subject = 'A new contact has registered!'; // allow admin config as an option in future ...
+                    $message = "A new contact has registered using ZWS Contacts Database!\r\n"
+                            . "The name of the contact is: {$safe_values['first_name']} {$safe_values['last_name']}\r\n"
+                            . "Full details are availabe via your adminstration dashboard."; // allow admin config as option in future ...
+                    // wrap lines if more than 70 characters ...
+                    $message = wordwrap($message, 70, "\r\n");
+                    // reply to
+                    $reply_to = $admin_email;
+                    // to
+                    $primary_email = apply_filters(
+                            'zws_filter_basic_sanitize', $emails[0]);
+                    $to = "{$primary_email}";
+                    // from
+                    $from = "ZWS Contacts Database <{$admin_email}>";
+                    // count number of admin email addresses to sent to ...
+                    $emails_count = count($emails);
+                    $cc = '';
+                    // if more than one email, construct CC header
+                    if ($emails_count > 1) {
+                        foreach ($emails as $key => $email) {
+                            if (is_email(apply_filters(
+                                                    'zws_filter_basic_sanitize', $email)) && $key > 0) {
+                                $cc .= apply_filters('zws_basic_sanitize', $email) . ', ';
+                            }
                         }
+                        // trim trailing comma and space
+                        $cc = rtrim($cc);
                     }
-                    // trim trailing comma and space
-                    $cc = rtrim($cc);
+                    // construct headers
+                    $headers = array();
+                    array_push($headers, "From: {$from}");
+                    array_push($headers, "Cc: {$cc}");
+                    array_push($headers, "Reply-To: {$reply_to}");
+                    array_push($headers, "X-Mailer: PHP/" . phpversion());
+                    $extras = "-f{$admin_email} -r{$admin_email}";
+                    // send email
+                    if (!mail($to, $subject, $message, implode("\r\n", $headers), $extras)) {
+                        error_log("An error occurred whilst sending email to the administrators ...");
+                    }
                 }
-                // construct headers
-                $headers = array();
-                array_push($headers, "From: {$from}");
-                array_push($headers, "Cc: {$cc}");
-                array_push($headers, "Reply-To: {$reply_to}");
-                array_push($headers, "X-Mailer: PHP/" . phpversion());
-                error_log(implode("\r\n", $headers));
-                $extras = "-f{$admin_email} -r{$admin_email}";
-                // send email
-                mail($to, $subject, $message, implode("\r\n", $headers), $extras);
-                return true;
             }
+            // email registrants
+            if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active']) {
+                // subject
+                $reg_subject = apply_filters(
+                        'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']);
+                // email
+                $reg_email = 'Thank you for registering!'; // default in case all else fails!
+                $email_file_url = __DIR__ . '/../inc/registration_confirmation.tpl';
+                if (file_get_contents($email_file_url) !== false) {
+                    $formatted_reg_email = self::format_email(file_get_contents($email_file_url), $safe_values);
+                    if ($formatted_reg_email !== false) {
+                        $reg_email = wordwrap($formatted_reg_email, 70, "\r\n");
+                    }
+                }
+                // reply to
+                $reg_reply_to = $admin_email;
+                // to
+                $reg_to = $safe_values['email'];
+                // from
+                $reg_from = get_site_option('blogname') . " <{$admin_email}>";
+                // construct headers
+                $reg_headers = array();
+                array_push($reg_headers, "From: {$reg_from}"); 
+                array_push($reg_headers, "Reply-To: {$reg_reply_to}");
+                array_push($reg_headers, "X-Mailer: PHP/" . phpversion());
+                $reg_extras = "-f{$admin_email} -r{$admin_email}";
+                // send email
+                if (!mail($reg_to, $reg_subject, $reg_email, implode("\r\n", $reg_headers), $reg_extras)) {
+                    error_log('An error occurred whilst sending the confirmation email to the registrant ...');
+                }
+            }
+            return true;
+        } catch (Exception $e) {
+            return false;
         }
-        // email registrants
-        if (get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active']) {
-            $reg_subject = apply_filters(
-                    'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']);
-            $reg_message = apply_filters(
-                    'zws_filter_text_with_linebreak', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email']);
-            // ... to do: finish this - email out!
+    }
+
+    private static function format_email($email, $safe_values) {
+        //// accepts email template and returns formatted string
+        // define replacement tags
+        $first_name_tag = '{{first-name}}';
+        $last_name_tag = '{{last-name}}';
+        $site_name_tag = '{{site-name}}';
+        try {
+            // replace first-name tag
+            $email = str_replace($first_name_tag, $safe_values['first_name'], $email);
+            // replace last-name tag
+            $email = str_replace($last_name_tag, $safe_values['last_name'], $email);
+            // replace admin-name tag
+            $email = str_replace($site_name_tag, get_site_option('blogname'), $email);
+            return $email;
+        } catch (Exception $e) {
+            return false;
         }
-        return false;
     }
 
 }
