@@ -84,9 +84,9 @@ Class SetOptions {
                     }
                     break;
                 case 'zws_contacts_database_plugin_reg_email_subject':
-                    // validate it's no more than 25 characters
+                    // validate it's no more than 45 characters
                     $safe_value = apply_filters('zws_filter_basic_sanitize', $value);
-                    $existing_options['zws_contacts_database_plugin_reg_email_subject'] = substr($safe_value, 0, 25);
+                    $existing_options['zws_contacts_database_plugin_reg_email_subject'] = substr($safe_value, 0, 45);
                     break;
                 case 'zws_contacts_database_plugin_reg_email':
                     // ensure text is sanitised but allow linebreaks to be retained.

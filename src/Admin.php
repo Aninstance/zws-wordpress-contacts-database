@@ -228,8 +228,8 @@ Class Admin {
 
             public static function reg_email_subject_form_field_element() {
                 ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 25 characters)</small>      
-                <input type="text" name="zws_contacts_database_plugin_reg_email_subject" size="55" maxlength="25" id="zws_contacts_database_plugin_reg_email_subject"
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 45 characters)</small>      
+                <input type="text" name="zws_contacts_database_plugin_reg_email_subject" size="55" maxlength="45" id="zws_contacts_database_plugin_reg_email_subject"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']; ?>" />
                        <?php
                    }
