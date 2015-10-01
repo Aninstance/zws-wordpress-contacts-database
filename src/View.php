@@ -253,7 +253,7 @@ Class View {
                 $reg_subject = apply_filters(
                         'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']);
                 // email
-                $reg_email = 'Thank you for registering!'; // default in case all else fails!
+                $reg_email = 'Thank you for registering with ' . get_site_option('blogname') . '!'; // default in case all else fails!
                 $email_file_url = __DIR__ . '/../inc/registration_confirmation.tpl';
                 if (file_get_contents($email_file_url) !== false) {
                     $formatted_reg_email = self::format_email(file_get_contents($email_file_url), $safe_values);
@@ -269,7 +269,7 @@ Class View {
                 $reg_from = get_site_option('blogname') . " <{$admin_email}>";
                 // construct headers
                 $reg_headers = array();
-                array_push($reg_headers, "From: {$reg_from}"); 
+                array_push($reg_headers, "From: {$reg_from}");
                 array_push($reg_headers, "Reply-To: {$reg_reply_to}");
                 array_push($reg_headers, "X-Mailer: PHP/" . phpversion());
                 $reg_extras = "-f{$admin_email} -r{$admin_email}";
@@ -297,7 +297,7 @@ Class View {
             $email = str_replace($last_name_tag, $safe_values['last_name'], $email);
             // replace admin-name tag
             $email = str_replace($site_name_tag, get_site_option('blogname'), $email);
-            return $email;
+            return stripslashes(apply_filters('zws_filter_text_with_linebreak', $email));
         } catch (Exception $e) {
             return false;
         }

@@ -380,7 +380,7 @@ Class Admin {
                 /// method that returns a string containing the notification email file
                 $email_file_url = __DIR__ . '/../inc/registration_confirmation.tpl';
                 if (file_get_contents($email_file_url) !== false) {
-                    return file_get_contents($email_file_url);
+                    return stripslashes(apply_filters('zws_filter_text_with_linebreak', file_get_contents($email_file_url)));
                 } else {
                     return 'There is currently no email saved';
                 }
