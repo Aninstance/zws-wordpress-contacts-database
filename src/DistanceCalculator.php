@@ -16,7 +16,6 @@ Class DistanceCalculator {
     // uses Google Distance Matrix API
     const OPTIONS_LABEL = 'zws_contacts_database_options';
     const DISTANCE_MATRIX_BASE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
-    const DISTANCE_MATRIX_PARAMS = '&mode=driving&language=en-EN&units=imperial&sensor=false';
 
     public static function nearestContacts($how_many = 5, $target = NULL) {
 
@@ -71,7 +70,15 @@ Class DistanceCalculator {
         require_once(__DIR__ . '/QueryAPI.php');
 
         $google_api_key = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
-        $path = '?origins=' . $target_postcode . '&destinations=' . $contact_postcode . self::DISTANCE_MATRIX_PARAMS . '&key=' . $google_api_key;
+        $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
+        $path = "?origins={$target_postcode}
+            &destinations={$contact_postcode}
+            &mode=driving
+            &language=en-EN
+            &components=country:{$country_code}
+            &units=imperial
+            &sensor=false
+            &key={$google_api_key}";
         // $data = file_get_contents($url);
         $data = \ZwsContactsDatabase\QueryAPI::makeQuery(self::DISTANCE_MATRIX_BASE_URL, $path);
 
@@ -86,7 +93,8 @@ Class DistanceCalculator {
         }
     }
 
-    private static function my_multidimensional_array_sorter($value1, $value2) {
+    private static function my_multidimensional_array_sorter($value1
+    , $value2) {
         $sort_order = 'asc'; // default
         $sort_key = 'distance';
         if ($sort_order == 'asc') {

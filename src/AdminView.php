@@ -110,11 +110,12 @@ Class AdminView {
 
     public static function display_form() {
         require_once(__DIR__ . '/Helpers.php');
+        $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
 // method to display the target postcode / address entry form.
         echo '<h3 style="' . Zelp::getCss('header_style_tag') . '">Search for nearest drivers</h3>';
         echo '<form action="' . Zelp::set_url_query_cleared(array('postback' => 'true', 'postcode_address_search' => 'true')) . '" method="post">';
         echo '<p style="' . Zelp::getCss('label_style_tag') . '">Target postcode (type address or postcode)</p>';
-        echo '<p><input type="text" id="target_postcode" data-geo="postal_code" placeholder="Postcode / address" name="target_postcode" pattern="[a-zA-Z0-9|\s]+" maxlength="255" value="" style="width:85%" /></p>';
+        echo "<p><input type=\"text\" id=\"target_postcode\" data-geo=\"postal_code\" data-country={$country_code} placeholder=\"Postcode / address\" name=\"target_postcode\" pattern=\"[a-zA-Z0-9|\s]+\" maxlength=\"255\" value=\"\" style=\"width:85%\" /></p>";
         wp_nonce_field('submit_details_action', 'my_nonce_field');
         echo '<p><input type="submit" name="submitted" value="Submit"/></p>';
         echo '</form>';
@@ -135,11 +136,15 @@ Class AdminView {
 // checks if incoming POST, and that nonce was set, and that nonce details match
         if (isset($_POST['submitted']) && isset($_POST['my_nonce_field']) && wp_verify_nonce($_POST['my_nonce_field'], 'submit_details_action')) {
 // set the target postcode from the form post
-            $target_postcode = apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
-            $last_name = apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
+            if (!empty($_POST['target_postcode'])) {
+                $target_postcode = apply_filters('zws_filter_sanitize_postcode', $_POST['target_postcode']);
+            }
+            if (!empty($_POST['last_name'])) {
+                $last_name = apply_filters('zws_filter_basic_sanitize', $_POST['last_name']);
+            }
             if (!empty($target_postcode)) {
                 return $target_postcode;
-            } elseif ($last_name) {
+            } elseif (!empty($last_name)) {
                 return $last_name;
             }
             return false;

@@ -13,13 +13,13 @@ Plugin to create and administer a contacts database and calculate nearest contac
 
 This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given UK postcode.
 
-The plugin is currently configured for UK addresses. If you are not in the UK and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
+The plugin is currently configured to support UK and USA addresses. If you are not in the UK or USA and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
 
 = Example use case =
 
 The plugin is being developed for use initially on a wildlife hospital website, to allow people to register as "wildlife ambulances".
 
-When a casualty is reported, the administrator enters the postcode, and is presented with the 5 closest contacts ("ambulances") to the casualty who are within their specified maximum travel distance. The casualty and the contacts are also plotted on a Google map.
+When a wildlife casualty is reported, the administrator enters the address or postcode, and is presented with the 5 closest contacts ("ambulances") to the casualty who are within their specified maximum travel distance. The casualty and the contacts are also plotted on a Google map.
 
 == Beta Information ==
 
@@ -46,6 +46,7 @@ If you are installing from the master zip file from GitHub, please re-download t
 * Only contacts who have indicated that they are available on the current day of the week are displayed when searching for the 'nearest contact'.
 * Option for administrators to receive email notifications when new contacts register.
 * Option to configure a confirmation email and have it sent to new registrants upon registration.
+* Ability to configure plugin to work with alternative (non UK) country of deployment. Current options: UK, USA.
 
 == Requirements ==
 
@@ -59,7 +60,9 @@ The plugin has been tested with PHP versions 5.6.x and above.
 * Add ability for administrators to define the administrator's notification email subject and message from the admin page.
 * Add feature to optionally require new registrants to confirm their email address before their account is made 'live' (hook into registration confirmation email that is already an option).
 * Add feature to allow contacts to modify their own stored data. This would necessitate creating a password at sign-up.
-* Add selection of country, to extend functionality to other countries besides the UK (swap out the google API country attribute).
+* Test it works with additional countries and add those to the list of available countries of deployment.
+* Add selection of language, to internationalise.
+* Add option to display distances in metric units rather than imperial (km rather than miles).
 * Add ability for administrator to select not to include the day/time feature. When not included, remove section from registration form, times button from display pages, and submit defaults of 00:00 to database).
 * Add presentation polish.
 * Refactor code to tidy up the mess!
@@ -106,7 +109,8 @@ The current version is: 0.8
 
 = 0.8 =
 
-* CHANGES .......
+* Added option to select country of deployment (from list of tested available locations).
+* Added USA to list of available locations.
 
 = 0.7 =
 

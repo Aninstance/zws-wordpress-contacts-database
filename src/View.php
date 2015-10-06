@@ -59,7 +59,7 @@ Class View {
         echo '<input type="text" name="last_name" required="required" placeholder="Last name" pattern="[a-zA-Z0-9]+" value="' . ( isset($_POST["last_name"]) ? esc_attr($_POST["last_name"]) : '' ) . '" size="40" />';
         echo '</p>';
         echo '<p>';
-        echo 'Your postcode (required - no spaces - e.g. AB329BR) <br />';
+        echo 'Your postcode / zipcode (required - no spaces - e.g. AB329BR) <br />';
         echo '<input type="text" name="postcode" required="required" placeholder="Postcode" pattern="[a-zA-Z0-9]+" maxlength="7" value="' . ( isset($_POST["postcode"]) ? esc_attr($_POST["postcode"]) : '' ) . '" size="8" />';
         echo '</p>';
         echo '<p>';
