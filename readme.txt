@@ -7,11 +7,11 @@ Requires at least: 3.0
 Tested up to: 4.3.0
 Stable tag: 0.8.1
 License: GPLv2 or later
-Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
+Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
 
 == Description ==
 
-This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given UK postcode.
+This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given postcode.
 
 The plugin is currently configured to support UK and USA addresses. If you are not in the UK or USA and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
 
