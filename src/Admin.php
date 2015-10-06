@@ -180,6 +180,22 @@ Class Admin {
                        <?php
                    }
 
+                   public static function country_form_field_element() {
+                       $current_country = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
+                       echo '<small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Country of deployment</small>';
+                       echo '<select name="zws_contacts_database_plugin_country_of_use" id="zws_contacts_database_plugin_country_of_use">';
+                       foreach (unserialize(COUNTRY) as $country_name => $country_code) {
+                           if ($country_code == apply_filters(
+                                           'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'])) {
+                               $selected = 'selected';
+                           } else {
+                               $selected = '';
+                           }
+                           echo "<option {$selected} value=\"{$country_code}\">{$country_name}</option>";
+                       }
+                       echo '</select>';
+                   }
+
                    public static function admin_email_active_form_field_element() {
                        ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to administrator(s) upon new registrations</small> 
@@ -321,6 +337,8 @@ Class Admin {
                     'base_postcode_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_base_name', 'Home base display name', array('\ZwsContactsDatabase\Admin',
                     'base_name_form_field_element'), 'basic_options_section', 'basic_options_section_group');
+                add_settings_field('zws_contacts_database_plugin_country_of_use', 'Country of deployment', array('\ZwsContactsDatabase\Admin',
+                    'country_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_admin_email_active', 'Notifications', array('\ZwsContactsDatabase\Admin',
                     'admin_email_active_form_field_element'), 'basic_options_section', 'basic_options_section_group');
                 add_settings_field('zws_contacts_database_plugin_admin_email', 'Notification email address(es)', array('\ZwsContactsDatabase\Admin',

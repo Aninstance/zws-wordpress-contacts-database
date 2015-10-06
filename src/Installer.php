@@ -31,6 +31,7 @@ Class Installer {
     const ADMIN_EMAIL_ACTIVE = 'FALSE';
     const REG_EMAIL_ACTIVE = 'FALSE';
     const REG_EMAIL_SUBJECT = 'Thank you for your registration!';
+    const COUNTRY_CODE = 'GB';
 
     private static $existing_stored_options = array();
 
@@ -57,7 +58,8 @@ Class Installer {
             'zws_contacts_database_plugin_admin_email' => array(),
             'zws_contacts_database_plugin_reg_email_active' => self::REG_EMAIL_ACTIVE,
             'zws_contacts_database_plugin_reg_email_from' => array(get_site_option('blogname'), get_site_option('admin_email')),
-            'zws_contacts_database_plugin_reg_email_subject' => self::REG_EMAIL_SUBJECT
+            'zws_contacts_database_plugin_reg_email_subject' => self::REG_EMAIL_SUBJECT,
+            'zws_contacts_database_plugin_country_of_use' => self::COUNTRY_CODE
         );
 
         // set options array if does not exist

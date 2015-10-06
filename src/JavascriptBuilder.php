@@ -13,6 +13,8 @@ namespace ZwsContactsDatabase;
  */
 Class JavascriptBuilder {
 
+    const OPTIONS_LABEL = 'zws_contacts_database_options';
+
     public static function generate_js($map_config) {
 
         // check params have been passed
@@ -43,8 +45,9 @@ Class JavascriptBuilder {
         // define filename ensuring it includes the unique user id, in case of simultatious sessions by different users.
         $filename = __DIR__ . '/../inc/' . $map_config['new_script_uri'];
         // build the file
+        $county_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
         $js = 'jQuery(document).ready(function($) {
-        $.getJSON(\'https://maps.googleapis.com/maps/api/geocode/json?address=' . $map_config['target_postcode'] . '&language=en-EN&sensor=false\', null, function(data){
+        $.getJSON(\'https://maps.googleapis.com/maps/api/geocode/json?address=' . $map_config['target_postcode'] . '&language=en-EN&components=country:' . $county_code . '&sensor=false\', null, function(data){
         var p = data.results[0].geometry.location;
         var LatLng = new google.maps.LatLng(p.lat, p.lng);
         var mapCanvas = document.getElementById(\'map-canvas\');

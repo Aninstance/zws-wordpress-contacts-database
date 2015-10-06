@@ -95,6 +95,29 @@ Class SetOptions {
                     $filename = __DIR__ . '/../inc/registration_confirmation.tpl';
                     file_put_contents($filename, $email, LOCK_EX);
                     break;
+                case 'zws_contacts_database_plugin_country_of_use':
+                    // trim whitespace
+                    $safe_value = trim(apply_filters('zws_contacts_database_plugin_country_of_use', $value));
+                    if (strlen($safe_value) === 2) {
+                        // set available countries (defauts to GB)
+                        switch ($safe_value) {
+                            case 'GB':
+                                $country_code = 'GB';
+                                break;
+                            case 'US':
+                                $country_code = 'US';
+                                break;
+                            default:
+                                $country_code = 'GB';
+                                break;
+                        }
+                    } else {
+                        error_log("Country code more than 2 characters. Reverting to default (GB)!");
+                        $country_code = 'GB';
+                    }
+                    // set option
+                    $existing_options[$key] = $country_code;
+                    break;
                 default:
                     $existing_options[$key] = apply_filters('zws_filter_basic_sanitize', $value);
                     break;
@@ -111,8 +134,9 @@ Class SetOptions {
     private static function getBaseCoordinates($postcode) {
         // returns an array for the coordinates (lat, lng).
         require_once(__DIR__ . '/QueryAPI.php');
+        $county_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
         $base_url = 'https://maps.googleapis.com/maps/api/geocode/json';
-        $path = '?address=' . $postcode . '&language=en-EN&sensor=false';
+        $path = "?address={$postcode}&language=en-EN&components=country:{$country_code}&sensor=false";
         $result = \ZwsContactsDatabase\QueryAPI::makeQuery($base_url, $path);
         // if successful return and there are some results ...
         if ($result !== false && !empty($result['returned_data']['results'])) {
