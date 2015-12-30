@@ -109,7 +109,7 @@ The current version is: 0.8.2
 
 = 0.8.2 =
 
-NEW ...
+No change. Version number bumped to correct versioning issue.
 
 = 0.8.1 =
 
