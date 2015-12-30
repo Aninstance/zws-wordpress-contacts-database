@@ -109,7 +109,7 @@ The current version is: 0.8.1
 
 = 0.8.1 =
 
-* NEW ...
+* Fixed error where Google API key was hard-coded to an invalid value.
 
 = 0.8 =
 
