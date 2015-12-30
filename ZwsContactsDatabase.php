@@ -11,7 +11,7 @@ define("COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => '
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 0.8.2
+ * Version: 0.8.3
  * Author: Zaziork Web Solutions
  * Author URI: http://www.zaziork.com
  * Copyright (c) 2015 Zaziork Web Solutions. All rights reserved.
