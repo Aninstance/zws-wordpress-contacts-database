@@ -178,10 +178,10 @@ Class AdminView {
         require_once(__DIR__ . '/Helpers.php');
         $options = get_site_option(self::OPTIONS_LABEL);
         $success = false;
-        $how_many_contacts = 5;
+        $how_many_contacts = 500; // BUG - need to re-write max so that ALL possibilities are eval PRIOR to display of limited resultset. Set to eval 500 until fixed ...
         $contacts_array = \ZwsContactsDatabase\DistanceCalculator::nearestContacts($how_many_contacts, $target_postcode);
         if ($contacts_array !== false) {
-            $contacts_array_safe = array();
+            $contacts_array_safe = [];
 // display the  elements
             echo '<div class="contact-list"><h2>' . $how_many_contacts . ' Closest Contacts</h2>';
             echo '<small><a href="' . \ZwsContactsDatabase\Helpers::set_url_query_cleared(array('postback' => 'false')) . '">Back to administration dashboard</a></small>';
