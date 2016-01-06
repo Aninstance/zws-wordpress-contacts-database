@@ -16,6 +16,7 @@ use ZwsContactsDatabase\Helpers as Zelp;
 Class ZwsPaginator {
 
     const MAPS_API_BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
+    const OPTIONS_LABEL = 'zws_contacts_database_options';
 
     public static $number_of_pages = 0;
 
