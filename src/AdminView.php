@@ -193,19 +193,19 @@ Class AdminView {
 // ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target ...
                 // ... only those who are available TODAY are returned from the DistanceCalculator::nearestContacts method, above.
                 // ... ALL of TODAY's results (up to max results) are displayed, with the available times also printed.
-                    $id_safe = sanitize_text_field($value['id']);
-                    $contacts_array_safe[$id_safe]['distance'] = apply_filters('zws_filter_enforce_numeric', $value['distance']);
-                    $contacts_array_safe[$id_safe]['postcode'] = apply_filters('zws_filter_basic_sanitize', $value['postcode']);
-                    $contacts_array_safe[$id_safe]['lat'] = apply_filters('zws_filter_basic_sanitize', $value['lat']);
-                    $contacts_array_safe[$id_safe]['lng'] = apply_filters('zws_filter_basic_sanitize', $value['lng']);
-                    $contacts_array_safe[$id_safe]['first_name'] = apply_filters('zws_filter_basic_sanitize', $value['first_name']);
-                    $contacts_array_safe[$id_safe]['last_name'] = apply_filters('zws_filter_basic_sanitize', $value['last_name']);
-                    $contacts_array_safe[$id_safe]['phone'] = apply_filters('zws_filter_enforce_numeric', $value['phone']);
-                    $contacts_array_safe[$id_safe]['email'] = sanitize_email($value['email']);
-                    $contacts_array_safe[$id_safe][$earliest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$earliest_time_today]);
-                    $contacts_array_safe[$id_safe][$latest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$latest_time_today]);
-                    $contacts_array_safe[$id_safe]['max_radius'] = apply_filters('zws_filter_enforce_numeric', $value['max_radius']);
-                    $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
+                    $contacts_array_safe[$key]['id'] = sanitize_text_field($value['id']);
+                    $contacts_array_safe[$key]['distance'] = apply_filters('zws_filter_enforce_numeric', $value['distance']);
+                    $contacts_array_safe[$key]['postcode'] = apply_filters('zws_filter_basic_sanitize', $value['postcode']);
+                    $contacts_array_safe[$key]['lat'] = apply_filters('zws_filter_basic_sanitize', $value['lat']);
+                    $contacts_array_safe[$key]['lng'] = apply_filters('zws_filter_basic_sanitize', $value['lng']);
+                    $contacts_array_safe[$key]['first_name'] = apply_filters('zws_filter_basic_sanitize', $value['first_name']);
+                    $contacts_array_safe[$key]['last_name'] = apply_filters('zws_filter_basic_sanitize', $value['last_name']);
+                    $contacts_array_safe[$key]['phone'] = apply_filters('zws_filter_enforce_numeric', $value['phone']);
+                    $contacts_array_safe[$key]['email'] = sanitize_email($value['email']);
+                    $contacts_array_safe[$key][$earliest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$earliest_time_today]);
+                    $contacts_array_safe[$key][$latest_time_today] = apply_filters('zws_filter_basic_sanitize', $value[$latest_time_today]);
+                    $contacts_array_safe[$key]['max_radius'] = apply_filters('zws_filter_enforce_numeric', $value['max_radius']);
+                    $contacts_array_safe[$key]['extra_info'] = nl2br(
                             stripslashes(
                                     apply_filters('zws_filter_text_with_linebreak', $value['extra_info'])));
             }
@@ -258,7 +258,8 @@ Class AdminView {
 
     public static function display_map($map_config) {
 // check params have been passed and that there is something to display
-        if (!isset($map_config['contacts_array_safe'][0]['distance'])) {
+        if (!isset($map_config['contacts_array_safe'][0]['id'])) {
+            error_log('An error with the passing of $map_config to display_map has occurred.');
             return false;
         }
 // method to display the Google map
