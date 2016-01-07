@@ -68,6 +68,7 @@ Class DistanceCalculator {
                             $c++;
                         }
                     }
+                    return $top_n;
                 }
             }
             return false;
