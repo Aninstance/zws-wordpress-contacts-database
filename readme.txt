@@ -109,7 +109,7 @@ The current version is: 0.8.3
 
 = 0.8.3 =
 
-NEW ...
+Fix for bug where correct number of valid results were not being returned for available drivers.
 
 = 0.8.2 =
 
