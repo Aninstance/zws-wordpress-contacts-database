@@ -258,7 +258,8 @@ Class AdminView {
 
     public static function display_map($map_config) {
 // check params have been passed and that there is something to display
-        if (!isset($map_config['contacts_array_safe'][0]['distance'])) {
+        if (!isset($map_config['contacts_database']['id'])) {
+            error_log('An error with the passing of $map_config to display_map has occurred.');
             return false;
         }
 // method to display the Google map
