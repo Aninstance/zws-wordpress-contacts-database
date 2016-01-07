@@ -178,7 +178,7 @@ Class AdminView {
         require_once(__DIR__ . '/Helpers.php');
         $options = get_site_option(self::OPTIONS_LABEL);
         $success = false;
-        $how_many_contacts = 500; // BUG - need to re-write max so that ALL possibilities are eval PRIOR to display of limited resultset. Set to eval 500 until fixed ...
+        $how_many_contacts = 5;
         $contacts_array = \ZwsContactsDatabase\DistanceCalculator::nearestContacts($how_many_contacts, $target_postcode);
         if ($contacts_array !== false) {
             $contacts_array_safe = [];
@@ -192,8 +192,8 @@ Class AdminView {
             foreach ($contacts_array as $key => $value) {
 // ensure variables from database are safe to output and add them to the contacts array. Only include contacts within their specified radius from target ...
                 // ... only those who are available TODAY are returned from the DistanceCalculator::nearestContacts method, above.
-                if (apply_filters('zws_filter_enforce_numeric', $value['distance']) <= apply_filters('zws_filter_enforce_numeric', $value['max_radius'])) {
-                    $id_safe = sanitize_text_field($key);
+                // ... ALL of TODAY's results (up to max results) are displayed, with the available times also printed.
+                    $id_safe = sanitize_text_field($value['id']);
                     $contacts_array_safe[$id_safe]['distance'] = apply_filters('zws_filter_enforce_numeric', $value['distance']);
                     $contacts_array_safe[$id_safe]['postcode'] = apply_filters('zws_filter_basic_sanitize', $value['postcode']);
                     $contacts_array_safe[$id_safe]['lat'] = apply_filters('zws_filter_basic_sanitize', $value['lat']);
@@ -208,7 +208,6 @@ Class AdminView {
                     $contacts_array_safe[$id_safe]['extra_info'] = nl2br(
                             stripslashes(
                                     apply_filters('zws_filter_text_with_linebreak', $value['extra_info'])));
-                }
             }
 
             // add contacts array to map config

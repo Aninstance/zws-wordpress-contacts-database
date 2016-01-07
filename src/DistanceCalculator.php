@@ -55,10 +55,18 @@ Class DistanceCalculator {
                     }
                 }
                 if (!empty($distance_array)) {
-                    // sort it
-                    if (uasort($distance_array, array(__CLASS__, 'my_multidimensional_array_sorter'))) {
-                        // only return the top $how_many (defaults to 5)
-                        return array_slice($distance_array, 0, $how_many);
+
+                    $top_n = [];
+                    $c = 0;
+                    foreach ($distance_array as $key => $value) {
+                        // if within max radius, and available, and within requested size of resultset
+                        if (apply_filters('zws_filter_enforce_numeric', $value['distance']) <=
+                                apply_filters('zws_filter_enforce_numeric', $value['max_radius']) && $c < $how_many) {
+                            // add the id to the actual dataset, at it will no longer be available as the key
+                            $value['id'] = sanitize_text_field($key);
+                            $top_n[$c] = $value;
+                            $c++;
+                        }
                     }
                 }
             }
