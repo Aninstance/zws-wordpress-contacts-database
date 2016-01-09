@@ -18,7 +18,7 @@ Class DistanceCalculator {
     const DISTANCE_MATRIX_BASE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
 
     public static function nearestContacts($how_many = 5, $target = NULL) {
-
+        
         /* returns a multidimensional array of x contacts, sorted by distance from target, containing an innter array of details */
 
         if (isset($target)) {
@@ -77,11 +77,14 @@ Class DistanceCalculator {
 
     public static function getDistance($target_postcode, $contact_postcode) {
         require_once(__DIR__ . '/QueryAPI.php');
+        
+        $country_list = unserialize(ZWS_CDB_COUNTRY);
 
         $google_api_key = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
         $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
-        $path = "?origins={$target_postcode}
-            &destinations={$contact_postcode}
+        $country_name = key($country_list[$country_code]);
+        $path = "?origins={$target_postcode}, {$country_name}
+            &destinations={$contact_postcode}, {$country_name}
             &mode=driving
             &language=en-EN
             &components=country:{$country_code}
