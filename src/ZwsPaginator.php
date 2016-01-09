@@ -263,7 +263,10 @@ Class ZwsPaginator {
 // query google maps api to get longitute and latitude for the postcode, to pull back from db when displayed on map
             require_once(__DIR__ . '/QueryAPI.php');
             $google_api_key = apply_filters('zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key']);
-            $path = '?address=' . $safe_values['postcode'] . '&language=en-EN&sensor=false&key=' . $google_api_key;
+            $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
+            $country_list = unserialize(ZWS_CDB_COUNTRY);
+            $country_name = array_search($country_code, $country_list);
+            $path = '?address=' . $safe_values['postcode'] . ',' . $country_name . '&language=en-EN&sensor=false&key=' . $google_api_key;
             $data = \ZwsContactsDatabase\QueryAPI::makeQuery(self::MAPS_API_BASE_URL, $path);
             if ($data['returned_data'] && $data['returned_data']['status'] === 'OK') {
                 if ($data['cached']) {
