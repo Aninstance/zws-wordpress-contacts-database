@@ -109,15 +109,16 @@ The current version is: 0.8.4
 
 = 0.8.4 =
 
-NEW ...
+* Added system support (beta) for locations in India
+* Fixed bug where incorrect lat/lng may have been set/used under certain circumstances.
 
 = 0.8.3 =
 
-Fix for bug where correct number of valid results were not being returned for available drivers.
+* Fix for bug where correct number of valid results were not being returned for available drivers.
 
 = 0.8.2 =
 
-No change. Version number bumped to correct versioning issue.
+* No change. Version number bumped to correct versioning issue.
 
 = 0.8.1 =
 
