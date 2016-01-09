@@ -107,6 +107,9 @@ Class SetOptions {
                             case 'US':
                                 $country_code = 'US';
                                 break;
+                            case 'IN':
+                                $country_code = 'IN';
+                                break;
                             default:
                                 $country_code = 'GB';
                                 break;
@@ -134,7 +137,7 @@ Class SetOptions {
     private static function getBaseCoordinates($postcode) {
         // returns an array for the coordinates (lat, lng).
         require_once(__DIR__ . '/QueryAPI.php');
-        $county_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
+        $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
         $base_url = 'https://maps.googleapis.com/maps/api/geocode/json';
         $path = "?address={$postcode}&language=en-EN&components=country:{$country_code}&sensor=false";
         $result = \ZwsContactsDatabase\QueryAPI::makeQuery($base_url, $path);
