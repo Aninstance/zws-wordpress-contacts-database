@@ -46,8 +46,10 @@ Class JavascriptBuilder {
         $filename = __DIR__ . '/../inc/' . $map_config['new_script_uri'];
         // build the file
         $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
+        $country_list = unserialize(ZWS_CDB_COUNTRY);
+        $country_name = array_search($country_code, $country_list);
         $js = 'jQuery(document).ready(function($) {
-        $.getJSON(\'https://maps.googleapis.com/maps/api/geocode/json?address=' . $map_config['target_postcode'] . '&language=en-EN&components=country:' . $country_code . '&sensor=false\', null, function(data){
+        $.getJSON(\'https://maps.googleapis.com/maps/api/geocode/json?address=' . $map_config['target_postcode'] . ',' . $country_name . '&language=en-EN&components=country:' . $country_code . '&sensor=false\', null, function(data){
         var p = data.results[0].geometry.location;
         var LatLng = new google.maps.LatLng(p.lat, p.lng);
         var mapCanvas = document.getElementById(\'map-canvas\');
