@@ -5,7 +5,7 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
 Tested up to: 4.4
-Stable tag: 0.8.4
+Stable tag: 0.8.5
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
 
@@ -103,9 +103,13 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.8.4
+The current version is: 0.8.5
 
 == Changelog ==
+
+= 0.8.5 =
+
+* NEW ...
 
 = 0.8.4 =
 
