@@ -82,7 +82,7 @@ Class DistanceCalculator {
 
         $google_api_key = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
         $country_code = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
-        $country_name = key($country_list[$country_code]);
+        $country_name = array_search($country_code, $country_list);
         $path = "?origins={$target_postcode}, {$country_name}
             &destinations={$contact_postcode}, {$country_name}
             &mode=driving
