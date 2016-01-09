@@ -184,7 +184,7 @@ Class Admin {
                        $current_country = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'];
                        echo '<small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Country of deployment</small>';
                        echo '<select name="zws_contacts_database_plugin_country_of_use" id="zws_contacts_database_plugin_country_of_use">';
-                       foreach (unserialize(COUNTRY) as $country_name => $country_code) {
+                       foreach (unserialize(ZWS_CDB_COUNTRY) as $country_name => $country_code) {
                            if ($country_code == apply_filters(
                                            'zws_filter_basic_sanitize', get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_country_of_use'])) {
                                $selected = 'selected';
