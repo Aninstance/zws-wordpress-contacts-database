@@ -107,6 +107,8 @@ Class SetOptions {
                             case 'US':
                                 $country_code = 'US';
                                 break;
+                            case 'IN':
+                                $country_code = 'IN';
                             default:
                                 $country_code = 'GB';
                                 break;
