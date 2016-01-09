@@ -2,9 +2,9 @@
 
 namespace ZwsContactsDatabase;
 
-define("DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
+define(__NAMESPACE__ . "DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
 
-define("COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US', 'India' => 'IN')));
+define(__NAMESPACE__ . "COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US', 'India' => 'IN')));
 
 
 /**
@@ -39,8 +39,8 @@ define("COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => '
  * GNU General Public License for more details.
  * **********************************************************************
  */
-define("SHORTCODE_TAG_FORM", "zwscontactsdatabase_public_form");
-define("SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
+define(__NAMESPACE__ . "SHORTCODE_TAG_FORM", "zwscontactsdatabase_public_form");
+define(__NAMESPACE__ . "SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
 
 //define("PATH_TO_INC", plugins_url('ZwsContactsDatabase/inc/', __FILE__));
 
