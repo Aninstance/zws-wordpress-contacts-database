@@ -79,7 +79,7 @@ Class View {
         . '"Unavailable" indicates you are unavailable for the <strong>entire day</strong>.<br>'
         . 'By default, the options below are set to <strong>"Unavailable"</strong> every day. Please adjust as required!<br>'
         . 'Feel free to provide more detail in the "Extra information" section if necessary.</p>';
-        foreach (unserialize(DAYS) as $value => $day) {
+        foreach (unserialize(ZWS_CDB_DAYS) as $value => $day) {
             // note: put the time selectors inside a div with class of zws-contacts-db-modal, as sharing jquery.timepicker.init.js file 
             // with update datebase form (displayed in a modal in ZwsPaginator) - where that class is necessary
             // as there are multiple divs using same class, but only the active modal has the zws-contacts-db-modal class added when the modal is opened,
@@ -121,7 +121,7 @@ Class View {
             $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $_POST['max_radius']);
             $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']);
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
-            foreach (unserialize(DAYS)as $key => $day) {
+            foreach (unserialize(ZWS_CDB_DAYS)as $key => $day) {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
                     $safe_values['earliest_time_' . $day] = apply_filters('zws_filter_basic_sanitize', $_POST['earliest_time_' . $day]);
                 } else {

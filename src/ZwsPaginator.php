@@ -115,7 +115,7 @@ Class ZwsPaginator {
             . '<div class="zws-contacts-db-times-available">'
             . '<ul class="contact-info-list-inner_' . $c . '">';
             // available times field
-            foreach (unserialize(DAYS) as $key => $day) {
+            foreach (unserialize(ZWS_CDB_DAYS) as $key => $day) {
                 $set_obj_property_earliest = 'earliest_time_' . $day;
                 $set_obj_property_latest = 'latest_time_' . $day;
                 if (apply_filters('zws_filter_basic_sanitize', $value->$set_obj_property_earliest) == null || apply_filters('zws_filter_basic_sanitize', $value->$set_obj_property_latest) == null) {
@@ -200,7 +200,7 @@ Class ZwsPaginator {
                 . '"Unavailable" indicates you are unavailable for the <strong>entire day</strong>.<br>'
                 . 'By default, the options below are set to <strong>"Unavailable"</strong> every day. Please adjust as required!<br>'
                 . 'Feel free to provide more detail in the "Extra information" section if necessary.</p>';
-        foreach (unserialize(DAYS) as $value => $day) {
+        foreach (unserialize(ZWS_CDB_DAYS) as $value => $day) {
             $earliest_time_key = 'earliest_time_' . $day;
             $latest_time_key = 'latest_time_' . $day;
             if (esc_attr($values->$earliest_time_key) == 'UNAVL') {
@@ -252,7 +252,7 @@ Class ZwsPaginator {
             $safe_values['email'] = apply_filters('zws_filter_basic_sanitize', $post['email']);
             $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $post['max_radius']);
             $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $post['extra_info']);
-            foreach (unserialize(DAYS)as $key => $day) {
+            foreach (unserialize(ZWS_CDB_DAYS)as $key => $day) {
                 if (sanitize_text_field($post['earliest_time_' . $day]) !== 'Unavailable') {
                     $safe_values['earliest_time_' . $day] = apply_filters('zws_filter_basic_sanitize', $post['earliest_time_' . $day]);
                 } else {

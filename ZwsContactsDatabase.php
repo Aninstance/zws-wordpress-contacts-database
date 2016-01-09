@@ -2,9 +2,9 @@
 
 namespace ZwsContactsDatabase;
 
-define(__NAMESPACE__ . "DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
+define("ZWS_CDB_DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
 
-define(__NAMESPACE__ . "COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US', 'India' => 'IN')));
+define("ZWS_CDB_COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US', 'India' => 'IN')));
 
 
 /**
@@ -39,8 +39,8 @@ define(__NAMESPACE__ . "COUNTRY", serialize(array('United Kingdom' => 'GB', 'Uni
  * GNU General Public License for more details.
  * **********************************************************************
  */
-define(__NAMESPACE__ . "SHORTCODE_TAG_FORM", "zwscontactsdatabase_public_form");
-define(__NAMESPACE__ . "SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
+define("ZWS_CDB_SHORTCODE_TAG_FORM", "zwscontactsdatabase_public_form");
+define("ZWS_CDB_SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
 
 //define("PATH_TO_INC", plugins_url('ZwsContactsDatabase/inc/', __FILE__));
 
@@ -136,6 +136,6 @@ add_action('admin_menu', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_
 register_activation_hook(__FILE__, array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_installer'));
 // add the shortcodes
 require_once(__DIR__ . '/src/View.php');
-add_shortcode(SHORTCODE_TAG_FORM, array('\ZwsContactsDatabase\View', 'submission_form'));
+add_shortcode(ZWS_CDB_SHORTCODE_TAG_FORM, array('\ZwsContactsDatabase\View', 'submission_form'));
 require_once(__DIR__ . '/src/AdminView.php');
-add_shortcode(SHORTCODE_TAG_RESULTS, array('ZwsContactsDatabase\AdminView', 'dashboard'));
+add_shortcode(ZWS_CDB_SHORTCODE_TAG_RESULTS, array('ZwsContactsDatabase\AdminView', 'dashboard'));
