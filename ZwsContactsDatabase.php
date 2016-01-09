@@ -4,7 +4,7 @@ namespace ZwsContactsDatabase;
 
 define("DAYS", serialize(array(1 => 'mondays', 2 => 'tuesdays', 3 => 'wednesdays', 4 => 'thursdays', 5 => 'fridays', 6 => 'saturdays', 7 => 'sundays')));
 
-define("COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US')));
+define("COUNTRY", serialize(array('United Kingdom' => 'GB', 'United States' => 'US', 'India' => 'IN')));
 
 
 /**
