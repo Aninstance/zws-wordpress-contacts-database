@@ -109,7 +109,8 @@ The current version is: 0.8.5
 
 = 0.8.5 =
 
-* NEW ...
+* Fixed error where new registrants were unable to sign up due to bug in authorisation procedure.
+* Increased the maximum number of characters for the 'extra info' field, and enforced limit.
 
 = 0.8.4 =
 
