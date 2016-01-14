@@ -216,8 +216,8 @@ Class ZwsPaginator {
                     . '<input id="zws-contacts-database-latest-time-' . $day . '" required="required" type="text" name="latest_time_' . $day . '" value="' . esc_attr($values->$latest_time_key) . '"/>'
                     . '</span></p>';
         }
-        $form_content .= '<h3>Additional information</h3><p>'
-                . '<textarea rows="10" cols="35" name="extra_info" placeholder="Extra information">' . esc_attr($values->extra_info) . '</textarea>'
+        $form_content .= '<h3>Additional information (max 950 characters)</h3><p>'
+                . '<textarea rows="10" cols="35" name="extra_info" placeholder="Extra information" maxlength="950">' . esc_attr($values->extra_info) . '</textarea>'
                 . '</p>'
                 . '<input type="hidden" name="id" id="id" value="' . esc_attr($values->id) . '"/>';
         return $form_content;
@@ -251,7 +251,8 @@ Class ZwsPaginator {
             $safe_values['phone'] = apply_filters('zws_filter_enforce_numeric', $post['phone']);
             $safe_values['email'] = apply_filters('zws_filter_basic_sanitize', $post['email']);
             $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $post['max_radius']);
-            $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $post['extra_info']);
+            // substr the extra info to double-check it is limited to 950 characters
+            $safe_values['extra_info'] = substr(apply_filters('zws_filter_text_with_linebreak', $post['extra_info']), 0, 949);
             foreach (unserialize(ZWS_CDB_DAYS)as $key => $day) {
                 if (sanitize_text_field($post['earliest_time_' . $day]) !== 'Unavailable') {
                     $safe_values['earliest_time_' . $day] = apply_filters('zws_filter_basic_sanitize', $post['earliest_time_' . $day]);

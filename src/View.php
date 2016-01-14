@@ -95,8 +95,8 @@ Class View {
             echo '</span></p></div>';
         }
         echo '<h3>Anything else you\'d like to mention?</h3><p>';
-        echo 'Any extra information <br />';
-        echo '<textarea rows="10" cols="35" name="extra_info" placeholder="Extra information">' . ( isset($_POST["extra_info"]) ? esc_attr($_POST["extra_info"]) : '' ) . '</textarea>';
+        echo 'Any extra information (max. 1000 characters)<br />';
+        echo '<textarea rows="10" cols="35" name="extra_info" placeholder="Extra information" maxlength="950">' . ( isset($_POST["extra_info"]) ? esc_attr($_POST["extra_info"]) : '' ) . '</textarea>';
         echo '</p>';
         echo '<h3>Complete registration</h3><p>';
         echo $privacy_blurb . '<input type="checkbox" name="privacy_accept" value="accept">';
@@ -119,7 +119,8 @@ Class View {
             $safe_values['phone'] = apply_filters('zws_filter_enforce_numeric', ($_POST['phone']));
             $safe_values['email'] = apply_filters('zws_filter_basic_sanitize', $_POST['email']);
             $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $_POST['max_radius']);
-            $safe_values['extra_info'] = apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']);
+            // substr the extra info to double-check it is limited to 950 characters
+            $safe_values['extra_info'] = substr(apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']), 0, 949);
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
             foreach (unserialize(ZWS_CDB_DAYS)as $key => $day) {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
@@ -155,7 +156,7 @@ Class View {
 
 // send to database
             require_once(__DIR__ . '/Database.php');
-            if (\ZwsContactsDatabase\Database::insert($safe_values)) {
+            if (\ZwsContactsDatabase\Database::insert($safe_values, $user_signup=True)) {
                 // email admins
                 if (!self::email_notifications($safe_values)) {
                     error_log('Error sending email to administrator ...');
@@ -166,6 +167,7 @@ Class View {
                 return self::failure_view();
             }
         } else {
+            // if it wasn't a form submission, create / present the form
             return self::create_form();
         }
     }
@@ -185,7 +187,7 @@ Class View {
                 break;
             default:
                 $message = '<div class="zws-contacts-db-failure-message"><p>Unfortunately, an error occurred and your details have not been submitted.</p>'
-                        . '<p>Did you already register using the same phone or email? Or, maybe you mistyped your postcode?</p>'
+                        . '<p>Did you already register using the same phone or email? Or, maybe you mistyped your postcode? Or, perhaps you submitted more than 950 charcters as your additional information?</p>'
                         . '<p>Please try again, but if you receive this message once more just contact us and we\'ll add your details manually.</p></div>';
                 break;
         }

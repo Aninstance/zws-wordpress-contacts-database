@@ -23,7 +23,7 @@ Class Database {
         }
 
         // increment this when database structure changed or name changed
-        $db_version = '1.0';
+        $db_version = '1.1';
 
 // updated database 
         global $wpdb;
@@ -43,7 +43,7 @@ Class Database {
         phone varchar(20) NOT NULL,
         email varchar(255) DEFAULT '' NOT NULL,
         max_radius mediumint(9) NOT NULL,
-        extra_info varchar(255),
+        extra_info varchar(1000),
         earliest_time_mondays varchar(5) NULL,
         latest_time_mondays varchar(5) NULL,
         earliest_time_tuesdays varchar(5) NULL,
@@ -81,10 +81,10 @@ Class Database {
         return $opts;
     }
 
-    public static function insert($safe_values) {
+    public static function insert($safe_values, $user_signup=False) {
 
-        // check to ensure user has at least 'editor' privileges
-        if (!\ZwsContactsDatabase\AdminView::authenticate()) {
+        // check to ensure user has at least 'editor' privileges unless being called as a new user signup (to ensure database entries can't be modified by non-admins)
+        if (!\ZwsContactsDatabase\AdminView::authenticate() && !$user_signup) {
             return false;
         }
 
