@@ -54,6 +54,16 @@ Class ZwsFilters {
     public static function enforce_numeric($input) {
         return sanitize_text_field(trim(preg_replace('/\D/', '', $input)));
     }
+    
+    public static function limit_chars($input, $limit_length=950, $append='...') {
+       // Method to limit characters of an input string, without cutting words, appending "...". Default return is 953 chars including append.
+           if (strlen($input > $limit_length)) {
+           $wrapped = wordwrap($input, $limit_length);
+           $wrapped_array = explode('\n', $wrapped, 2);
+           return $wrapped_array[0] . $append;
+           }
+           return $input; // return unchanged input if less than the max length
+   }
 
 }
 
@@ -66,3 +76,4 @@ add_filter('zws_filter_text_with_linebreak', array('\ZwsContactsDatabase\ZwsFilt
 add_filter('zws_filter_to_date_obj', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_to_date_obj'), 10, 1);
 add_filter('zws_filter_sanitize_postcode', array('\ZwsContactsDatabase\ZwsFilters', 'validate_textfield_postcode'), 10, 1);
 add_filter('zws_filter_enforce_numeric', array('\ZwsContactsDatabase\ZwsFilters', 'enforce_numeric'), 10, 1);
+add_filter('zws_filter_limit_chars', array('\ZwsContactsDatabase\ZwsFilters', 'limit_chars'), 10, 1);

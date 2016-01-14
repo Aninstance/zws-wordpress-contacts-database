@@ -119,8 +119,8 @@ Class View {
             $safe_values['phone'] = apply_filters('zws_filter_enforce_numeric', ($_POST['phone']));
             $safe_values['email'] = apply_filters('zws_filter_basic_sanitize', $_POST['email']);
             $safe_values['max_radius'] = apply_filters('zws_filter_enforce_numeric', $_POST['max_radius']);
-            // substr the extra info to double-check it is limited to 950 characters
-            $safe_values['extra_info'] = substr(apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']), 0, 949);
+            $safe_values['extra_info'] = apply_filters(
+                    'zws_filter_limit_chars', apply_filters('zws_filter_text_with_linebreak', $_POST['extra_info']));
             $safe_values['pp_accepted'] = true ? isset($_POST['privacy_accept']) : false;
             foreach (unserialize(ZWS_CDB_DAYS)as $key => $day) {
                 if (sanitize_text_field($_POST['earliest_time_' . $day]) !== 'Unavailable') {
@@ -318,5 +318,4 @@ Class View {
             return false;
         }
     }
-
 }
