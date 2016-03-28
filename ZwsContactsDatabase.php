@@ -122,7 +122,8 @@ Class ZwsContactsDatabase {
 // autoload the vendor packages
 require_once(__DIR__ . '/vendor/autoload.php');
 // check minimum version before initiating installer using the vendor WPUpdatePHP library
-$updatePhp = new \WPUpdatePhp( '5.5.0' );
+require_once(__DIR__ . '/vendor/wp-update-php/src/WPUpdatePhp.php');
+$updatePhp = new \WPUpdatePhp( $minimum_version='5.7.0', $plugin_name='ZWS Contacts Database');
 if ( $updatePhp->does_it_meet_required_php_version() ) {
     // include the filters
     require_once(__DIR__ . '/src/Filters.php');
