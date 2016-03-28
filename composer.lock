@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "15b519ab9817ad682c52473b05f88ea0",
-    "content-hash": "348a5f95c02237f5fef8435619e0847f",
+    "hash": "8840215128cf6bd4d1ae96f7fcec71aa",
+    "content-hash": "7a12869adba2f709560fabbdf077d9f5",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -226,33 +226,6 @@
                 "response"
             ],
             "time": "2015-05-04 20:22:00"
-        },
-        {
-            "name": "wpupdatephp/wp-update-php",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/WPupdatePHP/wp-update-php.git",
-                "reference": "d13faa42781d080c1ba122419cfc8df1b9e3e804"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WPupdatePHP/wp-update-php/zipball/d13faa42781d080c1ba122419cfc8df1b9e3e804",
-                "reference": "d13faa42781d080c1ba122419cfc8df1b9e3e804",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpspec/phpspec": "~2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Library to be bundled with WordPress plugins to enforce users to upgrade to PHP 5.4 hosting",
-            "time": "2015-02-13 12:00:12"
         }
     ],
     "packages-dev": [],
