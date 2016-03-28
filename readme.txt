@@ -109,7 +109,8 @@ The current version is: 0.8.6
 
 = 0.8.6 =
 
-* NEW ...
+* Updated the Guzzle library
+* Updated jquery-geocomplete and jquery-timepicker
 
 = 0.8.5 =
 
