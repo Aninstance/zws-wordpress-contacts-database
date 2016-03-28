@@ -84,6 +84,12 @@
 
     this.options = $.extend(true, {}, defaults, options);
 
+    // This is a fix to allow types:[] not to be overridden by defaults
+    // so search results includes everything
+    if (options && options.types) {
+      this.options.types = options.types;
+    }
+    
     this.input = input;
     this.$input = $(input);
 
@@ -125,14 +131,14 @@
         'click',
         $.proxy(this.mapClicked, this)
       );
- 
+
       // add dragend even listener on the map
       google.maps.event.addListener(
         this.map,
         'dragend',
         $.proxy(this.mapDragged, this)
       );
-      
+
       // add idle even listener on the map
       google.maps.event.addListener(
         this.map,
@@ -358,8 +364,8 @@
       }
 
       // Get the first suggestion's text.
-      var $span1 = $(".pac-container:last .pac-item" + selected + ":first span:nth-child(2)").text();
-      var $span2 = $(".pac-container:last .pac-item" + selected + ":first span:nth-child(3)").text();
+      var $span1 = $(".pac-container:visible .pac-item" + selected + ":first span:nth-child(2)").text();
+      var $span2 = $(".pac-container:visible .pac-item" + selected + ":first span:nth-child(3)").text();
 
       // Adds the additional information, if available.
       var firstResult = $span1;
@@ -506,7 +512,7 @@
     mapClicked: function(event) {
         this.trigger("geocode:click", event.latLng);
     },
-   
+
     // Fire the "geocode:mapdragged" event and pass the current position of the map center.
     mapDragged: function(event) {
       this.trigger("geocode:mapdragged", this.map.getCenter());
@@ -585,3 +591,4 @@
   };
 
 })( jQuery, window, document );
+
