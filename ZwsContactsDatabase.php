@@ -121,21 +121,26 @@ Class ZwsContactsDatabase {
 
 // autoload the vendor packages
 require_once(__DIR__ . '/vendor/autoload.php');
-// include the filters
-require_once(__DIR__ . '/src/Filters.php');
-// add action for our enqueued scripts and stylesheets
-add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_scripts'));
-add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_styles'));
-// add action to send additional headers
-add_action('send_headers', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_no_cache'));
-// add additional links on plugins page
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
-// create the administration page
-add_action('admin_menu', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_admin'));
-// add the installer to the activation hook
-register_activation_hook(__FILE__, array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_installer'));
-// add the shortcodes
-require_once(__DIR__ . '/src/View.php');
-add_shortcode(ZWS_CDB_SHORTCODE_TAG_FORM, array('\ZwsContactsDatabase\View', 'submission_form'));
-require_once(__DIR__ . '/src/AdminView.php');
-add_shortcode(ZWS_CDB_SHORTCODE_TAG_RESULTS, array('ZwsContactsDatabase\AdminView', 'dashboard'));
+// check minimum version before initiating installer using the vendor WPUpdatePHP library
+require_once(__DIR__ . '/vendor/wp-update-php/src/WPUpdatePhp.php');
+$updatePhp = new \WPUpdatePhp( $minimum_version='5.5.0', $plugin_name='ZWS Contacts Database');
+if ( $updatePhp->does_it_meet_required_php_version() ) {
+    // include the filters
+    require_once(__DIR__ . '/src/Filters.php');
+    // add action for our enqueued scripts and stylesheets
+    add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_scripts'));
+    add_action('init', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'load_styles'));
+    // add action to send additional headers
+    add_action('send_headers', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_no_cache'));
+    // add additional links on plugins page
+    add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('\ZwsContactsDatabase\ZwsContactsDatabase', 'add_action_links'));
+    // create the administration page
+    add_action('admin_menu', array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_admin'));
+    // add the installer to the activation hook
+    register_activation_hook(__FILE__, array('\ZwsContactsDatabase\ZwsContactsDatabase', 'run_installer'));
+    // add the shortcodes
+    require_once(__DIR__ . '/src/View.php');
+    add_shortcode(ZWS_CDB_SHORTCODE_TAG_FORM, array('\ZwsContactsDatabase\View', 'submission_form'));
+    require_once(__DIR__ . '/src/AdminView.php');
+    add_shortcode(ZWS_CDB_SHORTCODE_TAG_RESULTS, array('ZwsContactsDatabase\AdminView', 'dashboard'));
+}
