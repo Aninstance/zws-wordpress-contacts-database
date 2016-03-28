@@ -1,5 +1,6 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "wpupdatephp/wp-update-php": "^1.0"
     }
 }
