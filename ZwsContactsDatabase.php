@@ -47,9 +47,14 @@ define("ZWS_CDB_SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
 Class ZwsContactsDatabase {
 
     public static function run_installer() {
-        require_once(__DIR__ . '/src/Installer.php');
-        // run installer
-        \ZwsContactsDatabase\Installer::install();
+
+        # check minimum version before initiating installer using the vendor WPUpdatePHP library
+        $updatePhp = new WPUpdatePhp('5.7.0');
+        if ($updatePhp->does_it_meet_required_php_version(PHP_VERSION)) {
+            require_once(__DIR__ . '/src/Installer.php');
+            // run installer
+            \ZwsContactsDatabase\Installer::install();
+        }
     }
 
     public static function run_admin() {
