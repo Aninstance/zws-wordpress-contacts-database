@@ -106,7 +106,7 @@ Class Admin {
             </div>
             <?php
             // return true if ran without errors, for unit testing purposes.
-            return True;
+            return true;
         }
 
         /* // define form elements // */

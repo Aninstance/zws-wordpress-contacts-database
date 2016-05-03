@@ -109,7 +109,8 @@ The current version is: 0.8.7
 
 = 0.8.7 =
 
-* New stuff ...
+* TO DO: Add error catch so that it doesn't timeout if signup confirmation email can't be sent (eg. if a postfix issue).
+* TO DO: List the nearest 5 contacts in order of distance (they're unordered at the moment).
 
 = 0.8.6 =
 
