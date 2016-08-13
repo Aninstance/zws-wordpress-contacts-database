@@ -11,7 +11,7 @@ define("ZWS_CDB_COUNTRY", serialize(array('United Kingdom' => 'GB', 'United Stat
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 0.8.6
+ * Version: 0.8.7
  * Author: Zaziork Web Solutions
  * Author URI: http://www.zaziork.com
  * Copyright (c) 2015 Zaziork Web Solutions. All rights reserved.
@@ -44,28 +44,34 @@ define("ZWS_CDB_SHORTCODE_TAG_RESULTS", "zwscontactsdatabase_results_page");
 
 //define("PATH_TO_INC", plugins_url('ZwsContactsDatabase/inc/', __FILE__));
 
-Class ZwsContactsDatabase {
+Class ZwsContactsDatabase
+{
+    const OPTIONS_LABEL = 'zws_contacts_database_options';
 
-    public static function run_installer() {
+    public static function run_installer()
+    {
         require_once(__DIR__ . '/src/Installer.php');
         // run installer
         \ZwsContactsDatabase\Installer::install();
     }
 
-    public static function run_admin() {
+    public static function run_admin()
+    {
         require_once(__DIR__ . '/src/Admin.php');
         // run the menu page code
         \ZwsContactsDatabase\Admin::setup_menu();
     }
 
-    public static function add_action_links($links) {
+    public static function add_action_links($links)
+    {
         $mylinks = array(
             '<a href="' . admin_url('admin.php?page=zws-database-creator') . '">Settings</a>',
         );
         return array_merge($mylinks, $links);
     }
 
-    public static function load_scripts() {
+    public static function load_scripts()
+    {
         if (!is_admin()) {
             // set up our scripts
             $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.js', __FILE__);
@@ -74,7 +80,8 @@ Class ZwsContactsDatabase {
             $jquery_timepicker_js = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__);
             $jquery_timepicker_init_js = plugins_url('/inc/jquery.timepicker.init.js', __FILE__);
             $jquery_delete_record_js = plugins_url('/inc/jquery.deleteRecord.js', __FILE__);
-            $jquery_maps_with_places_js = 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false';
+            $jquery_maps_with_places_js = 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false' .
+                ' &key=' . get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
             $jquery_geocomplete_js = plugins_url('/vendor/jquery-geocomplete/jquery.geocomplete.js', __FILE__);
             $jquery_geocomplete_init_js = plugins_url('/inc/jquery.geocomplete.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
@@ -98,7 +105,8 @@ Class ZwsContactsDatabase {
         }
     }
 
-    public static function load_styles() {
+    public static function load_styles()
+    {
         // set up our scripts
         $jquery_ui_css = plugins_url('/vendor/jquery/jquery-ui-1.11.4/jquery-ui.min.css', __FILE__);
         $jquery_timepicker_css = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.css', __FILE__);
@@ -112,7 +120,8 @@ Class ZwsContactsDatabase {
     }
 
     // prevent caching in adminview
-    public static function add_no_cache() {
+    public static function add_no_cache()
+    {
         header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
         header("Pragma: no-cache"); //HTTP 1.0
     }
@@ -123,8 +132,8 @@ Class ZwsContactsDatabase {
 require_once(__DIR__ . '/vendor/autoload.php');
 // check minimum version before initiating installer using the vendor WPUpdatePHP library
 require_once(__DIR__ . '/vendor/wp-update-php/src/WPUpdatePhp.php');
-$updatePhp = new \WPUpdatePhp( $minimum_version='5.5.0', $plugin_name='ZWS Contacts Database');
-if ( $updatePhp->does_it_meet_required_php_version() ) {
+$updatePhp = new \WPUpdatePhp($minimum_version = '5.5.0', $plugin_name = 'ZWS Contacts Database');
+if ($updatePhp->does_it_meet_required_php_version()) {
     // include the filters
     require_once(__DIR__ . '/src/Filters.php');
     // add action for our enqueued scripts and stylesheets

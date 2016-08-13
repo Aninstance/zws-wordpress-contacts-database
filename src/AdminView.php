@@ -15,7 +15,6 @@ use ZwsContactsDatabase\Helpers as Zelp;
  */
 Class AdminView {
 
-    const GOOGLE_MAPS_API = 'https://maps.googleapis.com/maps/api/js';
     const OPTIONS_LABEL = 'zws_contacts_database_options';
 
     public static function dashboard() {
@@ -280,7 +279,6 @@ Class AdminView {
         require_once(__DIR__ . '/JavascriptBuilder.php');
         if (\ZwsContactsDatabase\JavascriptBuilder::generate_js($map_config)) {
 // load up the scripts
-            wp_enqueue_script('google_maps_api', self::GOOGLE_MAPS_API);
             wp_enqueue_script('my_implementation', $new_filename, array('jquery'));
 
 // define the display structure

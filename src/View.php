@@ -18,24 +18,6 @@ Class View {
 
     public static function submission_form($atts = NULL) {
 
-        /*
-          // Handle attribues in shortcode tags - translate to variables for use in code.
-          // let's sanitize and filter the incoming attributes before we play with them
-          if (!empty($atts)) {
-          $sanitized_atts = self::filter_shortcodes($atts);
-          }
-
-          $a = shortcode_atts(array(
-          'url' => get_site_option(self::$plugin_options_name)['zws_api_consumer_api_base_url'],
-          'path' => get_site_option(self::$plugin_options_name)['zws_api_consumer_api_path'],
-          'protocol' => get_site_option(self::$plugin_options_name)['zws_api_consumer_proto'],
-          ), $sanitized_atts);
-          $url = $a['url'];
-          $path = $a['path'];
-          $protocol = $a['protocol'];
-
-         */
-
 // turn on output buffer
         \ob_start();
 //  display form or submit if a postback
