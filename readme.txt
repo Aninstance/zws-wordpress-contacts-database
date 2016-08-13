@@ -4,7 +4,7 @@ Donate link: https://www.zaziork.com/donate
 Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
-Tested up to: 4.4
+Tested up to: 4.5.3
 Stable tag: 0.8.7
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
@@ -109,8 +109,9 @@ The current version is: 0.8.7
 
 = 0.8.7 =
 
-* TO DO: Add error catch so that it doesn't timeout if signup confirmation email can't be sent (eg. if a postfix issue).
-* TO DO: List the nearest 5 contacts in order of distance (they're unordered at the moment).
+* Update Guzzle
+* Update query-geocomplete and jquery-timepicker
+* Tested up to Wordpress 4.5.3
 
 = 0.8.6 =
 
