@@ -5,7 +5,7 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
 Tested up to: 4.5.3
-Stable tag: 0.8.7
+Stable tag: 0.8.8
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
 
@@ -103,9 +103,17 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.8.7
+The current version is: 0.8.8
 
 == Changelog ==
+
+= 0.8.8 =
+
+* TO DO: Add error catch so that it doesn't timeout if signup confirmation email can't be sent (eg. if a postfix issue).
+* TO DO: List the nearest 5 contacts in order of distance (they're unordered at the moment).
+* TO DO: Add Netherlands as a selectable location.
+* TO DO: Allow user query through GPS co-ordinates rather than postcode.
+* TO DO: Refactor to provide an option to allow users (rather than just admins) to search for other subscribers by location.
 
 = 0.8.7 =
 
