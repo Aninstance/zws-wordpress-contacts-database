@@ -5,7 +5,7 @@ Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
 Tested up to: 4.7.5
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
 
@@ -13,7 +13,7 @@ Plugin to create and administer a contacts database and calculate nearest contac
 
 This is a plugin to create and administer a contacts database and calculate the nearest contacts to any given postcode.
 
-The plugin is currently configured to support UK and USA addresses. If you are not in the UK or USA and would but would like this configured for your own country of residence, please contact us at: https://www.zaziork.com/contact/
+The plugin is currently configured to support UK and USA addresses. If you are not in the UK or USA and would but would like this configured for your own country of residence, please contact us at: https://www.aninstance.com/contact/
 
 = Example use case =
 
@@ -69,13 +69,13 @@ The plugin has been tested with PHP versions 5.6.x and above.
 
 == Plugin Website ==
 
-The URL of this plugin's website is: https://www.zaziork.com/zws-contacts-database/
+The URL of this plugin's website is: https://www.aninstance.com/zws-contacts-database/
 
 The URL of this plugin's Wordpress page is: https://wordpress.org/plugins/zws-contacts-database/
 
 == Installation ==
 
-Note: We do sell installation, configuration and support services. If you'd be interested in hiring us to get this up and running for you, please get in touch at: https://www.zaziork.com/contact/
+Note: We do sell installation, configuration and support services. If you'd be interested in hiring us to get this up and running for you, please get in touch at: https://www.aninstance.com/contact/
 
 To install search for "ZWS Contacts Database" in the WordPress Plugins Directory, then click the "Install Now" button.
 
@@ -103,11 +103,11 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 1.0
+The current version is: 1.0.1
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
 
 * Updated Guzzle
 * Update query-geocomplete and jquery-timepicker
