@@ -81,7 +81,7 @@ Class Admin {
                           do_settings_sections("basic_options_section");
                           do_settings_sections("memcached_options_section");
                           submit_button();
-                          ?>          
+                          ?>
                 </form>
             </div>
 
@@ -97,12 +97,12 @@ Class Admin {
                           <?php
                           do_settings_sections("clear_section_group");
                           submit_button('Manually Clear Cache Now');
-                          ?>          
+                          ?>
                 </form>
             </div>
 
             <div class="footer" style="position:relative;float:left;clear:left;">
-                <p>Thank you for using ZWS Contacts Database.  <a href="https://www.zaziork.com/donate/">Donations are much appreciated!</a></p>
+                <p>Thank you for using ZWS Contacts Database.  <a href="https://www.aninstance.com/donate/">Donations are much appreciated!</a></p>
             </div>
             <?php
             // return true if ran without errors, for unit testing purposes.
@@ -115,40 +115,40 @@ Class Admin {
 
         public static function google_api_key_form_field_element() {
             ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Your Google API Key (server)</small>      
-            <input type="text" name="zws_contacts_database_google_server_api_key" size="55" id="zws_contacts_database_google_server_api_key" 
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Your Google API Key (server)</small>
+            <input type="text" name="zws_contacts_database_google_server_api_key" size="55" id="zws_contacts_database_google_server_api_key"
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key']; ?>" />
                    <?php
                }
 
                public static function privacy_page_url_form_field_element() {
                    ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of privacy policy page (relative link - e.g. /privacy-policy)</small>      
-            <input type="text" name="zws_contacts_database_plugin_privacy_policy_url" size="55" id="zws_contacts_database_plugin_privacy_policy_url" 
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of privacy policy page (relative link - e.g. /privacy-policy)</small>
+            <input type="text" name="zws_contacts_database_plugin_privacy_policy_url" size="55" id="zws_contacts_database_plugin_privacy_policy_url"
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_privacy_policy_url']; ?>" />
                    <?php
                }
 
                public static function map_contact_icon_url_form_field_element() {
                    ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for contacts</small>      
-            <input type="text" name="zws_contacts_database_plugin_map_contact_icon_url" size="55" id="zws_contacts_database_plugin_map_contact_icon_url" 
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for contacts</small>
+            <input type="text" name="zws_contacts_database_plugin_map_contact_icon_url" size="55" id="zws_contacts_database_plugin_map_contact_icon_url"
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_map_contact_icon_url']; ?>" />
                    <?php
                }
 
                public static function map_target_icon_url_form_field_element() {
                    ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for target</small>      
-            <input type="text" name="zws_contacts_database_plugin_map_target_icon_url" size="55" id="zws_contacts_database_plugin_map_target_icon_url" 
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for target</small>
+            <input type="text" name="zws_contacts_database_plugin_map_target_icon_url" size="55" id="zws_contacts_database_plugin_map_target_icon_url"
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_map_target_icon_url']; ?>" />
                    <?php
                }
 
                public static function map_base_icon_url_form_field_element() {
                    ?>
-            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for 'home base'</small>      
-            <input type="text" name="zws_contacts_database_plugin_map_base_icon_url" size="55" id="zws_contacts_database_plugin_map_base_icon_url" 
+            <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">URL of the map icon to use for 'home base'</small>
+            <input type="text" name="zws_contacts_database_plugin_map_base_icon_url" size="55" id="zws_contacts_database_plugin_map_base_icon_url"
                    value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_map_base_icon_url']; ?>" />
             <small style="display:block;margin-top:1em;">If you're looking for map icons, you may like to try <a href="https://mapicons.mapsmarker.com/" target="_blank">this resource</a>.
 
@@ -157,8 +157,8 @@ Class Admin {
 
             public static function map_zoom_form_field_element() {
                 ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Initial zoom factor of the map (suggest between 7 and 10)</small>      
-                <input type="text" name="zws_contacts_database_plugin_google_map_zoom" size="55" id="zws_contacts_database_plugin_google_map_zoom" 
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Initial zoom factor of the map (suggest between 7 and 10)</small>
+                <input type="text" name="zws_contacts_database_plugin_google_map_zoom" size="55" id="zws_contacts_database_plugin_google_map_zoom"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_google_map_zoom']; ?>" />
 
                 <?php
@@ -166,16 +166,16 @@ Class Admin {
 
             public static function base_postcode_form_field_element() {
                 ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Postcode of 'home base' (No spaces - e.g. AB467TR)</small>      
-                <input type="text" name="zws_contacts_database_plugin_base_postcode" size="55" id="zws_contacts_database_plugin_base_postcode" 
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Postcode of 'home base' (No spaces - e.g. AB467TR)</small>
+                <input type="text" name="zws_contacts_database_plugin_base_postcode" size="55" id="zws_contacts_database_plugin_base_postcode"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_base_postcode']; ?>" />
                        <?php
                    }
 
                    public static function base_name_form_field_element() {
                        ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Display name of 'home base'</small>      
-                <input type="text" name="zws_contacts_database_plugin_base_name" size="55" id="zws_contacts_database_plugin_base_name" 
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">Display name of 'home base'</small>
+                <input type="text" name="zws_contacts_database_plugin_base_name" size="55" id="zws_contacts_database_plugin_base_name"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_base_name']; ?>" />
                        <?php
                    }
@@ -198,7 +198,7 @@ Class Admin {
 
                    public static function admin_email_active_form_field_element() {
                        ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to administrator(s) upon new registrations</small> 
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to administrator(s) upon new registrations</small>
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
                 $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_admin_email_active'] === 'TRUE' ? 'checked' : '';
@@ -222,7 +222,7 @@ Class Admin {
 
             public static function reg_email_active_form_field_element() {
                 ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to new registrants</small> 
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want notification email(s) sent to new registrants</small>
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
                 $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_active'] === 'TRUE' ? 'checked' : '';
@@ -244,7 +244,7 @@ Class Admin {
 
             public static function reg_email_subject_form_field_element() {
                 ?>
-                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 45 characters)</small>      
+                <small class="zws-database-creator-form-helper" style="display:block;margin-bottom:1em;">The text of the "Subject" field of the notification email sent to registrants (max 45 characters)</small>
                 <input type="text" name="zws_contacts_database_plugin_reg_email_subject" size="55" maxlength="45" id="zws_contacts_database_plugin_reg_email_subject"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_plugin_reg_email_subject']; ?>" />
                        <?php
@@ -261,7 +261,7 @@ Class Admin {
 
                    public static function full_removal_on_uninstall_element() {
                        ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small> 
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Whether you want to entirely remove ALL DATABASES AND OPTIONS when this plugin is uninstalled</small>
                 <?php
                 // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
                 $true_checked = get_site_option('zws_contacts_database_remove_data') === 'TRUE' ? 'checked' : '';
@@ -277,7 +277,7 @@ Class Admin {
                 ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;
                        margin-bottom:1em;
-                       ">Use Memcached to cache API requests</small> 
+                       ">Use Memcached to cache API requests</small>
                        <?php
                        // check to see if option is set as true or false, then pre-populate the radio buttons accordingly
                        $true_checked = get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_active'] === 'TRUE' ? 'checked' : '';
@@ -291,8 +291,8 @@ Class Admin {
                        ?>
                 <small class="zws-rest_api-consumer-form-helper" style="display:block;
                        margin-bottom:1em;
-                       ">Length of time to cache content (in seconds)</small>      
-                <input type="text" name="zws_contacts_database_memcached_period" size="55" id="zws_contacts_database_memcached_period" 
+                       ">Length of time to cache content (in seconds)</small>
+                <input type="text" name="zws_contacts_database_memcached_period" size="55" id="zws_contacts_database_memcached_period"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_period'];
                        ?>" />
                        <?php
@@ -300,16 +300,16 @@ Class Admin {
 
                    public static function memcached_server_IP_element() {
                        ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server IP (default 127.0.0.1)</small>      
-                <input type="text" name="zws_contacts_database_memcached_ip" size="55" id="zws_contacts_database_memcached_ip" 
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server IP (default 127.0.0.1)</small>
+                <input type="text" name="zws_contacts_database_memcached_ip" size="55" id="zws_contacts_database_memcached_ip"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_ip']; ?>" />
                        <?php
                    }
 
                    public static function memcached_server_port_element() {
                        ?>
-                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server port (default 11211)</small>      
-                <input type="text" name="zws_contacts_database_memcached_port" size="55" id="zws_contacts_database_memcached_port" 
+                <small class="zws-rest_api-consumer-form-helper" style="display:block;margin-bottom:1em;">Memcached server port (default 11211)</small>
+                <input type="text" name="zws_contacts_database_memcached_port" size="55" id="zws_contacts_database_memcached_port"
                        value="<?php echo get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_memcached_port']; ?>" />
                 <?php
             }
@@ -406,4 +406,3 @@ Class Admin {
             }
 
         }
-        
