@@ -1,11 +1,11 @@
 === ZWS Contacts Database ===
 
-Donate link: https://www.zaziork.com/donate
+Donate link: https://www.aninstance.com/donate
 Contributors: zaziork
 Tags: contacts, database, contacts database, google map, distance calculator, contacts location database, postcode calculator
 Requires at least: 3.0
-Tested up to: 4.5.3
-Stable tag: 0.8.8
+Tested up to: 4.7.5
+Stable tag: 1.0
 License: GPLv2 or later
 Plugin to create and administer a contacts database and calculate nearest contacts to any given postcode.
 
@@ -103,22 +103,20 @@ There are no frequently asked questions as yet.
 
 == Current version ==
 
-The current version is: 0.8.8
+The current version is: 1.0
 
 == Changelog ==
 
-= 0.8.8 =
+= 1.0 =
 
-* TO DO: Add error catch so that it doesn't timeout if signup confirmation email can't be sent (eg. if a postfix issue).
-* TO DO: List the nearest 5 contacts in order of distance (they're unordered at the moment).
-* TO DO: Add Netherlands as a selectable location.
-* TO DO: Allow user query through GPS co-ordinates rather than postcode.
-* TO DO: Refactor to provide an option to allow users (rather than just admins) to search for other subscribers by location.
+* Updated Guzzle
+* Update query-geocomplete and jquery-timepicker
+* Tested up to Wordpress 4.7.5
 
 = 0.8.7 =
 
-* Update Guzzle
-* Update query-geocomplete and jquery-timepicker
+* Updated Guzzle
+* Updated query-geocomplete and jquery-timepicker
 * Tested up to Wordpress 4.5.3
 
 = 0.8.6 =

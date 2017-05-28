@@ -11,7 +11,7 @@ define("ZWS_CDB_COUNTRY", serialize(array('United Kingdom' => 'GB', 'United Stat
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.zaziork.com/wp-zws-database-creator
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 0.8.8
+ * Version: 1.0
  * Author: Zaziork Web Solutions
  * Author URI: http://www.zaziork.com
  * Copyright (c) 2015 Zaziork Web Solutions. All rights reserved.
@@ -74,7 +74,7 @@ Class ZwsContactsDatabase
     {
         if (!is_admin()) {
             // set up our scripts
-            $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.12.0/jquery-ui.min.js', __FILE__);
+            $jquery_ui_js = plugins_url('/vendor/jquery/jquery-ui-1.12.1/jquery-ui.min.js', __FILE__);
             $jquery_time_modal_js = plugins_url('/inc/jquery_time_modal.js', __FILE__);
             $jquery_user_mod_modal_js = plugins_url('/inc/jquery_user_mod_modal.js', __FILE__);
             $jquery_timepicker_js = plugins_url('/vendor/jquery-timepicker/jquery.timepicker.min.js', __FILE__);
@@ -82,7 +82,7 @@ Class ZwsContactsDatabase
             $jquery_delete_record_js = plugins_url('/inc/jquery.deleteRecord.js', __FILE__);
             $jquery_maps_with_places_js = 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false' .
                 ' &key=' . get_site_option(self::OPTIONS_LABEL)['zws_contacts_database_google_server_api_key'];
-            $jquery_geocomplete_js = plugins_url('/vendor/jquery-geocomplete/jquery.geocomplete.js', __FILE__);
+            $jquery_geocomplete_js = plugins_url('/vendor/geocomplete/jquery.geocomplete.js', __FILE__);
             $jquery_geocomplete_init_js = plugins_url('/inc/jquery.geocomplete.js', __FILE__);
             wp_register_script('jquery_ui_js', $jquery_ui_js, array('jquery'));
             wp_register_script('jquery_time_modal_js', $jquery_time_modal_js, array('jquery_ui_js'));
