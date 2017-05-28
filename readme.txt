@@ -198,4 +198,4 @@ The plugin is to be used entirely at the user's own risk.
 
 Support and/or implementation of feature requests are not guaranteed, however comments and/or requests for free support are welcome.
 
-For premium support, please contact the author via the plugin website: https://www.zaziork.com/contact
+For premium support, please contact the author at productions@aninstance.com

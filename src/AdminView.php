@@ -7,11 +7,11 @@ use ZwsContactsDatabase\Helpers as Zelp;
 /**
  * Administration view file for ZWS Contacts Database
  *
- * @copyright Copyright (c) 2015, Zaziork Web Solutions
+ * @copyright Copyright (c) 2017, Aninstance
  * @license This plugin uses the Composer library - see composer-license.txt
- * @author    Zaziork Web Solutions
+ * @author    Dan Bright (Aninstance)
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * @link https://www.zaziork.com/
+ * @link https://www.aninstance.com
  */
 Class AdminView {
 
@@ -262,7 +262,7 @@ Class AdminView {
             return false;
         }
 // method to display the Google map
-// 
+//
 // create the javascript filename (add random id to script to ensure a cached version is not returned to client)
         $rand = rand();
         $user_id = $map_config['users_id'];
