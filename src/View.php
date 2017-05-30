@@ -62,7 +62,7 @@ Class View {
         . 'By default, the options below are set to <strong>"Unavailable"</strong> every day. Please adjust as required!<br>'
         . 'Feel free to provide more detail in the "Extra information" section if necessary.</p>';
         foreach (unserialize(ZWS_CDB_DAYS) as $value => $day) {
-            // note: put the time selectors inside a div with class of zws-contacts-db-modal, as sharing jquery.timepicker.init.js file 
+            // note: put the time selectors inside a div with class of zws-contacts-db-modal, as sharing jquery.timepicker.init.js file
             // with update datebase form (displayed in a modal in ZwsPaginator) - where that class is necessary
             // as there are multiple divs using same class, but only the active modal has the zws-contacts-db-modal class added when the modal is opened,
             // which allows only the active class (open modal) to be targeted in jquery.timepicker.init.js.
@@ -230,7 +230,7 @@ Class View {
                     array_push($headers, "X-Mailer: PHP/" . phpversion());
                     $extras = "-f{$admin_email} -r{$admin_email}";
                     // send email
-                    if (!mail($to, $subject, $message, implode("\r\n", $headers), $extras)) {
+                    if (!wp_mail($to, $subject, $message, implode("\r\n", $headers), $extras)) {
                         error_log("An error occurred whilst sending email to the administrators ...");
                     }
                 }
@@ -272,7 +272,7 @@ Class View {
                 array_push($reg_headers, "X-Mailer: PHP/" . phpversion());
                 $reg_extras = "-f{$admin_email} -r{$admin_email}";
                 // send email
-                if (!mail($reg_to, $reg_subject, $reg_email, implode("\r\n", $reg_headers), $reg_extras)) {
+                if (!wp_mail($reg_to, $reg_subject, $reg_email, implode("\r\n", $reg_headers), $reg_extras)) {
                     error_log('An error occurred whilst sending the confirmation email to the registrant ...');
                 }
             }
