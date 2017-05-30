@@ -11,7 +11,7 @@ define("ZWS_CDB_COUNTRY", serialize(array('United Kingdom' => 'GB', 'United Stat
  * Plugin Name: ZWS Contacts Database
  * Plugin URI: https://www.aninstance.com/projects/?gh_reg_key=wp-contacts-db
  * Description: Plugin to create and administer a contacts database and calculate nearest contacts to any given UK postcode.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Dan Bright (Aninstance)
  * Author URI: http://www.aninstance.com
  * Copyright (c) 2017 Aninstance. All rights reserved.
