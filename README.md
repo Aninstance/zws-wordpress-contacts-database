@@ -1,2 +1,1 @@
-## THIS PLUGIN IS NOW "END OF LIFE". IT IS HERE FOR ARCHIVE PURPOSES ONLY. THEREFORE, USE OF THIS PLUGIN IS HIGHLY DISCOURAGED.
-# This plugin is no longer supported, patched or updated, and most likely contains security vulnerabilities.
+__NOTE: This project is now unmaintained and therefore should *NOT* be used in production. It is likely to contain security vulnerabilites, both in the codebase and project dependences.__
